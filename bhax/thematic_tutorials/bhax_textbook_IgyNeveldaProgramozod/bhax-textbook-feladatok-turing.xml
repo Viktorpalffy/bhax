@@ -13,11 +13,11 @@
         </para>
 
         <para>
-            Megoldás forrása: <link xlink:href="https://github.com/raczandras/progbook/blob/master/src/Turing/ciklus.c">https://github.com/raczandras/progbook/blob/master/src/Turing/ciklus.c</link>        
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/ciklus.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/ciklus.c</link>        
         </para>
 
         <para>
-           	Egy magot 100%-on dolgoztatni nem egy nagy kihívás, hiszen ha egy szimpla while ciklust megírunk, az
+           	Egy magot 100%-on dolgoztatni egész egyszerű feladat, hiszen ha egy szimpla while ciklust megírunk, az
 		alapvetően így működik. Egy magot 0%-on dolgoztatni sem egy egetrengető kihívás, viszont itt már kell
 		minimálisan gondolkodni. De hamar rájövünk, hogy a sleep(x) parancs kiadásával x másodpercig nem
 		használja a processzort a program. Viszont ha nincs parancs a cikluson belül, a processzor ugyanúgy 100 %-on
@@ -78,7 +78,7 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
             Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/08/28/10_begin_goto_20_avagy_elindulunk">https://bhaxor.blog.hu/2018/08/28/10_begin_goto_20_avagy_elindulunk</link>
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása:<link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/felcserelo.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/felcserelo.c</link> 
         </para>
 	<para>
 	Annak ellenére, hogy nem használhatunk logikai utasításokat/kifejezéseket, ez egy egyszerű feladatnak bizonyul egy kezdő programozó számára is. Itt most négy módját is bemutatom.
@@ -89,13 +89,17 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
 
 	<programlisting><![CDATA[
 	int main()
+
 {
-    int a=0;
-    int b=0;
-    int c=0;
-    cout<<"Kerem a felcserelni kivant szamokat!"<<"\n";
-    cin>>a>>b;
-    cout<<"A ket szam: "<<"\n"<<"A = "<<a<<"\n"<<"B = "<<b<<"\n";
+    int a;
+    int b;
+    int c;
+    printf("Kerem a felcserelni kivant szamokat! \n");
+    scanf("%d",a);
+    scanf("%d",b);
+    printf("A ket szam: \n");
+    printf("A =" "%d",a);
+    printf("B = " "%d",b);
 
     //Elso valtozat:
     /*
@@ -121,7 +125,9 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
         b=a^b;
         a=a^b;
     */
-    cout<<"A ket szam felcserelve: "<<"\n"<<"A = "<<a<<"\n"<<"B = "<<b<<"\n";
+    printf("A ket szam felcserelve: \n");
+    printf("A =" "%d",a);
+    printf("B = " "%d",b);
 
     return 0;
 }]]>
@@ -148,11 +154,24 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
             Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/08/28/labdapattogas">https://bhaxor.blog.hu/2018/08/28/labdapattogas</link>
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása <link xlink:href="https://bhaxor.blog.hu/2018/08/28/labdapattogas">Bátfai Norbert</link> tulajdona.
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Ez egy egyszerű program, ami a grafikus megjelenítést imitálja. Egy ladbádnak álcázott o betűt mozgat egy while ciklus segítségével. Ez a program egy nagyon jó kezdet a grafikus felületű 		programokkal való megismerkedéshez.
         </para>
+	<para>
+	A program két fő részből áll. Az egyik egy függvény, ami a labdát rajzolja ki a konzolra,
+	A másik pedig maga a main.
+	</para>
+	<para>
+	A main-ben először létrehozunk egy maxX és egy maxY változót, amiket át is adunk a tx és a ty tömbök méretének.
+	</para>
+	<para>
+	Ezután két for ciklus végigmegy a két tömbön, a második, és az utolsó elemek értéke -1 lesz, a többi elemé pedig 1
+	</para>
+	<para>
+	végül pedig egy while ciklus és a függvény segítségével kiírja a konzolra a labdát.
+	</para>
     </section>                     
 
     <section>
@@ -162,18 +181,22 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
             Használd ugyanazt a while ciklus fejet, amit Linus Torvalds a BogoMIPS rutinjában! 
         </para>
         <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/9KnMqrkj_kU">https://youtu.be/9KnMqrkj_kU</link>, 
-            <link xlink:href="https://youtu.be/KRZlt1ZJ3qk">https://youtu.be/KRZlt1ZJ3qk</link>, 
-            <link xlink:href=""></link>.
+            Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=xLu3I6lBH-E">https://www.youtube.com/watch?v=xLu3I6lBH-E</link>
+            
         </para>
         <para>
-            Megoldás forrása: <link xlink:href="Turing/bogomips.c">
-                <filename>bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/bogomips.c</filename>
-            </link>
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/bogo.cpp"></link>
+           
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat... 
+           A BogoMips a processzorunk sebességének meghatározásához használatos mértékegység. Azt mondja meg, hogy a számítógép processzora mekkora szóhosszal dolgozik.
         </para>
+	<para>
+	Ezt a XOR ^ művelet segítségével számolja ki a program, ami a kizáró vagy művelete. Az int értékének 1-et adunk, és addig shifteljük balra, ameddig lehet, vagyis amíg az int értéke egyenlő nem lesz nullával. 
+	</para>
+	<para>
+	Közben egy másik változóval számoljuk, hogy hányszor shiftelt balra az int, ezzel meghatározva a szóhosszt. Az én esetemben az eredmény 32 lett, ami a virtuális gép miatt van. Valójában 64 bit-es a processzorom ami 8 bájtnak felel meg.
+	</para>
     </section>                     
 
     <section>
@@ -186,10 +209,10 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
             Megoldás videó: <link xlink:href=""></link>
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Turing/pagerank.c"></link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Én a Bevezetés a Programozásba nevű tárgyon már átnézett <link xlink:href="https://github.com/Viktorpalffy/bug-free-computing-machine/blob/master/pagerank.cpp">PageRank</link> programot vettem 		    alapnak, és azt alakítottam át C++-ból C-re. 
         </para>
     </section>
                                                                                                                                                                                                                                                                                                                                                         
@@ -204,8 +227,11 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
         <para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/MontyHall_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/MontyHall_R</link>
         </para>
+	<para>
+	A megoldás Bátfai Norbert tulajdona.
+	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            A Monty Hall problémát még középiskolában ismertem meg, sok különböző változata van. Az általam ismert történetben Monty Hall egy műsorvezető volt, akinél a nyertes játékosok választhattak három darab ajtó közül. A háromból két ajtó mögött 1-1 darab kecske, míg a harmadik ajtó mögött egy sportautó volt. A játékos választott egy ajtót, majd Monty Hall, aki tudta, hogy melyik ajtó mögött van az autó, kinyitott egy másik ajtót, ami mögött egy kecske lapult. Ezek után a játékosnak lehetősége volt változtatni a döntésén, vagy maradhatott az eredetileg kiválasztott ajtónál. A kérdés az, hogy mely esetben van több esélye megnyerni az autót? A legtöbb ember azt mondaná, hogy 50-50% esélye van megnyerni az autót, hiszen vagy az egyik ajtó mögött van az autó, vagy a másik mögött. Ekkor persze hiába magyarázzuk, hogy 1/3 esélye van megnyerni az autót, ha nem vált, és 2/3 ha vált, a legtöbb embert elég nehéz meggyőzni erről. Ekkor kell kicsit átalakitani a kérdést. Ha van 1 millió ajtó, ebből kiválaszt a játékos 1-et, majd kinyitnak 999,998 ajtót, amik mögött kecske van, akkor melyik esetben van több esélye a játékosnak megnyerni az autót? Ilyenkor már a legtöbb ember eggyértelműnek tartja, hogy vált, de van olyan ismerősöm, aki még ekkor is azt mondta, hogy 50-50% esélye van megnyerni az autót, ha vált ha nem. Ez a program ennek a játéknak a nyerési eseteit szimulálja. Tízmillió esetből hányszor nyer az, aki mindig vált, és az aki egyáltalán nem vált.
         </para>
     </section>
 
@@ -220,246 +246,17 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
         <para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Primek_R">https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Primek_R</link>
         </para>
-
+	<para>
+	A megoldás Bátfai Norbert tulajdona.
+	</para>
         <para>
-            A természetes számok építőelemei a prímszámok. Abban az értelemben, 
-            hogy minden természetes szám előállítható prímszámok szorzataként.
-            Például 12=2*2*3, vagy például 33=3*11.
+            Mint tudjuk, léteznek a prímszámok. Ezek olyan számok, amik csak 1-el és önmagukkal oszthatóak. Valamint léteznek az ikerprímek. Ezek pedig olyan prímszámpárok, amiknek a különbsége pontosan 2. Ha minden ikerprím reciprokának az összegének vesszük a sorozatát, akkor ez a sorozat egy számhoz konvergál. Ez a szám a Brun-konstans. Nem tudjuk azt, hogy az ikerprímek száma véges vagy végtelen e, de ez nem okoz gondot, hiszen elvileg ha végtelen se lépi túl az összegük a Brun-konstanst. Na most be kell vallanom, hogy számtalan olyan ember létezik a földön, aki nálam jobban ért a matematikához. Viszont nekem erről egy elég érdekes dolog jutott eszembe, ami nem más, mint Zeno paradoxona. E szerint x útat teszünk meg, hogy elérjük a célunkat. Ezek alapján megteszünk 1/2x utat + 1/4x utat + 1/8x utat + 1/16x utat... Ha ezekből képzünk egy sorozatot, az a sorozat 1-hez fog konvergálni, Éppen ezért soha nem érünk el oda, ahova megyünk. Maga a tétel matematikailag helyes, azonban a való életben tudjuk, hogy ez nem így működik.
         </para>
-        <para>
-            Prímszám az a természetes szám, amely csak önmagával és eggyel 
-            osztható. Eukleidész görög matematikus már Krisztus előtt tudta, 
-            hogy végtelen sok prímszám van, de ma sem tudja senki, hogy 
-            végtelen sok ikerprím van-e. Két prím ikerprím, ha különbségük 2.
-        </para>
-        <para>
-            Két egymást követő páratlan prím között a legkisebb távolság a 2, 
-            a legnagyobb távolság viszont bármilyen nagy lehet! Ez utóbbit 
-            könnyű bebizonyítani. Legyen n egy tetszőlegesen nagy szám. 
-            Akkor szorozzuk össze n+1-ig a számokat, azaz számoljuk ki az 
-            1*2*3*… *(n-1)*n*(n+1) szorzatot, aminek a neve (n+1) faktoriális, 
-            jele (n+1)!.
-        </para>
-        <para>
-            Majd vizsgáljuk meg az a sorozatot:
-        </para>    
-        <para>
-            (n+1)!+2, (n+1)!+3,… , (n+1)!+n, (n+1)!+ (n+1) ez n db egymást követő azám, ezekre (a jól ismert
-            bizonyítás szerint) rendre igaz, hogy            
-        </para>    
-        <itemizedlist>
-            <listitem>
-                <para>(n+1)!+2=1*2*3*… *(n-1)*n*(n+1)+2, azaz 2*valamennyi+2, 2 többszöröse, így ami osztható kettővel</para>
-            </listitem>
-            <listitem>
-                <para>(n+1)!+3=1*2*3*… *(n-1)*n*(n+1)+3, azaz 3*valamennyi+3, ami osztható hárommal</para>
-            </listitem>
-            <listitem>
-                <para>...</para>
-            </listitem>
-            <listitem>
-                <para>(n+1)!+(n-1)=1*2*3*… *(n-1)*n*(n+1)+(n-1), azaz (n-1)*valamennyi+(n-1), ami osztható (n-1)-el</para>
-            </listitem>
-            <listitem>
-                <para>(n+1)!+n=1*2*3*… *(n-1)*n*(n+1)+n, azaz n*valamennyi+n-, ami osztható n-el</para>
-            </listitem>
-            <listitem>
-                <para>(n+1)!+(n+1)=1*2*3*… *(n-1)*n*(n+1)+(n-1), azaz (n+1)*valamennyi+(n+1), ami osztható (n+1)-el</para>
-            </listitem>
-        </itemizedlist>
-        <para>
-            tehát ebben a sorozatban egy prim nincs, akkor a (n+1)!+2-nél 
-            kisebb első prim és a (n+1)!+ (n+1)-nél nagyobb első 
-            prim között a távolság legalább n.            
-        </para>    
-        <para>
-            Az ikerprímszám sejtés azzal foglalkozik, amikor a prímek közötti 
-            távolság 2. Azt mondja, hogy az egymástól 2 távolságra lévő prímek
-            végtelen sokan vannak.
-        </para>    
-        <para>
-            A Brun tétel azt mondja, hogy az ikerprímszámok reciprokaiból képzett sor összege, azaz
-            a (1/3+1/5)+ (1/5+1/7)+ (1/11+1/13)+... véges vagy végtelen sor konvergens, ami azt jelenti, hogy ezek
-            a törtek összeadva egy határt adnak ki pontosan vagy azt át nem lépve növekednek, 
-            ami határ számot B<subscript>2</subscript> Brun konstansnak neveznek. Tehát ez
-            nem dönti el a több ezer éve nyitott kérdést, hogy az ikerprímszámok halmaza végtelen-e? 
-            Hiszen ha véges sok van és ezek
-            reciprokait összeadjuk, akkor ugyanúgy nem lépjük át a B<subscript>2</subscript> Brun konstans értékét, 
-            mintha végtelen 
-            sok lenne, de ezek már csak olyan csökkenő mértékben járulnának hozzá a végtelen sor összegéhez, 
-            hogy így sem lépnék át a Brun konstans értékét.     
-        </para>
-        <para>
-            Ebben a példában egy olyan programot készítettünk, amely közelíteni próbálja a Brun konstans értékét.
-            A repó <link xlink:href="../../../bhax/attention_raising/Primek_R/stp.r">
-                <filename>bhax/attention_raising/Primek_R/stp.r</filename>
-            </link> mevű állománya kiszámolja az ikerprímeket, összegzi
-            a reciprokaikat és vizualizálja a kapott részeredményt.
-        </para>
-        <programlisting language="R">
-<![CDATA[#   Copyright (C) 2019  Dr. Norbert Bátfai, nbatfai@gmail.com
-#
-#   This program is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#   (at your option) any later version.
-#
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License
-#   along with this program.  If not, see <http://www.gnu.org/licenses/>
-
-library(matlab)
-
-stp <- function(x){
-
-    primes = primes(x)
-    diff = primes[2:length(primes)]-primes[1:length(primes)-1]
-    idx = which(diff==2)
-    t1primes = primes[idx]
-    t2primes = primes[idx]+2
-    rt1plust2 = 1/t1primes+1/t2primes
-    return(sum(rt1plust2))
-}
-
-x=seq(13, 1000000, by=10000)
-y=sapply(x, FUN = stp)
-plot(x,y,type="b")
-]]>
-        </programlisting>        
-        <para>
-            Soronként értelemezzük ezt a programot:
-        </para>                
-        <programlisting language="R">
-<![CDATA[ primes = primes(13)]]>
-        </programlisting>        
-        <para>
-            Kiszámolja a megadott számig a prímeket.             
-        </para>
-        <screen>
-<![CDATA[> primes=primes(13)
-> primes
-[1]  2  3  5  7 11 13
-]]>
-        </screen>
-                
-        <programlisting language="R">
-<![CDATA[ diff = primes[2:length(primes)]-primes[1:length(primes)-1]]]>
-        </programlisting>        
-        <screen>
-<![CDATA[> diff = primes[2:length(primes)]-primes[1:length(primes)-1]
-> diff
-[1] 1 2 2 4 2
-]]>
-        </screen>        
-        <para>
-            Az egymást követő prímek különbségét képzi, tehát 3-2, 5-3, 7-5, 11-7, 13-11.
-        </para>
-        <programlisting language="R">
-<![CDATA[idx = which(diff==2)]]>
-        </programlisting>        
-        <screen>
-<![CDATA[> idx = which(diff==2)
-> idx
-[1] 2 3 5
-]]>
-        </screen>              
-        <para>
-            Megnézi a <varname>diff</varname>-ben, hogy melyiknél lett kettő az eredmény, mert azok az ikerprím párok, ahol ez igaz.
-            Ez a <varname>diff</varname>-ben lévő 3-2, 5-3, 7-5, 11-7, 13-11 külünbségek közül ez a 2., 3. és 5. indexűre teljesül.
-        </para>
-        <programlisting language="R">
-<![CDATA[t1primes = primes[idx]]]>
-        </programlisting>  
-        <para>
-            Kivette a primes-ból a párok első tagját. 
-        </para>
-        <programlisting language="R">
-<![CDATA[t2primes = primes[idx]+2]]>
-        </programlisting>        
-        <para>
-            A párok második tagját az első tagok kettő hozzáadásával képezzük.
-        </para>
-        <programlisting language="R">
-<![CDATA[rt1plust2 = 1/t1primes+1/t2primes]]>
-        </programlisting>        
-        <para>
-            Az 1/t1primes a t1primes 3,5,11 értékéből az alábbi reciprokokat képzi:
-        </para>
-        <screen>
-<![CDATA[> 1/t1primes
-[1] 0.33333333 0.20000000 0.09090909
-]]>
-        </screen>                      
-        <para>
-            Az 1/t2primes a t2primes 5,7,13 értékéből az alábbi reciprokokat képzi:
-        </para>
-        <screen>
-<![CDATA[> 1/t2primes
-[1] 0.20000000 0.14285714 0.07692308
-]]>
-        </screen>                      
-        <para>
-            Az 1/t1primes + 1/t2primes pedig ezeket a törteket rendre összeadja.
-        </para>
-        <screen>
-<![CDATA[> 1/t1primes+1/t2primes
-[1] 0.5333333 0.3428571 0.1678322
-]]>
-        </screen>                      
-        <para>
-            Nincs más dolgunk, mint ezeket a törteket összeadni a 
-            <function>sum</function> függvénnyel.
-        </para>
+        </section>
         
-        <programlisting language="R">
-<![CDATA[sum(rt1plust2)]]>
-        </programlisting>    
-        <screen>
-<![CDATA[>   sum(rt1plust2)
-[1] 1.044023
-]]>
-        </screen>            
-        <para>
-            A következő ábra azt mutatja, hogy a szumma értéke, hogyan nő, egy határértékhez tart, a 
-            B<subscript>2</subscript> Brun konstanshoz. Ezt ezzel a csipettel rajzoltuk ki, ahol először a fenti 
-            számítást 13-ig végezzük, majd 10013, majd 20013-ig, egészen 990013-ig, azaz közel 1 millióig.
-            Vegyük észre, hogy az ábra első köre, a 13 értékhez tartozó 1.044023.
-        </para>
-        <programlisting language="R">
-<![CDATA[x=seq(13, 1000000, by=10000)
-y=sapply(x, FUN = stp)
-plot(x,y,type="b")]]>
-        </programlisting>          
-        <figure>
-            <title>A B<subscript>2</subscript> konstans közelítése</title>
-            <mediaobject>
-                <imageobject>
-                    <imagedata fileref="img/BrunKorok.png" scale="50" />
-                </imageobject>
-                <textobject>
-                    <phrase>A B<subscript>2</subscript> konstans közelítése</phrase>
-                </textobject>
-            </mediaobject>
-        </figure>                             
-        <tip>
-            <title>Werkfilm</title>
-            <itemizedlist>
-                <listitem>
-                    <para>
-                        <link xlink:href="https://youtu.be/VkMFrgBhN1g">https://youtu.be/VkMFrgBhN1g</link>
-                    </para>    
-                </listitem>                
-                <listitem>
-                    <para>
-                        <link xlink:href="https://youtu.be/aF4YK6mBwf4">https://youtu.be/aF4YK6mBwf4</link>
-                    </para>    
-                </listitem>                
-            </itemizedlist>                
-        </tip>
-    </section>
+        
+        
+        
+        
 
 </chapter>                

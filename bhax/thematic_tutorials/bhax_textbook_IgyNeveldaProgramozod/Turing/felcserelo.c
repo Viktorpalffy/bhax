@@ -1,10 +1,16 @@
+#include <stdio.h>
+int main()
+
 {
-    int a=0;
-    int b=0;
-    int c=0;
-    cout<<"Kerem a felcserelni kivant szamokat!"<<"\n";
-    cin>>a>>b;
-    cout<<"A ket szam: "<<"\n"<<"A = "<<a<<"\n"<<"B = "<<b<<"\n";
+    int a;
+    int b;
+    int c;
+    printf("Kerem a felcserelni kivant szamokat! \n");
+    scanf("%d",a);
+    scanf("%d",b);
+    printf("A ket szam: \n");
+    printf("A =" "%d",a);
+    printf("B = " "%d",b);
 
     //Elso valtozat:
     /*
@@ -30,7 +36,9 @@
         b=a^b;
         a=a^b;
     */
-    cout<<"A ket szam felcserelve: "<<"\n"<<"A = "<<a<<"\n"<<"B = "<<b<<"\n";
+    printf("A ket szam felcserelve: \n");
+    printf("A =" "%d",a);
+    printf("B = " "%d",b);
 
     return 0;
 }
