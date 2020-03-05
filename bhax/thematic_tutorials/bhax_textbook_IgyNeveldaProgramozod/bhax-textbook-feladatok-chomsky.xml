@@ -62,7 +62,7 @@
             Megoldás videó: https://youtu.be/Dkp4gI9JZNs
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/nyelvek.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/nyelvek.c</link> 
         </para>
 	<para>
         A BNF (Backus-Naur-forma) használatával környezetfüggetlen nyelveket lehet leirni. Nagyon sok programozási nyelvek szintaxisai is BNF-ben vannak leirva.
@@ -98,7 +98,7 @@
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása: 
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/lex.l">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/lex.l</link>
         </para>
 	<para>
 	A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/realnumber.l">Bátfai Norbert</link> tulajdona.
@@ -116,6 +116,9 @@
 	<para>
 		gcc -o lex lex.c -lfl
 	</para>
+	<para>
+		Ezzel megkapjuk a <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/lex.c">https://github.com/	Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/lex.c</link> oldalon található programot, ami a feladat megoldása.
+	</para>
 	
     </section>                     
 
@@ -128,109 +131,25 @@
             Megoldás videó: <link xlink:href="https://youtu.be/06C_PqDpD_k">https://youtu.be/06C_PqDpD_k</link>
         </para>
         <para>
-            Megoldás forrása: <link xlink:href="Chomsky/l337d1c7.l">
-                <filename>bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/l337d1c7.l</filename>
-            </link>  
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/lex.l">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/lex.l</link>
+            
         </para>
-        <programlisting language="c"><![CDATA[%{
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <time.h>
-  #include <ctype.h>
-
-  #define L337SIZE (sizeof l337d1c7 / sizeof (struct cipher))
-    
-  struct cipher {
-    char c;
-    char *leet[4];
-  } l337d1c7 [] = {
-
-  {'a', {"4", "4", "@", "/-\\"}},
-  {'b', {"b", "8", "|3", "|}"}},
-  {'c', {"c", "(", "<", "{"}},
-  {'d', {"d", "|)", "|]", "|}"}},
-  {'e', {"3", "3", "3", "3"}},
-  {'f', {"f", "|=", "ph", "|#"}},
-  {'g', {"g", "6", "[", "[+"}},
-  {'h', {"h", "4", "|-|", "[-]"}},
-  {'i', {"1", "1", "|", "!"}},
-  {'j', {"j", "7", "_|", "_/"}},
-  {'k', {"k", "|<", "1<", "|{"}},
-  {'l', {"l", "1", "|", "|_"}},
-  {'m', {"m", "44", "(V)", "|\\/|"}},
-  {'n', {"n", "|\\|", "/\\/", "/V"}},
-  {'o', {"0", "0", "()", "[]"}},
-  {'p', {"p", "/o", "|D", "|o"}},
-  {'q', {"q", "9", "O_", "(,)"}},
-  {'r', {"r", "12", "12", "|2"}},
-  {'s', {"s", "5", "$", "$"}},
-  {'t', {"t", "7", "7", "'|'"}},
-  {'u', {"u", "|_|", "(_)", "[_]"}},
-  {'v', {"v", "\\/", "\\/", "\\/"}},
-  {'w', {"w", "VV", "\\/\\/", "(/\\)"}},
-  {'x', {"x", "%", ")(", ")("}},
-  {'y', {"y", "", "", ""}},
-  {'z', {"z", "2", "7_", ">_"}},
-  
-  {'0', {"D", "0", "D", "0"}},
-  {'1', {"I", "I", "L", "L"}},
-  {'2', {"Z", "Z", "Z", "e"}},
-  {'3', {"E", "E", "E", "E"}},
-  {'4', {"h", "h", "A", "A"}},
-  {'5', {"S", "S", "S", "S"}},
-  {'6', {"b", "b", "G", "G"}},
-  {'7', {"T", "T", "j", "j"}},
-  {'8', {"X", "X", "X", "X"}},
-  {'9', {"g", "g", "j", "j"}}
-  
-// https://simple.wikipedia.org/wiki/Leet
-  };
-  
-%}
-%%
-.	{
-	  
-	  int found = 0;
-	  for(int i=0; i<L337SIZE; ++i)
-	  {
-	  
-	    if(l337d1c7[i].c == tolower(*yytext))
-	    {
-	    
-	      int r = 1+(int) (100.0*rand()/(RAND_MAX+1.0));
-	    
-          if(r<91)
-	        printf("%s", l337d1c7[i].leet[0]);
-          else if(r<95)
-	        printf("%s", l337d1c7[i].leet[1]);
-	      else if(r<98)
-	        printf("%s", l337d1c7[i].leet[2]);
-	      else 
-	        printf("%s", l337d1c7[i].leet[3]);
-
-	      found = 1;
-	      break;
-	    }
-	    
-	  }
-	  
-	  if(!found)
-	     printf("%c", *yytext);	  
-	  
-	}
-%%
-int 
-main()
-{
-  srand(time(NULL)+getpid());
-  yylex();
-  return 0;
-}
-]]></programlisting>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
+	<para>
+            Megoldás forrása: A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/l337d1c7.l">Bátfai Norbert</link> tulajdona.             
+        </para>        
+            <para>
+            A leet vagy a saját formájában leírva 1337 egy, az internettel együtt elterjedt szleng nyelv, amiben a betűket különböző számokként, és egyéb ASCII karakterekként, a számokat pedig különböző betűkként ábrázoljuk.
         </para>
-    </section>                     
+	<para>
+           Itt is érvényes az a szabály, hogy a program egyes részeit % jelekkel kell elválasztani egymástól. Itt a legelső részben a cipher struktúrában meg vannak adva a karakterek leet formái
+        </para>
+	<para>
+	A második részben történik az érdemi munka, először a szöveget kisbetűssé alakítja a program, majd pedig végigmegy a szövegen, és minden karaktert a neki megfelelő leet formájú karakterré alakítja át.
+	</para>
+	<para>
+	A harmadik és egyben utolsó részben található a main amiben a lex meghívása történik.
+	</para>
+        </section>                     
 
 
     <section>
@@ -295,7 +214,26 @@ main()
         </para>
 
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            	1: Ha kapunk egy INTERACT szignált, akkor a jelkezelő fügvénnyel eldöntjük, hogy mihez
+		kezdjünk azzal a szignállal, mit reagáljon rá a program.
+        </para>
+	<para>
+            	2: Egy for ciklus ami nullától négyig megy, és a ciklus törzsében lévő művelet elvégzése előtt nő az értéke eggyel.
+        </para>
+	<para>
+            	3: Szintén egy for ciklus, ami szintén nullától négyig megy, viszont itt már a ciklus törzsében lévő műveletek elvégzése után növekszik az értéke.
+        </para>
+	<para>
+            	4: Egy for ciklus, ami berakja a tomb[i]-edik helyére az i értékénél eggyel nagyobb értéket, és közben i értékét is növeli.
+        </para>
+	<para>
+            	5: Egy for ciklus, ami addig megy, amíg i kisseb mint n, illetve amíg a d és s pointerek értékei megyegyeznek.
+        </para>
+	<para>
+            	6: Kiírunk két, az f nevű függvény által generált számot. Az egyik szám az a majd a eggyel megnövelt értékének a feldolgozásából jön létre, mig a másik szám a+1 és a feldolgozásából. Fontos a sorrend.
+        </para>
+	<para>
+            	7: Szintén két számot írunk ki, az egyik szám az f nevű függvény által feldolgozott a nevű számból előállt érték, a másik pedig a értéke.
         </para>
 
     </section>                     
@@ -321,9 +259,21 @@ $(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
             Megoldás videó: <link xlink:href="https://youtu.be/ZexiPy3ZxsA">https://youtu.be/ZexiPy3ZxsA</link>, <link xlink:href="https://youtu.be/AJSXOQFF_wk">https://youtu.be/AJSXOQFF_wk</link>
         </para>
 
+
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Első értelmezése: Minden számra igaz, hogy létezik tőle nagyobb y prímszám.
         </para>
+	<para>
+            Második értelmezése: Minden számra igaz, hogy létezik egy olyan tőle nagyobb y prímszám, hogy y+2 is prím.
+        </para>
+	<para>
+            Harmadik értelmezése: Létezik olyan szám, amitől minden prímszám kissebb.
+        </para>
+	<para>
+            Negyedik értelmezése: Létezik olyan szám, amitől egyik kissebb szám se prím.
+        </para>
+
+        
     </section>                                                                                                                                                                            
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     <section>
@@ -366,150 +316,81 @@ $(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
             </listitem>            
         </itemizedlist>            
 
-        <para>
+       <para>
             Mit vezetnek be a programba a következő nevek?
         </para>
 
         <itemizedlist>
             <listitem>
-                <programlisting><![CDATA[int a;]]></programlisting>            
+                <programlisting><![CDATA[int a; //létrehoz egy egész típusú változót]]></programlisting>   
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int *b = &a;]]></programlisting>            
+                <programlisting><![CDATA[int *b = &a; //egy pointer, ami a memóriacímére hivatkozik]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int &r = a;]]></programlisting>            
+                <programlisting><![CDATA[int &r = a; //egy referencia a-ra]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int c[5];]]></programlisting>            
+                <programlisting><![CDATA[int c[5]; //5 elemű tömb aminek c a neve]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int (&tr)[5] = c;]]></programlisting>            
+                <programlisting><![CDATA[int (&tr)[5] = c; //egy tr nevű referencia c-re]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int *d[5];]]></programlisting>            
+                <programlisting><![CDATA[int *d[5]; //egy 5 elemű pointerekből álló tömb]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int *h ();]]></programlisting>            
+                <programlisting><![CDATA[int *h (); //Egy egészre mutató mutatót visszaadó függvény]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int *(*l) ();]]></programlisting>            
+                <programlisting><![CDATA[int *(*l) (); //Egy egészre mutató mutatóra mutató mutatót visszaadó függvény]]></programlisting>            
             </listitem>
             <listitem>
-                <programlisting><![CDATA[int (*v (int c)) (int a, int b)]]></programlisting>            
+                <programlisting><![CDATA[int (*v (int c)) (int a, int b) //Függvénymutató, ami egy egészet visszaadó függvényre mutató mutatóval visszatérő függvény]]></programlisting>            
             </listitem>            
             <listitem>
-                <programlisting><![CDATA[int (*(*z) (int)) (int, int);]]></programlisting>            
+                <programlisting><![CDATA[int (*(*z) (int)) (int, int); //Függvénymutató, ami egy egészet visszaadó függvényre mutató mutatót visszaadó függvényre mutat]]></programlisting>            
             </listitem>            
         </itemizedlist>       
-
 
         <para>
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása: <link xlink:href=""></link>  
         </para>
         <para>
-            Az utolsó két deklarációs példa demonstrálására két olyan kódot
-            írtunk, amelyek összahasonlítása azt mutatja meg, hogy miért 
-            érdemes a <command>typedef</command> használata: <link xlink:href="Chomsky/fptr.c">
-                <filename>bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/fptr.c</filename>
-            </link>,
-            <link xlink:href="Chomsky/fptr2.c">
-                <filename>bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/fptr2.c</filename>.
-            </link>  
-            
+            Egész: <programlisting><![CDATA[int a;]]></programlisting> 
         </para>
-        <programlisting><![CDATA[#include <stdio.h>
-
-int
-sum (int a, int b)
-{
-    return a + b;
-}
-
-int
-mul (int a, int b)
-{
-    return a * b;
-}
-
-int (*sumormul (int c)) (int a, int b)
-{
-    if (c)
-        return mul;
-    else
-        return sum;
-
-}
-
-int
-main ()
-{
-
-    int (*f) (int, int);
-
-    f = sum;
-
-    printf ("%d\n", f (2, 3));
-
-    int (*(*g) (int)) (int, int);
-
-    g = sumormul;
-
-    f = *g (42);
-
-    printf ("%d\n", f (2, 3));
-
-    return 0;
-}]]></programlisting>            
-        <programlisting><![CDATA[#include <stdio.h>
-
-typedef int (*F) (int, int);
-typedef int (*(*G) (int)) (int, int);
-
-int
-sum (int a, int b)
-{
-    return a + b;
-}
-
-int
-mul (int a, int b)
-{
-    return a * b;
-}
-
-F sumormul (int c)
-{
-    if (c)
-        return mul;
-    else
-        return sum;
-}
-
-int
-main ()
-{
-
-    F f = sum;
-
-    printf ("%d\n", f (2, 3));
-
-    G g = sumormul;
-
-    f = *g (42);
-
-    printf ("%d\n", f (2, 3));
-
-    return 0;
-}
-]]></programlisting>            
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
+	<para>
+            Egészre mutató mutató: <programlisting><![CDATA[int *b = &a;]]></programlisting>
         </para>
-    </section>                     
+	<para>
+            Egész referenciája: <programlisting><![CDATA[int &r = a;]]></programlisting>
+		Itt fontos megjegyezni, hogy c-ben nincs referencia, ezért ezt a kódcsipetet érdemes g++-al forditani gcc helyett.
+        </para>
+	<para>
+            Egészek tömbje: <programlisting><![CDATA[int c[5];]]></programlisting>            
+        </para>
+	<para>
+            Egészek tömbjének referenciája (nem az első elemé): <programlisting><![CDATA[int (&tr)[5] = c;]]></programlisting>            
+        </para>
+	<para>
+            Egészre mutató mutatók tömbje: <programlisting><![CDATA[int *d[5];]]></programlisting>           
+        </para>
+	<para>
+            Egészre mutató mutatót visszaadó függvény: <programlisting><![CDATA[int *h ();]]></programlisting>           
+        </para>
+	<para>
+            Egészre mutató mutatót visszaadó függvényre mutató mutató:  <programlisting><![CDATA[int *(*l) ();]]></programlisting>           
+        </para>
+	<para>
+            Egészet visszaadó és két egészet kapó függvényre mutató mutatót visszaadó, egészet kapó függvény:   <programlisting><![CDATA[int (*v (int c)) (int a, int b)]]></programlisting> 
+        </para>
+	<para>
+            Függvénymutató egy egészet visszaadó és két egészet kapó függvényre mutató mutatót visszaadó, egészet kapó függvényre:   <programlisting><![CDATA[int (*(*z) (int)) (int, int);]]></programlisting>
+        </para>
+    </section>                      
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 </chapter>                
