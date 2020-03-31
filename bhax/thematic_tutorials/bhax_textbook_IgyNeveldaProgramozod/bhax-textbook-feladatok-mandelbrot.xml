@@ -12,7 +12,7 @@
             Megoldás videó:https: <link xlink:href="//www.youtube.com/watch?v=hHKhGdCN2Rolink">//www.youtube.com/watch?v=hHKhGdCN2Rolink</link>
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrot.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrot.cpp</link>              
         </para>
 	<para>
 	A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/CUDA/mandelpngt.c++">Bátfai Norbert</link> tulajdona.
@@ -66,7 +66,7 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:            
+            Megoldás forrása:<link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrotkomplex.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrotkomplex.cpp</link>       
         </para>
 	<para>
 	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/kezdo/elsocpp/mandelbrot_komplex/mandelbrot_komplex.cpp">UDPROG</link> repóban.
@@ -253,7 +253,7 @@ imag(C) = MAXY - i * dy;]]>
     <section>
         <title>Mandelbrot nagyító és utazó Java nyelven</title>
         <para>
-	Megoldás Forrása: 
+	Megoldás Forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/MandelJava">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/MandelJava</link>
         </para>
 	
 	<para>
