@@ -253,7 +253,19 @@ De tegyük fel, hogy megírjuk ezt a programot, aminek a neve legyen eldöntő. 
             Mint tudjuk, léteznek a prímszámok. Ezek olyan számok, amik csak 1-el és önmagukkal oszthatóak. Valamint léteznek az ikerprímek. Ezek pedig olyan prímszámpárok, amiknek a különbsége pontosan 2. Ha minden ikerprím reciprokának az összegének vesszük a sorozatát, akkor ez a sorozat egy számhoz konvergál. Ez a szám a Brun-konstans. Nem tudjuk azt, hogy az ikerprímek száma véges vagy végtelen e, de ez nem okoz gondot, hiszen elvileg ha végtelen se lépi túl az összegük a Brun-konstanst. Na most be kell vallanom, hogy számtalan olyan ember létezik a földön, aki nálam jobban ért a matematikához. Viszont nekem erről egy elég érdekes dolog jutott eszembe, ami nem más, mint Zeno paradoxona. E szerint x útat teszünk meg, hogy elérjük a célunkat. Ezek alapján megteszünk 1/2x utat + 1/4x utat + 1/8x utat + 1/16x utat... Ha ezekből képzünk egy sorozatot, az a sorozat 1-hez fog konvergálni, Éppen ezért soha nem érünk el oda, ahova megyünk. Maga a tétel matematikailag helyes, azonban a való életben tudjuk, hogy ez nem így működik.
         </para>
         </section>
-        
+        <section>
+        <title>Vörös Pipacs Pokol/csiga folytonos mozgási parancsokkal</title>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/uA6RHzXH840">https://youtu.be/uA6RHzXH840</link>      
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ebben a feladatban a karaktert folytonos mozgásra bírtuk, különböző módokon. Ez egy nagyon kezdetleges lépés volt, de mint már azt tudjuk, kis lépés egy karakternek, óriási a hackernek :).
+        </para>            
+    </section>   
+
         
         
         

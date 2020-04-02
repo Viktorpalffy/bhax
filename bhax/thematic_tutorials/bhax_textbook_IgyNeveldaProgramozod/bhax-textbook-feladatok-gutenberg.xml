@@ -4,31 +4,144 @@
         <keywordset>
             <keyword/>
         </keywordset>
-        <cover>
-            <para>
-                Programozás tankönyvek rövid olvasónaplói.
-            </para>
-        </cover>
     </info>
     <section>
-        <title>Programozási alapfogalmak</title>
-        <para>         
-            <citation>PICI</citation>       
-        </para>
+        <title>Juhász István - Magas szintű programozási nyelvek 1 olvasónaplója</title>
+
+	<para>
+		A számítógépet programozó nyelveknek három szintje van. Ezek a gépi nyelv, az assembly nyelv és a magas szintű nyelv. Mi a magas szintű programozási nyelvekkel foglalkozunk, ami az emberek által a legjobban érthető. Az ilyen nyelven megírt programot nevezzük forrásprogramnak. Azonban a processzorok csak az adott gépi nyelven írt programokat tudják végrehajtani. Ezért forrásprogramot át kell írni gépi kódra. Ezt a munkát végzik el a fordítók.
+	</para>
+	<para>
+	Minden programnyelvnek van saját szabványa, ez a hivatkozási nyelv. Pontosan meg vannak adva a nyelvtani szabályok, amiket be kell tartani, különben vagy szintaktikai, vagy szemantikai hibát fogunk kapni. A szintaktikai hiba az, amit a fordító észrevesz, és jelez nekünk, hogy gond van. Míg a szemantikai hiba esetén a fordító nem kapja el a hibát, de a program nem megfelelően fog működni.
+	</para>
+	<para>
+	Ezen kívül minden nyelvnek vannak Adattípusai is. Ezek lehetnek beépített, vagy a programozó által kreáltak is. Ilyen típusok például az egész számok, a karakterek, a karakterláncok, a tömbök, a listák, a mutatók.
+	</para>
+	<para>
+	Léteznek nevesített konstansok is. Ezek is lehetnek beépítettek, vagy létrehozottak is. Ilyen konstans például a pí. Létrehozni pedig c++ nyelvben a #define-al míg java-ban a final utasítással tudunk.
+	</para>
+	<para>
+A legalapvetőbb dolgok azonban a változók. Ezekben tároljuk a számunkra szükséges dolgokat. Egy változónak van típusa és értéke. A típusa lehet szám, karakter, karakterlánc, illetve logikai. Az értéke pedig a lehetséges típusok alapján lehet szám, karakter, karakterek sorozata, illetve igaz/hamis.
+	</para>
+	<para>
+	A programozási nyelvekben használunk még Kifejezéseket is. Ezek egyfajta műveletek. Egy kifejezésnek három része van. A művelet bal szélén valamilyen változó áll, aminek szeretnénk egy értéket adni, középen egy műveleti jel, és jobb oldalt pedig vagy egy másik változó, vagy egy konkrét érték, ami a bal oldalt álló változónak az új értéke lesz.
+	</para>
+	<para>
+	A gépi kódot a fordító az utasítások alapján generálja. Ezek az utasítások a következők lehetnek : Értékadó utasítás; Üres utasítás; Ugró utasítás; Elágaztató utasítások; Ciklusszervező utasítások; Hívó utasítás; Vezérlésátadó utasítások; I/O utasítások; Egyéb utasítások.
+	</para>
+	<para>
+	A ciklusokat is rengetegszer használják a programozók. Ezek segítségével a megadott parancsokat egymás után többször is elvégzi a program. A ciklusokhoz tartoznak a Vezérlő utasítások, amik a következők:
+A Continue parancs esetén a ciklus jelenlegi lépésében a hátra lévő utasításokat nem hajtja végre, hanem a következő cikluslépésre ugrik.
+A Break parancs esetén a ciklus megáll, és nem fut tovább
+A Return parancs esetén leáll a ciklus és visszaadja az eredményt.
+	</para>
+	<para>
+	Az alprogramok, vagy másnéven függvények olyan programrészletek, amiket megírva később meg lehet hívni őket, és a megadott értékekből előállítanak egy eredményt. Az alprogramoknak van neve és vannak argumentumai. A nevével hívjuk meg őket, az argumentumok pedig azok az értékek amikből a végeredmény áll elő.
+	</para>
+	<para>
+	A programokban a blokkok olyan programrészletek amik programrészletekben helyezkednek el. Ilyen például az if elágazás után a potenciálisan végrehajtandó utasítások.
+	</para>
+    </section>        
+    
+    <section>
+        <title>Kerninghan és Richie olvasónaplója</title>
+        
+
+	<para>
+	Először is A vezérlési Szerkezetek a ciklusok, az elágazások
+	</para>
+	<para>
+	Az elágazásokba beletartozik az if, if-else, else-if, else, és a switch feltételvizsgálatok. Ezekkel értékeket tudunk vizsgálni, és ezek végrehajtatni a megfelelő utasítást, utasításokat végrehajtani.
+Az if, if-else, else-if, else kifejezéseknél az if után vizsgáljuk meg az értéket, majd jönnek az utasítások, és végül opcionálisan else-if vagy else. Bármennyi else-if lehet egymás után, azonban else csak egy vagy nulla. Viszont célszerű else-t is használni, mert általában kevés esély van arra, hogy minden esetet lefedünk szimplán else-if használatával.
+	</para>
+	<para>
+	Ezzel szemben a switch esetében megadjuk az értéket, majd tetszőleges darabszámú case használatával megnézzük, hogy az e az érték, ami nekünk kell, és ha igen akkor az aktuális case utasításait hajtja végre. Célszerű megjegyezni, switch-case használatánál a program minden esetben végigellenőrzi az összes case-t, ezért ha nem szeretnénk, hogy az összeset ellenőrizze, ha már talált egy egyezést, akkor használjuk a break utasítást.
+	</para>
+	<para>
+	A Ciklusok esetében beszélhetünk for, while, és do while ciklusokról.
+	</para>
+	<para>
+	A for esetében a programozó adja meg, hogy hányszor fusson le a ciklus. A while és a do while esetében pedig addig fut a ciklus, amíg egy feltétel nem teljesül. Éppen ezért vigyázni kell, nehogy véletlenül egy végtelen ciklus alakuljon ki. Fontos különbség még a while és a do while ciklusok között, hogy míg a while ciklus először ellenőrzi, hogy teljesült e a feltétel, majd pedig lefuttatja az utasításokat, addig a do while ciklus először lefuttatja az utasításokat, majd pedig ellenőrzi, hogy teljesült e már a feltétel.
+	</para>
+	<para>
+	A C nyelv alapvető adattípusai az int, a float, a double, a char, és a bool.
+	</para>
+	<para>
+	Az intek (integerek) egész számok amik lehetnek pozitívak és negatívak is. Az int mérete 4bájt, azaz 32bit
+	</para>
+	<para>
+	A float és a double típusú változókban valós, úgynevezett lebegőpontos számokat lehet tárolni.
+	Ilyen például a 0.5. A különbség a két változó között azonban az, hogy, hogy míg a float mérete csak 4bájt, addig a double méréte 8bájt.
+	</para>
+	<para>
+	A char (character) típusú változóban meglepő módon egy karaktert lehet eltárolni. A char mérete 1bájt.
+	</para>
+	<para>
+	Az alapvető adattípusokon túl a C nyelvnek vannak Állandói is. Ilyen például a #define, amivel meg tudunk adni meg nem változtatható értékeket. Ezekre később hivatkozni tudunk. De ilyen állandók még az escape sorozatok, amiket az adatok kiíratásánál tudunk alkalmazni. ilyen például a \n amivel egy új sort kezdünk.
+	</para>
     </section>        
     <section>
-        <title>Programozás bevezetés</title>
+        <title>Benedek Zoltán, Levendovszky Tihamér - Szoftverfejlesztés C++ nyelven olvasónaplója</title>
+	<para>
+	A C++ egy objektum orientált programozási nyelv, ami egyben alacsonyabb szintű elemeket is támogat. 
+	</para>
+	<para>
+	A C++-ban ha egy függvényt paraméterek nélkül hívunk meg, akkor az egyenértékű egy void paraméterrel. Aminek pont az a jelentése, hogy a függvénynek nincs paramétere. További különbség, hogy míg a C nyelvben egy függvényt csak a neve alapján azonosítunk, addig C++ ban egy függvényt a neve és az argumentumai határoznak meg. Ezáltal C++ ban előfordulhat két ugyan olyan nevű függvény különböző argumentumokkal. További változás, hogy C++ ba be lettek vezetve a referenciák, valamint egy új típus is bevezetésre került, ami nem más mint a bool. A bool egy logikai változó ami lehet igaz vagy hamis értékű
+	</para>
+	<para>
+	A C++ bevezette az osztályokat, amik az adatok, és metódusok együttese. Innen ered az objektum orientáltság, mivel az objektum a egy darab osztály egy darab előfordulása. A metódus pedig az osztálynak egy olyan eleme, egy olyan függvény, ami az osztályba tartozó adatokat manipulálja.
+	</para>
+	<para>
+	A konstruktorok és destruktorok előredefiniált függvénymezők, amelyek kulcsszerepet játszanak a C++ nyelvben. Alepvető probléma a programozásban az inicializálás. Mielőtt egy adatstruktúrát elkezdenénk használni, meg kell bizonyosodnunk arról, hogy megfelelő méretű tárterületet biztosítsunk a számára, és legyen kezdeti értéke. Ezt a problémát orvosolják a konstruktorok.
+	</para>
+	<para>
+	A destruktorok pedig egy konstruktor által már létrehozott objektum törlésében segítenek. Törlik a tartalmát, és felszabadítják az objektum által elfoglalt helyet. Ha mi nem hozunk létre destruktort, akkor a C++ a saját alapértelmezett változatát fogja használni.
+	</para>
+	<para>
+	Létezik még másoló konstruktor is, ami egy már meglévő objektumból hoz létre egy újat. Lefoglal a memóriában egy részletet, és annak az értékét felülírja a már létező objektum értékeivel. 
+	</para>
+	<para>
+	A C++ nyelven az osztályok adattagjai előtt szerepelhet a static szó. Ez azt jelenti, hogy ezeket a tagokat az osztály objektumai megosztva használják.
+	</para>
+	
+	<para>
+	Gyakran kerülünk olyan helyzetbe, hogy egy adott típusnak  úgy  kellene viselkednie,  mint  egy másiknak. Ekkor kell típuskonverziót alkalmazni. Ezt meg lehet tenni implicit és explicit módon is.
+	</para>
+	<para>
+	Implicit konverziót általában haonló típusokon lehet elvégezni. Ilyen például ha egy integer változó értékét szeretnénk átadni egy long típusú változónak. 
+	</para>
+
+	<programlisting>
+	<![CDATA[
+	int x = 5;
+	long y = x;]]>
+	</programlisting>
+
+	<para>
+Mind a ketten egész szám típusok, viszont a long nagyobb méretű, ezért a konverzió gond nélkül megtörténik.
+	</para>
+	<para>
+	Ez a módszer explicit konverzió esetén nem biztos, hogy működni fog, és még adatvesztéssel is járhat. Ilyen például ha egy integer változó értékét szeretnénk átadni egy byte értékű változónak. A byte mérete kissebb mint az it, ezért a változó előtt kell lennie egy zárójelnek benne a típussal.
+	</para>
+	<programlisting>
+	<![CDATA[
+	int x = 300;
+	byte y = (byte)x;]]>
+	</programlisting>
+	<para>
+	Itt például az y értéke 44 lesz, mert a 300-at kilenc biten kell felírni, azonban a byte csak 8 bitet tárol, ezért az x-nek csak az első 8 bitjét fogja eltárolni.
+	</para>
+	<para>
+	C++ ban lehetőségünk van függvénysablonok és osztálysablonok létrehozására is, ezek a temlatek. A template argumentumai eltérnek a hagyományos argumentumoktól. Egyrészt már a fordítás közben kiértékelődnek, ezért a futás közben már konstansok. Éppen e miatt az argumentumok típusok is lehetnek, nem csak értékek.
+	</para>
+    </section> 
+
+<section>
+        <title>Python nyelvi bevezetés</title>
         <para>                
-            <citation>KERNIGHANRITCHIE</citation>
+            Rövid olvasónapló a <citation>BMEPY</citation> könyvről.
         </para>
-        <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/zmfT9miB-jY">https://youtu.be/zmfT9miB-jY</link>
-        </para>        
-    </section>        
-    <section>
-        <title>Programozás</title>
-        <para>                
-            <citation>BMECPP</citation>
-        </para>
-    </section>        
+    </section>     
+       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 </chapter>                

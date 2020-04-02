@@ -326,5 +326,18 @@ kulcs[0],kulcs[1],kulcs[2],kulcs[3],kulcs[4],kulcs[5],kulcs[6],kulcs[7], buffer)
 		Persze a mi három bemeneti adatos példánknál nem sokat lehet finomítani, de ha több millió bemeneti adatról beszélünk, ott ez egy elég fontos dolog.
 	</para>
     </section>        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    
+<section>
+        <title>Vörös Pipacs Pokol/írd ki, mit lát Steve</title>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/-GX8dzGqTdM">https://youtu.be/-GX8dzGqTdM</link>      
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ebben a feladatban a kódhoz hozzáadunk egy olyan részt, ami kiírja, hogy mi található a karakter 3x3-as környezetében, merre néz a karakter, és azt is, hogy éppen mire néz. A cél az, hogy a karakter kiírja a képernyőre, hogy éppen egy vörös virágot lát.
+        </para>            
+    </section>              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 </chapter>   

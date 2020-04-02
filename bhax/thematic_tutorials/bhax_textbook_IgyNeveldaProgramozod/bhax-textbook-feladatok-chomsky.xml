@@ -392,5 +392,18 @@ $(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
         </para>
     </section>                      
 
+	<section>
+        <title>Vörös Pipacs Pokol/csiga diszkrét mozgási parancsokkal</title>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/Fc33ByQ6mh8">https://youtu.be/Fc33ByQ6mh8</link>      
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ebben a feladatban ugyanazt csináltuk mint az előző hetiben, viszont itt diszkrét mozgási parancsokat kell megadnunk a karakternek.
+        </para>            
+    </section>           
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 </chapter>                

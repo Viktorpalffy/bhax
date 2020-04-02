@@ -286,5 +286,18 @@ imag(C) = MAXY - i * dy;]]>
 	Ez a programrészlet a nagyított mandelbrot halmazok pontjait tartja nyílván. Ez egy számításra létrehozott osztály, ami a kiválasztott ponthoz tartó utat mutatja meg.
 	</para>
     </section>
+	<section>
+        <title>Vörös Pipacs Pokol/fel a láváig és vissza</title>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/I6n8acZoyoo">https://youtu.be/I6n8acZoyoo</link>      
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ebben a feladatban az a lényeg, hogy a karakter fusson fel az aréna aljától a tetejéig, majd ha a 3x3-as látóterében lávát érzékel, akkor a lávával együtt szépen sétáljon vissza le az aréna aljáig. 
+        </para>            
+    </section>         
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 </chapter>
