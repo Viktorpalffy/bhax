@@ -22,12 +22,12 @@
 	A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/tm.c">Bátfai Norbert</link> tulajdona.
 	</para>
         <para>
-            Először is egy alap fogalom. Az alsó háromszög mátrixnak ugyanannyi sora van, mint oszlopa. Ezen kívül még egy nagyon fontos tényezője az is, hogy a főátlója felett csak 0 szerepel.
+            Először is egy alapfogalom: Az alsó háromszög mátrixnak ugyanannyi sora van, mint oszlopa. Ezen kívül még egy nagyon fontos tényezője az is, hogy a főátlója felett csak 0 szerepel.
 	</para>
 	<para> 
-	Általában az ilyen mátrixokat, ha tömbökben tároljuk, akkor nincs értelme a nullákat is tárolni a többi, számunkra érdekes elemmel eggyütt, éppen ezért ezeket nem is tároljuk.
-	Amikor egy ilyen tömböt vissza szeretnénk alakítani az eredeti alakjára, akkor sorfolytonosan írjuk fel az elemeit. ez mindössze annyit jelent, hogy a mátrix első sorába az első elemet írjuk fel,
-	a második sorába a 2. és 3. elemet, és igy tovább minden sorban eggyel több elemet írunk fel mint az előző sorban.
+	Az ilyen mátrixokat, ha tömbökben tároljuk, akkor nincs értelme a nullákat is tárolni a többi, számunkra fontos elemmel együtt, ezért ezeket nem is tároljuk.
+	Amikor egy ilyen tömböt vissza szeretnénk alakítani az eredeti alakjára, akkor sorfolytonosan írjuk fel az elemeit. Ez annyit jelent, hogy a mátrix első sorába az első elemet írjuk fel,
+	a második sorába a második és harmadik elemet és így tovább minden sorban eggyel több elemet írunk fel mint az előző sorban.
         </para>     
 	<para>
 		Ebben a programban egy ilyen alsó háromszög mátrixot hozunk létre egy <programlisting language="c"><![CDATA[double **]]> </programlisting> segítségével. Ez egy pointerre mutató pointer, ami tökéletes a többdimenziós tömbök használatához.
@@ -47,18 +47,18 @@
             return -1;
         }
 }]]> </programlisting>
-	Ellenőrzi, hogy történt e valamilyen memóriahiba, (pl. nincs e tele a memória) és ha történt, akkor -1-el tér vissza.
+	Ellenőrzi, hogy történt e valamilyen memóriahiba, (pl. nincs tele a memória?) és ha történt, akkor -1-el tér vissza.
 	</para>
 	<para>
-		Ellenkező esetben a program a <programlisting language="c"><![CDATA[tm[i][j] = i * (i + 1) / 2 + j;]]> </programlisting> képletet használva feltölti, a tömböt. Ezután két egymásba ágyazott for ciklus segitségével kiírja azt.
+		Ellenkező esetben a program a <programlisting language="c"><![CDATA[tm[i][j] = i * (i + 1) / 2 + j;]]> </programlisting> képletet használva feltölti a tömböt. Ezután két egymásba ágyazott for ciklus segítségével kiírja azt.
 	</para>
 	<para>
 		Ezek után módosítunk a tömb egyes elemein, majd megint kiírjuk őket.
 	</para>       
 	<para>
-		Legvégül pedig a <programlisting language="c"><![CDATA[for (int i = 0; i < nr; ++i)
+		Legvégül, pedig a <programlisting language="c"><![CDATA[for (int i = 0; i < nr; ++i)
         free (tm[i]);
-free (tm);]]></programlisting> függvény használatával felszabaditjuk a tömbnek lefoglalt helyet.
+free (tm);]]></programlisting> függvény használatával felszabadítjuk a tömbnek lefoglalt helyet.
 	</para>
 	<para>
 	A program futtatásnál a következő memóriacímeket írta ki:
@@ -79,7 +79,7 @@ free (tm);]]></programlisting> függvény használatával felszabaditjuk a tömb
             </imageobject>
         </mediaobject>
 	<para>
-	A képnek az alapját Bátfai Norbert Biztosította, én azt módosítottam.
+	A képnek az alapját Bátfai Norbert biztosította, azt módosítottam.
 	</para>
     </section>        
     <section>
@@ -97,7 +97,7 @@ free (tm);]]></programlisting> függvény használatával felszabaditjuk a tömb
 	A megoldás forrása <link xlink:href="https://progpater.blog.hu/2011/02/15/felvetelt_hirdet_a_cia">Bátfai Norbert</link> tulajdona.
 	</para>
         <para>
-            Ez a fajta titkosítás a kizáró vagy műveleten alapul. A megadott kulcs, és a forrásfájl karaktereit kizáró vaggyal titkosítva egy szöveget úgy tudunk titkosítani, hogy egy olvashatatlan karaktermasszát kapunk végeredményül. Viszont aki ismeri a kulcsot az ugyan olyan egyszerűen vissza tudja alakítani a szöveget az eredeti alakjára úgy, hogy mégegyszer lefuttatja a programot, de a titkosított forrást adja meg titkosítandóként, ezzel visszakapva az eredeti szöveget. Így más nem tudja elolvasni a titkainkat, csak az, aki ismeri hozzá a kulcsot. (legalábbis egyenlőre. Két feladattal később már más lesz a helyzet.)
+            Ez a fajta titkosítás a kizáró vagy műveleten alapul. A megadott kulcs, és a forrásfájl karaktereit kizáró vaggyal titkosítva egy szöveget úgy tudunk titkosítani, hogy egy olvashatatlan karakterhalmazt kapunk végeredményül. Viszont az a személy, aki ismeri a kulcsot ugyanolyan egyszerűen vissza is tudja alakítani a szöveget az eredeti alakjára úgy, hogy mégegyszer lefuttatja a programot, de a titkosított forrást adja meg titkosítandóként, ezzel visszakapva az eredeti szöveget. Így más nem tudja elolvasni a titkainkat, csak az, aki ismeri hozzá a kulcsot.
 	</para>
 	<para>
 Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
@@ -113,7 +113,7 @@ Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
 	}
       write (1, buffer, olvasott_bajtok);
 }]]></programlisting>
-		program végigmegy a bemeneti adatok (titkosítandó fájl) karakterein, és mindegyiket titkosítja a kulcs használatával, és kiírja a végeredményt.
+		program végigmegy a bemeneti adatok (titkosítandó fájl) karakterein, mindegyiket titkosítja a kulcs használatával és kiírja a végeredményt.
 	</para> 
 	<para>
 		A program használata: ./exor kulcs <![CDATA[<titkosítandó fájl>]]> titkosított fájl
@@ -141,11 +141,11 @@ Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
 	</para>
 
         <para>
-            Itt az előző feladatban megírt EXOR titkosítót írjuk át java programozási nyelvre.
-	    Ehhez importálnunk kell az input/output streamet, ez ahhoz kell,  hogy olvasni tudjuk a bemeneti fájlt, illetve, hogy írni tudjuk a kimeneti fájlt.
+            Itt az előző feladatban megírt EXOR titkosítót írjuk át java nyelvre.
+	    Ehhez importálnunk kell az input/output streamet. Ez ahhoz kell,  hogy olvasni tudjuk a bemeneti fájlt, illetve, hogy írni tudjuk a kimeneti fájlt.
         </para>
 	<para>
-	A main-ben megpróbáljuk a try-al beolvasni az args (argumentumok) tömbbe azt a fájlt, amit titkosítani szeretnénk, és ha ez nem sikerült, akkor "elkapjuk" a hibát a catch szerkezettel, és kiíratjuk, hogy mi a hiba:
+	A main-ben megpróbáljuk a try-al beolvasni az args tömbbe azt a fájlt, amit titkosítani szeretnénk és ha ez nem sikerült, akkor "elkapjuk" a hibát a catch szerkezettel, és kiíratjuk, hogy mi a hiba:
 	</para>
 	<programlisting><![CDATA[[
 	public static void main(String[] args) {
@@ -162,14 +162,14 @@ Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
 	]]></programlisting>
 	
 	<para>
-	Ha viszont sikerült beolvasni a fájlt, akkor az ExorTitkosító nevű függvényt meghívva előállítjuk a titkosított szöveget. a System.in illetve System.out a bemenő és a kimenő fájlra utalnak.
+	Ha viszont sikerült beolvasni a fájlt, akkor az ExorTitkosító nevű függvényt meghívva előállítjuk a titkosított szöveget. A System.in illetve System.out a bemenő és a kimenő fájlra utalnak.
 	</para>
 	
 	<para>
-	Először is a függvény átadja a program a kulcs nevű tömbnek a bemenő szöveget, és létrehoz egy buffer nevű tömböt is 256-os mérettel. Erre az EXOR művelethez lesz szükség.
+	Először a függvény átadja a program a kulcs nevű tömbjének a bemenő szöveget, és létrehoz egy buffer nevű tömböt is 256-os mérettel. Erre az EXOR művelethez lesz szükség.
 	</para>
 	<para>
-	Végül a program egy while-ba épített for ciklus segítségével végigmegy a szövegen, és minden egyes karakternek meghatározza a titkosított verzióját, és kiírja azt a kimeneti fájlba.
+	Végül a program egy while-ba épített for ciklus segítségével végigzongorázza a szöveget, minden egyes karakternek meghatározza a titkosított verzióját, és kiírja azt a kimeneti fájlba.
 	</para>
            
     </section>        
@@ -188,29 +188,29 @@ Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
 	A megoldás forrása <link xlink:href="https://progpater.blog.hu/2011/02/15/felvetelt_hirdet_a_cia">Bátfai Norbert</link> tulajdona.
 	</para>
         <para>
-           Önnel is előfordult már az, hogy elfelejtette egy EXOR-ral titkosított fájl kulcsát?
-	   Ön is akart már kutatkodni mások fájljai között, de nem tudott, mert EXOR-ra voltak titkosítva a fájlok?
+           Elfelejtetted egy EXOR-ral titkosított fájlod kulcsát?
+	   Szeretnél kutakodni mások fájljai között, de azok titkosítva vannak?
         </para>
 	<para>
-	 	Ne szenvedjen tovább. Az EXOR törő biztos megoldást nyújt önnek! Csupán annyit kell tudnia, hogy hány karakterből áll a kulcs, és máris használhatja ezt a fenomenálist programot. A felhasználó ostobaságaiért és azok jogi következményeiért felelősséget nem vállalunk.
+	 	Ne is kínlódj tovább. Az EXOR törőt neked találták ki! A program sikerességéhez mindössze annyit kell tudnod , hogy hány karakterből áll a kulcs, és máris használhatod ezt a fantasztikus programot!
 	</para>
 	<para>
-		A működése roppant egyszerű. Mivel nem ismerjük a kulcsot, ezért a program az összes lehetséges kombinációt végigpróbálja. A következőkben bemutatott példában a kulcs 8 darab karakterből áll.
+		A működése nagyon  egyszerű. Mivel nem ismerjük a kulcsot, ezért a program az összes lehetséges kombinációt végigpróbálja. A következőkben bemutatott példában a kulcs 8 darab karakterből áll.
 	</para>
 	<para>
-		Legelőször a program a következő while ciklus:
+		Legelőször a program a következő while ciklus
 		<programlisting><![CDATA[ while ((olvasott_bajtok =
                 read (0, (void *) p,
                       (p - titkos + OLVASAS_BUFFER <
                        MAX_TITKOS) ? OLVASAS_BUFFER : titkos + MAX_TITKOS - p)))
 p += olvasott_bajtok;]]></programlisting>
-		Használatával beolvassa a feltörni kívánt fájlt, majd a maradék helyet a bufferben egy for ciklust használva
+		használatával beolvassa a feltörni kívánt fájlt, majd a maradék helyet a bufferben, egy for ciklust használva,
 	<programlisting><![CDATA[ for (int i = 0; i < MAX_TITKOS - (p - titkos); ++i)
 titkos[p - titkos + i] = '\0';]]></programlisting>
 	feltölti 0 értékekkel.
 	</para>
 	<para>
-		Ezek után egy halom (ami jelen esetben 8) for ciklussal: 
+		Ezek után egy csomó (ami jelen esetben 8) for ciklussal 
 		<programlisting><![CDATA[ #pragma omp parallel for private(kulcs)
     for (int ii = '0'; ii <= '9'; ++ii)
         for (int ji = '0'; ji <= '9'; ++ji)
@@ -231,11 +231,11 @@ titkos[p - titkos + i] = '\0';]]></programlisting>
                                     kulcs[7] = pi;
                                     exor_tores (kulcs, KULCS_MERET, titkos, p - titkos);
 }]]></programlisting>
-	Megpróbálja a program előállítani az eredeti szöveget. Azonban több kombináció is ad eredményt, éppen ezért nekünk kell kitalálni, hogy a kapott eredmények közül melyik a helyes.
-	Kis érdekesség, hogy ezek a for ciklusok az összes magot dolgoztatni fogják, ezzel jelentősen leccsökentve a töréshez szükséges időt.
+	megpróbálja a program előállítani az eredeti szöveget. Azonban több kombináció is ad eredményt, ezért nekünk kell kitalálni, hogy a kapott eredmények közül melyik a helyes.
+	Ezek a for ciklusok az összes magot dolgoztatni fogják, ezzel jelentősen lecsökkentve a töréshez szükséges időt.
 	</para>
 	<para>
-		Ha a kulcs nem 8 karakterből áll, akkor se essünk pánikba! Csupán néhány (pontosan 3) szekcióban kell módositani a program kódját. Ezek a következők:
+		Ha a kulcs nem 8 karakterből áll, akkor sem kell aggódnunk! Csupán néhány (pontosan 3) szekcióban kell módositani a program kódját. Ezek a következők:
 	</para>
 	<para>
 		Először is a program fejében a <programlisting><![CDATA[[#define KULCS_MERET 8]]></programlisting>
@@ -250,7 +250,7 @@ kulcs[0],kulcs[1],kulcs[2],kulcs[3],kulcs[4],kulcs[5],kulcs[6],kulcs[7], buffer)
 		Végül pedig az előzőekben már látott for ciklus halmon kell módosítanunk úgy, hogy pontosan annyi <command>for</command> ciklus, és pontosan annyi <command>kulcs[n] = xi;</command> legyen a programban, amennyi karakterből áll a kulcs.
 	</para>
 	<para>
-		Most hogy ezt mind tudjuk, a programot a következőképpen kell fordítani:
+		Most ezeknek az ismeretében, a programot a következőképpen kell fordítani:
 		<command><![CDATA[gcc tores.c -fopenmp -o tores -std=c99]]></command>
 	</para>
 	<para>
@@ -274,7 +274,7 @@ kulcs[0],kulcs[1],kulcs[2],kulcs[3],kulcs[4],kulcs[5],kulcs[6],kulcs[7], buffer)
 	</para>
 
         <para>
-	A neurális hálózatokban például a machine learning esetében, A neuronok egy gráfban elhelyezkedve egymással kommunikálnak úgynevezett "Activation function", magyarul Aktivációs függvény segítségével.
+	A neurális hálózatokban például a machine learning esetében, a neuronok egy gráfban elhelyezkedve egymással kommunikálnak ún. "Activation function", magyarul Aktivációs függvény segítségével.
 	</para>
 	<para>
 	Léteznek bemeneti, kimeneti, és rejtett neuronok is.
@@ -314,16 +314,16 @@ kulcs[0],kulcs[1],kulcs[2],kulcs[3],kulcs[4],kulcs[5],kulcs[6],kulcs[7], buffer)
 		Egy példa:
         </para>  
 	<para>
-		Van három bemeneti adatunk amikhez pozitiv egész számokat várunk. Ha a három bemeneti számból kettő kissebb mint nulla, akkor a kimeneti adat -1 lesz, ha viszont a háromból legalább kettő pozitiv szám, akkor a számok összege lesz a kimeneti adat.
+		Van három bemeneti adatunk amikbe pozitív egész számokat várunk. Ha a három bemeneti számból kettő kisebb mint 0, akkor a kimeneti adat -1 lesz, ha viszont a háromból legalább kettő pozitív szám, akkor a számok összege lesz a kimeneti adat.
 	</para>
 	<para>
 		Ekkor kimondhatjuk, hogy 1 a hibahatár, mert ekkor még megkapjuk az általunk kért dolgot, viszont ha már kettőt hibázunk akkor már -1 lesz a válasz.
 	</para>
 	<para>
-		Ezt a hibahatárt szokták finomhangolni. Nagyon magas hibahatárnál kezdenek, és egyre kissebbé teszik egészen addig amig elfogadható a hibák mennyisége.
+		Ezt a hibahatárt szokták finomítani. Nagyon magas hibahatárnál kezdenek, és egyre kisebbé teszik egészen addig, amíg elfogadható a hibák mennyisége.
 	</para>
 	<para>
-		Persze a mi három bemeneti adatos példánknál nem sokat lehet finomhangolni, de ha több millió bemeneti adatról beszélünk, ott ez egy elég fontos dolog.
+		Persze a mi három bemeneti adatos példánknál nem sokat lehet finomítani, de ha több millió bemeneti adatról beszélünk, ott ez egy elég fontos dolog.
 	</para>
     </section>        
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

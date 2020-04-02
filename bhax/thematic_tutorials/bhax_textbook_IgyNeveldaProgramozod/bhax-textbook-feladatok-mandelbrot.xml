@@ -21,7 +21,7 @@
 		Mielőtt bármihez hozzákezdenénk egy nagyon fontos információ. Ahhoz, hogy leforduljon a programunk, szükséges a png++. Ezt a legegyszerűbben a <command>sudo apt install png++ </command> paranccsal lehet megtenni. Most hogy ezt letudtuk, jöhet pár alapvető információ.
 	</para>
 	<para>
-	A Mandelbrot halmaz lényege (legalábbis számomra) az, hogy komplex számokkal, és egy egyenlettel dolgozik. Azok a számok amelyek kielégítik ezt az egyenletet egy nagyon szép képet alkotnak, ha levetítjük őket egy kétdimenziós sikra. Akit ez bővebben vagy részletesebben érdekel azoknak ajánlom a különböző weboldalakat, én nem fogom tovább boncolgatni, mert én magam sem értem.
+	A Mandelbrot halmaz lényege az, hogy komplex számokkal, és egy egyenlettel dolgozik. Azok a számok amelyek kielégítik ezt az egyenletet egy nagyon szép képet alkotnak, ha levetítjük őket egy kétdimenziós síkra.
 	</para>
 	<para>
 		A program legelején includeoljuk a png++-t, hiszen nagyrészt ezt fogja használni a program. <programlisting> <![CDATA[#include <png++-0.2.9/png.hpp>]]> </programlisting>
@@ -52,10 +52,10 @@
 	</programlisting>
 	<para>
 	Végül pedig a <function>GeneratePNG(tomb)</function>
-	nevű függvény használatával a program legenerálja a PNG fájlt. pixelről pixelre.
+	nevű függvény használatával a program legenerálja a PNG fájlt pixelről pixelre.
 	</para>
 	<para>
-		A programot a következőképpen tudjuk fordítani: <command>g++ mandelbrot.cpp -lpng16 -o mandelbrot</command>   Futtatni pedig a szokásos módon <command>./mandelbrot</command> parancsal tudjuk.
+		A programot a következőképpen tudjuk fordítani: <command>g++ mandelbrot.cpp -lpng16 -o mandelbrot</command>   Futtatni pedig a szokásos módon a <command>./mandelbrot</command> parancsal tudjuk.
 	</para>
     </section>        
         
@@ -72,10 +72,10 @@
 	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/kezdo/elsocpp/mandelbrot_komplex/mandelbrot_komplex.cpp">UDPROG</link> repóban.
 	</para>
 	<para>
-	Ebben a feladatban a végeredmény ugyan az kellene hogy legyen, mint az előző feladatban. Illetve azóta még a mandelbrot halmaz lényege sem változott, ezért azt nem írnám le újra.
+	Ebben a feladatban a végeredmény ugyan az kellene hogy legyen, mint az előző feladatban. Illetve azóta még a mandelbrot halmaz lényege sem változott.
 	</para>
 	<para>
-	A png++ ebben az esetben is kelleni fog, így ha nincs leszedve, akkor pillants az előző feladat magyarázatára, ahol megtalálod a szükséges dolgokat ahoz, hogy le tudjon fordulni a program.
+	A png++ ebben az esetben is kelleni fog, így ha nincs leszedve, akkor pillants az előző feladat magyarázatára, ahol megtalálod a szükséges dolgokat ahhoz, hogy le tudjon fordulni a program.
 	</para>
 	<para>
 	Ebben az esetben az <filename>std::complex</filename> osztályt fogjuk használni a program megvalósításához. Ez az osztály, ahogy a neve is utal rá, a komplex számok kezelése miatt jött létre.
@@ -105,7 +105,7 @@
 	Az érdemi különbség a két forrás között az az, hogy itt az std::complex osztályt használva, már nem kell létrehoznunk egy saját struktúrát a komplex számoknak.
 	</para>
 	<para>
-	E helyett szimplán létrehozzuk a double típusú komplex számokat a következőképpen:
+	Ehelyett szimplán létrehozzuk a double típusú komplex számokat a következőképpen:
 	</para>
 	<programlisting><![CDATA[std::complex<double> C, Z, Zuj;]]></programlisting>
 	<para>
@@ -181,7 +181,7 @@ imag(C) = MAXY - i * dy;]]>
 	<![CDATA[png::image < png::rgb_pixel > kep ( szelesseg, magassag );]]>
 	</programlisting>
 	<para>
-	Ezek után a program két egymásba ágyazott for ciklus segítségével kiszámolja, és létrehozza a képet, és el is menti a felhasználó által megadott néven.
+	Ezek után a program két egymásba ágyazott for ciklus segítségével kiszámolja, létrehozza a képet és el is menti a felhasználó által megadott néven.
 	</para>
 	<para>
 	A fordítása az előző két programhoz hasonlóan műkődik, a futtatása azonban már igy néz ki:
@@ -276,7 +276,7 @@ imag(C) = MAXY - i * dy;]]>
 	A következő fájlunk a <emphasis>MandelbrotHalmazNagyító.java</emphasis>
 	</para>
 	<para>
-	A nevéből adódóan ez végzi a halmazon a nagyítás folyamatát, iletve magának a halmaznak a kirajzolását is. Maga a MandelborHalmazNagyító osztály figyeli a felhasználó egér tevékenységeit, azzal kapcsolatban, hogy hol szeretné nagyítani a képet, illetve kirajzolja az új, nagyított képet.
+	A nevéből adódóan ez végzi a halmazon a nagyítást, illetve magának a halmaznak a kirajzolását is. Maga a MandelborHalmazNagyító osztály figyeli a felhasználó egér tevékenységeit, azzal kapcsolatban, hogy hol szeretné nagyítani a képet, illetve kirajzolja az új, nagyított képet.
 	Ezen kívül ez végzi az elmentendő képek készítését, és elmentését is.
 	</para>
 	<para>

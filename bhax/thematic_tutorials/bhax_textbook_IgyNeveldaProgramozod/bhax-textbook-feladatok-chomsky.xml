@@ -22,11 +22,11 @@
             Megoldás forrása: A kép nem az én tulajdonom, hanem a Magas szintű programozási nyelvek 1 nevű tárgyon kivetített előadás fóliáiról másoltam.               
         </para>
         <para>
-            Az unáris számrendszer csupa 1-esekből vagy vonalakból áll. Ilyen például, amikor a kezünkön számolunk, vagy amikor az óvodákban a gyerekek a pálcikákkal rakják ki a dolgokat.
-	    Pontosan annyi 1-es vagy pálcika, vagy akármilyen jel kell, amennyi maga a szám értéke. például ha az 50-es számot szeretnénk felírni unárisban, akkor 50 darab 1-est kellene leírni egymás 	    után, ezért ebben a számrendszerben csak a természetes számokat tudjuk ábrázolni.
+            Az unáris számrendszer csupa 1-esekből vagy vonalakból áll. Ilyen például, amikor a kezünkön számolunk, vagy amikor az iskolában a gyerekek a számolópálcikákkal rakják ki a dolgokat.
+	    Pontosan annyi 1-es vagy pálcika, vagy akármilyen jel kell, amennyi maga a szám értéke. Például ha a 25-ös számot szeretnénk felírni unárisban, akkor 25 darab 1-est kellene leírni egymás 	    után, ezért ebben a számrendszerben csak a természetes számokat tudjuk ábrázolni.
         </para>
 	<para>
-            Egy ilyen decinálisból unárisba átváltó Turing gépet mutat a fenti ábra is. Ez a gép a kapott szám utolsó számjegyéból von le egyeseket. ha a számjegy 0 akkor 9db-ot von le, ha 5 akkor 4-et. 			Ezzel eggyütt a levont egyeseket a tárba helyezi. Ezt minden számjeggyel megismétli. 
+            Egy ilyen decinálisból unárisba átváltó Turing gépet mutat a fenti ábra is. Ez a gép a kapott szám utolsó számjegyéből von le egyeseket. Ha a számjegy 0 akkor kilenc darabot von le, ha öt akkor négyet. 			Ezzel együtt a levont egyeseket a tárba helyezi. Ezt minden számjeggyel megismétli. 
         </para>
     </section>        
         
@@ -46,8 +46,8 @@
 		nyelv nem környezetfüggetlen. Na de először értsük meg, hogy mit is jelent ez a nyelv.
         </para>
 	<para>
-	Az a<superscript>n</superscript>b<superscript>n</superscript>c<superscript>n</superscript> tulajdonképpen annyit jelent, hogy n darab a, majd n darab b, majd végül n darab c áll egymás után.
-	Ezek a terminális szimbólumok. A szabály alapján a környezetfüggő nyelveknél bal oldalon csak egy önmagában álló nem-terminális szimbólum állhat. Azonban nem létezik olyan képzési szabály ami 	alapján ez a szabály teljesíthető, éppen ezért ez a nyelv nem környezetfüggetlen.
+	Az a<superscript>n</superscript>b<superscript>n</superscript>c<superscript>n</superscript> annyit jelent, hogy n darab a, majd n darab b, majd végül n darab c áll egymás után.
+	Ezek a terminális szimbólumok. A szabály alapján a környezetfüggő nyelveknél bal oldalon csak egy önmagában álló nem-terminális szimbólum állhat. Azonban nem létezik olyan képzési szabály ami 	alapján ez a szabály teljesíthető, ezért ez a nyelv nem környezetfüggetlen.
 	</para>
     </section>       
                 
@@ -65,7 +65,7 @@
             Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/nyelvek.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/nyelvek.c</link> 
         </para>
 	<para>
-        A BNF (Backus-Naur-forma) használatával környezetfüggetlen nyelveket lehet leirni. Nagyon sok programozási nyelvek szintaxisai is BNF-ben vannak leirva.
+        A BNF (Backus-Naur-forma) használatával környezetfüggetlen nyelveket lehet leirni. Nagyon sok programozási nyelv szintaxisa is BNF-ben vannak leírva.
 	</para>
         <para>
             A programozási nyelveknek is van nyelvtana, illetve nyelvtani szabályaik. Az egyik ilyen szabály C89-ben az, hogy a for ciklus fejrészében nem lehetett változót deklarálni, éppen ezért ha a a következőképpen szeretnénk lefordítani a fenti programot:
@@ -83,7 +83,7 @@
 		Ez pontosan leírja nekünk, hogy a for ciklusban deklarálni csak c99 vagy c11 módban lehet.
 	</para>
 	<para>
- 	Éppen ezért ha -std=c89 helyett nem írunk semmit, vagy -std=c99-et írunk, akkor a program gond nélkül lefordul.
+ 	Éppen ezért ha -std=c89-et kihagyjuk és nem írunk oda semmit, vagy -std=c99-et írunk, akkor a program gond nélkül lefordul.
         </para>
     </section>                     
 
@@ -138,16 +138,16 @@
             Megoldás forrása: A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chomsky/l337d1c7.l">Bátfai Norbert</link> tulajdona.             
         </para>        
             <para>
-            A leet vagy a saját formájában leírva 1337 egy, az internettel együtt elterjedt szleng nyelv, amiben a betűket különböző számokként, és egyéb ASCII karakterekként, a számokat pedig különböző betűkként ábrázoljuk.
+            A leet (1337, saját formában írva) egy, az internettel együtt elterjedt szleng nyelv, amiben a betűket különböző számokként, és egyéb ASCII karakterekként, a számokat pedig különböző betűkként ábrázoljuk.
         </para>
 	<para>
            Itt is érvényes az a szabály, hogy a program egyes részeit % jelekkel kell elválasztani egymástól. Itt a legelső részben a cipher struktúrában meg vannak adva a karakterek leet formái
         </para>
 	<para>
-	A második részben történik az érdemi munka, először a szöveget kisbetűssé alakítja a program, majd pedig végigmegy a szövegen, és minden karaktert a neki megfelelő leet formájú karakterré alakítja át.
+	A második részben történik az igazi munka, először a szöveget kisbetűssé alakítja a program, majd pedig végigmegy a szövegen és minden karaktert a neki megfelelő leet formájú karakterré alakítja át.
 	</para>
 	<para>
-	A harmadik és egyben utolsó részben található a main amiben a lex meghívása történik.
+	A harmadik és egyben utolsó részben található a main() amiben a lex meghívása történik.
 	</para>
         </section>                     
 
@@ -218,7 +218,7 @@
 		kezdjünk azzal a szignállal, mit reagáljon rá a program.
         </para>
 	<para>
-            	2: Egy for ciklus ami nullától négyig megy, és a ciklus törzsében lévő művelet elvégzése előtt nő az értéke eggyel.
+            	2: Egy for ciklus ami nullától négyig megy és a ciklus törzsében lévő művelet elvégzése előtt nő az értéke eggyel.
         </para>
 	<para>
             	3: Szintén egy for ciklus, ami szintén nullától négyig megy, viszont itt már a ciklus törzsében lévő műveletek elvégzése után növekszik az értéke.
@@ -230,7 +230,7 @@
             	5: Egy for ciklus, ami addig megy, amíg i kisseb mint n, illetve amíg a d és s pointerek értékei megyegyeznek.
         </para>
 	<para>
-            	6: Kiírunk két, az f nevű függvény által generált számot. Az egyik szám az a majd a eggyel megnövelt értékének a feldolgozásából jön létre, mig a másik szám a+1 és a feldolgozásából. Fontos a sorrend.
+            	6: Kiírunk két, az f nevű függvény által generált számot. Az egyik szám az a majd a eggyel megnövelt értékének a feldolgozásából jön létre, míg a másik szám a+1 és a feldolgozásából. Fontos a sorrend.
         </para>
 	<para>
             	7: Szintén két számot írunk ki, az egyik szám az f nevű függvény által feldolgozott a nevű számból előállt érték, a másik pedig a értéke.
