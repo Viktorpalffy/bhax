@@ -17,29 +17,80 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            C++ forrás: <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/labor/polargen/">https://sourceforge.net/p/udprog/code/ci/master/tree/source/labor/polargen/</link>         
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat... térj ki arra is, hogy a JDK forrásaiban a Sun programozói
-            pont úgy csinálták meg ahogyan te is, azaz az OO nemhogy nem nehéz, hanem éppen természetes neked!
+            Java forrás: <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/kezdo/elsojava/PolarGen.java#l10">https://sourceforge.net/p/udprog/code/ci/master/tree/source/kezdo/elsojava/PolarGen.java#l10</link>           
+        </para>
+        <para>
+            Ehhez a programhoz java-ban szükségünk lesz az util.random, az io.* illetve a lang.math java könyvtárakra. Először is a bExist változót hamisra állitjuk a konstruktoron belül, majd pedig inicializálunk egy randomot, és gyakorlatilag ennyi a konstruktor.
         </para>                
+	<para>
+	Ezek után a PolarGet függvény az, ami az érdemi munkát végzi. Először is ellenőrzi, hogy volt-e már generálás. Ha volt akkor azt adja vissza, ha nem, akkor a matekos algoritmus segítségével legenerálja a két random normált és bExists-et átállítja az ellentetjére.
+	</para>
+	
     </section>        
 
     <section>
         <title>LZW</title>
         <para>
-            Valósítsd meg C-ben az LZW algoritmus fa-építését!
+            Valósítsd meg C++-ban az LZW algoritmus fa-építését!
         </para>
         <para>
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href=""></link>           
         </para>
+	<para>
+	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban.
+	</para>
+
+	<para>
+	Mindkét esetben a bináris fa felépítésének a lépései a következők:
+	</para>
+	<para>
+	Ha 1-est szeretnénk betenni a fába, akkor először megnézzük, hogy az aktuális csomópontnak van-e már ilyen eleme. Ha még nincs, akkor egyszerűen betesszük neki az 1-es gyermekének az 1-et. Azonban ha már van ilyen gyermeke, akkor létre kell hozni egy új csomópontot és az ő gyermekének adjuk át az 1-et.
+	</para>
+	<para>
+	Ez hasonlóan működik akkor is, ha nullást szeretnénk betenni, annyi különbséggel, hogy nem az egyeseket vizsgáljuk, hanem a nullásokat. Ezt a lépést a programban a következő rész oldja meg:
+	</para>
+	<programlisting>
+<![CDATA[void operator<<(char b) {
+			if (b == '0') {
+				if (!fa->nullasGyermek()) {
+					Csomopont *uj = new Csomopont('0');
+					fa->ujNullasGyermek(uj);
+					fa = &gyoker;
+				} else {
+					fa = fa->nullasGyermek();
+				}
+			}
+			else {
+				if (!fa->egyesGyermek()) {
+					Csomopont *uj = new Csomopont('1');
+					fa->ujEgyesGyermek(uj);
+					fa = &gyoker;
+				} else {
+					fa = fa->egyesGyermek();
+				}
+			}
+}]]>
+	</programlisting>
+	<para>
+	A megadott fájl tartalma alapján felépíti az LZWBinfa csomópontjait. Jelen esetben ezt a Bináris Fát in order bejárással dolgozzuk fel, ami annyit jelent, hogy először a fa bal oldalát dolgozzuk fel, majd a fának a gyökerét, és legvégül pedig a jobb oldalt. A következő feladatban ezen viszont már változtatunk.
+	</para>
+	<para>
+	Fordítása a szokásos módon történik a futtatása pedig a következőképpen:
+	</para>
+	<para>
+	<command>./lzw bemenet -o kimenet </command>
+	</para>
     </section>        
         
     <section>
         <title>Fabejárás</title>
+	
         <para>
             Járd be az előző (inorder bejárású) fát pre- és posztorder is!
         </para>
@@ -47,8 +98,42 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href=""></link>       
         </para>
+
+	<para>
+	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban.
+	</para>
+
+	<para>
+	Az előző feladatban tárgyalt fát In Order módszerrel járta be a program. Ez azt jelenti, hogy először a részfa bal oldalát dolgozzuk fel, majd a részfa gyökerét, és utoljára pedig a részfa jobb oldalát.
+	</para>
+	<para>
+	Erre ugyanúgy megmaradt a lehetőségünk, csupán a következőképp kell futtatni a programot:
+	</para>
+<para>
+	<command>./lzw bemenet -o kimenet i</command>
+
+</para>
+	<para>
+	Ezzel szemben itt két másik fajta bejárási módszerrel dolgozzuk fel a fát. Az egyik a Pre Order bejárási mód, a másik pedig a Post Order.
+	</para>
+
+	<para>
+	A Pre Order bejárási módnál először a részfa gyökerét dolgozzuk fel, másodjára a részfa bal oldalát, és utoljára pedig a részfa jobb oldalát. A Pre Order bejárási mód használatához a 		következőképpen kell futtatni a programot:
+	</para>
+
+	<para>
+	<command>./lzw bemenet -o kimenet r</command>
+
+	</para>
+
+	<para>
+	A Post Order bejárási módnál pedig legelőször a részfa bal oldalát dolgozza fel a program, majd a jobb oldalát, és utoljára pedig a részfa gyökerét. A Post Order bejáráshoz a következő 		parancs használatával kell futtatni a programot:
+	</para>
+	<para>
+	<command>./lzw bemenet -o kimenet r</command>
+	</para>
     </section>        
                         
     <section>
@@ -61,8 +146,27 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href=""></link>         
         </para>
+	<para>
+	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban.
+	</para>
+	<para>
+	Ez a program az eredeti Bevezetés a Programozásba tárgyon már tanult <emphasis>z3a7.cpp</emphasis> nevű program szerint működik, hiszem itt a csomópont már kompozícióban van a fával.
+	Az egész az LZWBinfa osztállyal kezdődik, aminek van privát, és publikus része is.
+	A publikus részen belül található a konstruktor, és a destruktor deklarációja. Itt kerülnek vizsgálatra a bemenő elemek, és jönnek létre a nullás illetve egyes elemek is.
+	Túlterhelődik az operátor, és megvizsgálja a program, hogy létezik-e már nullás gyermek. Ha nincs, akkor létrejön.
+	Egyes gyermeknél ugyanez a helyzet.
+	</para>
+	<para>
+	A kiír függvény pedig kiírja a csomópontokat.
+	</para>
+	<para>
+		Majd jön az LZWBinfa privát része. Itt található meg a Csomópont osztály amin belül a konstruktor megkapja a gyökeret.
+		Még a Csomópont osztályon belül találhatóak azok a függvények, amivel le tudjuk kérdezni, hogy ki az aktuális csomópont nullás illetve egyes gyermeke,
+		valamint az <function>ujNullasGyermek()</function> illetve <function>ujEgyesGyermek()</function> függvények,
+		amik létrehozzák az új nullás és egyes gyermekeket
+	</para>
     </section>        
                 
     <section>
@@ -72,15 +176,62 @@
             fával!
         </para>
         <para>
-            Megoldás videó: 
+            Megoldás videó:  
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása: <link xlink:href=""></link>
         </para>
+	<para>
+	Ehhez a feladathoz az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban megtalálható BinFa programot vettem alapul.
+	</para>
+	<para>
+	Ebben a megoldásban az előző feladathoz képest kicsit másképp a megoldás. A következő dolgokat kell átírni a már meglévő programban:
+	</para>
+	<para>
+	Először is a 315. sorban a csomopont után tegyünk egy *-ot ezzel mutatóvá téve a gyökeret. Ha így megpróbáljuk lefordítani a programot akkor nagyon sok szintaktikai hibát fogunk kapni a fordítótól válaszként.
+	Nem kell megijedni. Az a dolgunk, hogy ezeket a hibákat egyesével kijavítsuk. Az első két hiba kijavításához a következő részletet kell átírni.
+	</para>
+	<para>
+	A 92. és a 93. sorban a <programlisting> <![CDATA[ szabadit (gyoker.egyesGyermek ());
+	szabadit (gyoker.nullasGyermek ()); ]]></programlisting>
+	utasítások helyett a
+	<programlisting> <![CDATA[szabadit (gyoker->egyesGyermek ());
+	szabadit (gyoker->nullasGyermek ());]]> </programlisting>
+	utasításokat kell használni.
+	</para>
+	<para>
+	Ez után már kettővel kevesebb hibát kapunk. Az összes többi hibát a referenciák okozzák. Ahoz hogy ezeket a hibákat megoldjuk a következő sorokban kell tevékenykednünk: 92, 132, 147, 170, 210, 336, 344, és 356.
+	Azonban a hibát minden sorban ugyan azzal a módszerrel kell javítani, ami nem más mint hogy a <programlisting> <![CDATA[&gyoker]]> </programlisting> helyett azt kell írni hogy <programlisting> <![CDATA[gyoker]]> </programlisting>
+	Vagyis kiszedjük a referenciákat, mivel alapból a memóriacímek lesznek átadva.
+	</para>
+	<para>
+	Ezek után a programunk ugyan lefordul, de amikor megprobáljuk futtatni, akkor szegmentálási hibát kapunk. Ennek a javításához a konstruktort kell átírni a következőképpen:
+	</para>
+	<programlisting>
+		<![CDATA[LZWBinFa(){
+		gyoker = new Csomopont(/);
+		fa = gyoker;
+	}]]>
+	</programlisting>
+	<para>
+		Ezzel foglalunk helyet a memóriában a gyökérnek. Viszont amit lefoglalunk, azt fel is kell szabadítani, éppen ezért a destruktort is módosítani kell a következőképpen:
+	</para>
+	<programlisting>
+		<![CDATA[~LZWBinFa ()
+    {
+        szabadit (gyoker->egyesGyermek ());
+        szabadit (gyoker->nullasGyermek ());
+        delete gyoker;
+    }]]>
+	</programlisting>
+	<para>
+		Mostmár fel is szabadul, amit lefoglaltunk.
+	</para>
     </section>                     
 
     <section>
         <title>Mozgató szemantika</title>
+	
         <para>
             Írj az előző programhoz mozgató konstruktort és értékadást, a mozgató konstruktor legyen a mozgató
             értékadásra alapozva!
@@ -89,8 +240,48 @@
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása: <link xlink:href=""></link> 
         </para>
-    </section>                     
+	<para>
+	A megoldás forrásának az alapja megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban. Én ezt módosítottam.
+	</para>
+
+	<para>
+	Maga az LZWBinFa osztály felépítése úgy néz ki, hogy az osztályon belül léteznek a beágyazott csomópont objektummok amik a fát alkotják. Ezek alapján a fa másolása nem más, mint ezeknek a csomópontoknak a másolása. Ehhez létre kell hoznunk a mozgató illetve mozgató értékadás konstruktorokat.
+	</para>
+
+	<programlisting><![CDATA[
+      LZWBinFa (LZWBinFa&& masik){
+      gyoker=nullptr;
+      *this= std::move(masik);
+      }
+   
+      LZWBinFa& operator= (LZWBinFa&& masik){
+      std::swap(gyoker,masik.gyoker);
+      return *this;
+        
+    }
+    ]]></programlisting>
+
+	<para>
+	Először a mozgató értékadásról (alsó) szólnék pár szót, ami csupán annyit jelent, hogy ha egyenlőségjel operátort használunk, akkor az <function>std::swap()</function> fügvénnyel megcserélődik a két gyökér mutatója.
+	</para>
+	<para>
+	Másodszor pedig a mozgató konstruktor. Itt először is nullptr (nullpointer) értéket adunk abban a binfában lévő gyökérnek, amelyik fába akarjuk mozgatni a ("masik") fát. Majd a "masik" nevű fát átmozgatjuk az <function>std::move()</function> függvénnyel, ami annyit jelent, hogy a gyökér mutató mostmár a paraméterként kapott "masik" fára mutat, ami azért történhetett meg, mert az std::move() függvény tulajdonképpen nem is mozgat semmit, hanem a paraméterül kapott értéket jobbérték referenciává alakítja.
+	</para>
+
+    </section>  
+
+	<section>
+        <title>Vörös Pipacs Pokol/5x5x5 ObservationFromGrid</title>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ebben a feladatban a karakter látóterét 3x3x3-asról 5x5x5-ösre bővítettük, ezáltal az eddigi kettő szint helyett már hármat is tudunk egyszerre vizsgálni. Az 5x5x5-ös blokkban lévő elemeket pedig kiírathatjuk vele a konzolra, vagy csak szimplán felhasználhatjuk az adatokat belőle.
+        </para>            
+    </section>        
+
+                   
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-</chapter>                
+</chapter>  
