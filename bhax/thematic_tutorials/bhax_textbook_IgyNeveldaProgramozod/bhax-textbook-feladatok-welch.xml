@@ -40,7 +40,7 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>           
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/lzw.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/lzw.cpp</link>           
         </para>
 	<para>
 	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban.
@@ -98,7 +98,7 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>       
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/fabe.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/fabe.cpp</link>       
         </para>
 
 	<para>
@@ -146,7 +146,7 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>         
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/tag.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/tag.cpp</link>         
         </para>
 	<para>
 	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban.
@@ -179,7 +179,7 @@
             Megoldás videó:  
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/gyoker.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/gyoker.cpp</link>
         </para>
 	<para>
 	Ehhez a feladathoz az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban megtalálható BinFa programot vettem alapul.
@@ -240,7 +240,7 @@
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link> 
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/mozgato.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Welch/mozgato.cpp</link> 
         </para>
 	<para>
 	A megoldás forrásának az alapja megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">UDPROG</link> repóban. Én ezt módosítottam.
@@ -278,7 +278,7 @@
             Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
         </para>
         <para>
-            Ebben a feladatban a karakter látóterét 3x3x3-asról 5x5x5-ösre bővítettük, ezáltal az eddigi kettő szint helyett már hármat is tudunk egyszerre vizsgálni. Az 5x5x5-ös blokkban lévő elemeket pedig kiírathatjuk vele a konzolra, vagy csak szimplán felhasználhatjuk az adatokat belőle.
+            Ebben a feladatban a karakter látóterét 3x3x3-asról 5x5x5-ösre bővítettük, ezáltal az eddigi kettő szint helyett már hármat is tudunk egyszerre vizsgálni. Az 5x5x5-ös blokkban lévő elemeket pedig kiírathatjuk vele a konzolra, vagy csak szimplán felhasználhatjuk az adatokat.
         </para>            
     </section>        
 
