@@ -243,12 +243,50 @@ imag(C) = MAXY - i * dy;]]>
             egérrel kiválasztva vizualizálja onnan a komplex iteréció bejárta z<subscript>n</subscript> komplex számokat!
         </para>
         <para>
-            Megoldás videó: 
-        </para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/09/02/ismerkedes_a_mandelbrot_halmazzal">https://bhaxor.blog.hu/2018/09/02/ismerkedes_a_mandelbrot_halmazzal</link>.        </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása: <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/binom/Batfai-Barki/frak/">https://sourceforge.net/p/udprog/code/ci/master/tree/source/binom/Batfai-Barki/frak/</link>
         </para>
-    </section>                     
+<para>
+Visszatérünk a Mandebrot halmazokhoz, de most nem csak egy képet szeretnénk végeredményként kapni, hanem egy olyan ablakot, ahol képesek vagyunk ránagyítani a kapott halmazunkra. Ez lehetséges egy képfájl esetén is, de ott egy idő után a képet nem lehet lesz értelmezni, olyan szinten pixeles lesz.
+</para>
+<para>
+Amit mi itt használni fogunk ennél egy kicsit bonyolultabb, emiatt talán ez a fejezet legnehezebb feladata. A megoldás erre a problémára az, hogy az egérrel kijelölt részre az ablak nem ránagyít, hanem újragenerálja azt a részt. Így elkerülhetőhető az a probléma, hogy nagyon pixelessé válik a kép, ugyanis a pixelszám azonos lesz.
+</para>
+<para>
+Az első probléma még a kódolás előtt megjelenik, hogyan készitsük el ezt az ablakot. Egy nagyszerű megoldás a Qt eszköztár használata, amelyben elkészithető egy gui(grafikus interfész). Ennek az interfésznek a futtatásához 5 kódrészre van szükségünk, ezek szerepei a következők:
+</para>
+<para>
+frakablak.h
+</para>
+<para>
+Ebben a kódrészben egy osztályt hozunk létre, aminek van védett, privát és publikus tagja is. A publikus részben a tartományokat/határokat szabjuk meg, amik között mozoghatunk. A védett részben egy függvényt deklarálunk, amely figyelemmel követi, mit csinál a felhasználó. Ennek fontos szerepe lesz, hogy a program tudja azt, hogy mikor a halmazra ránagyítania. Végül a privát tagban a nagyitandó terület van meghatározva.
+</para>
+<para>
+frakszal.h
+</para>
+<para>
+Ismét egy osztályt láthatunk és még pár változót. Ezek segitenek majd a programnak a számolásban és rajzolásban.
+</para>
+<para>
+frakszal.cpp
+</para>
+<para>
+Ebben a kódrészben történik a legfontosabb dolog: a Madelbrot halmaz elemeinek kiszámolása, ehhez hasonló programot írtunk az első feladatokban is.
+</para>
+<para>
+main.cpp
+</para>
+<para>
+Itt kerül meghívásra a Qt konstruktora, és itt tesszük a kódhoz a Qt könyvtárat.
+</para>
+<para>
+frak.pro
+</para>
+<para>
+A frak.pro lesz a "főnök", alatta fognak futni az előbb bemutatott kódok, az ő feladata lesz a teljes folyamat kezelése.
+</para>
+    </section>             
                                                                                                                                                                             
     <section>
         <title>Mandelbrot nagyító és utazó Java nyelven</title>
