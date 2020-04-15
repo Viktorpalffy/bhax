@@ -1,0 +1,341 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Mandelbrot!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>A Mandelbrot halmaz</title>
+        
+        <para>
+            Megoldás videó:https: <link xlink:href="//www.youtube.com/watch?v=hHKhGdCN2Rolink">//www.youtube.com/watch?v=hHKhGdCN2Rolink</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrot.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrot.cpp</link>              
+        </para>
+	<para>
+	A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/CUDA/mandelpngt.c++">Bátfai Norbert</link> tulajdona.
+	</para>
+	<para>
+		Mielőtt bármihez hozzákezdenénk egy nagyon fontos információ. Ahhoz, hogy leforduljon a programunk, szükséges a png++. Ezt a legegyszerűbben a <command>sudo apt install png++ </command> paranccsal lehet megtenni. Most hogy ezt letudtuk, jöhet pár alapvető információ.
+	</para>
+	<para>
+	A Mandelbrot halmaz lényege az, hogy komplex számokkal, és egy egyenlettel dolgozik. Azok a számok amelyek kielégítik ezt az egyenletet egy nagyon szép képet alkotnak, ha levetítjük őket egy kétdimenziós síkra.
+	</para>
+	<para>
+		A program legelején includeoljuk a png++-t, hiszen nagyrészt ezt fogja használni a program. <programlisting> <![CDATA[#include <png++-0.2.9/png.hpp>]]> </programlisting>
+	</para>
+	<para>
+	Ezek után létrehozunk végleges értékeket N-nek és M-nek, valamint megadjuk X és Y lehetséges minimum és maximum értékét is.
+	</para>
+	<programlisting>
+	<![CDATA[
+#define N 500
+#define M 500
+#define MAXX 0.7
+#define MINX -2.0
+#define MAXY 1.35
+#define MINY -1.35]]>
+	</programlisting>
+	<para>
+	két egymásba ágyazott for ciklus használatával megadjuk a C, a Z, és a Zuj nevű Komplex számok valós és imaginárius értékét. Ezek korábban lettek létrehozva a mainen belül, és a Komplex nevű struktúrához tartoznak.
+	</para>
+	<programlisting>
+	<![CDATA[struct Komplex
+{
+    double re, im;
+};]]>
+	</programlisting>
+	<programlisting>
+	<![CDATA[struct Komplex C, Z, Zuj;]]>
+	</programlisting>
+	<para>
+	Végül pedig a <function>GeneratePNG(tomb)</function>
+	nevű függvény használatával a program legenerálja a PNG fájlt pixelről pixelre.
+	</para>
+	<para>
+		A programot a következőképpen tudjuk fordítani: <command>g++ mandelbrot.cpp -lpng16 -o mandelbrot</command>   Futtatni pedig a szokásos módon a <command>./mandelbrot</command> parancsal tudjuk.
+	</para>
+    </section>        
+        
+    <section>
+        <title>A Mandelbrot halmaz a <filename>std::complex</filename> osztállyal</title>
+       
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:<link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrotkomplex.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrotkomplex.cpp</link>       
+        </para>
+	<para>
+	A megoldás forrása nem az én tulajdonom. Az eredeti forrás megtalálható az <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/kezdo/elsocpp/mandelbrot_komplex/mandelbrot_komplex.cpp">UDPROG</link> repóban.
+	</para>
+	<para>
+	Ebben a feladatban a végeredmény ugyan az kellene hogy legyen, mint az előző feladatban. Illetve azóta még a mandelbrot halmaz lényege sem változott.
+	</para>
+	<para>
+	A png++ ebben az esetben is kelleni fog, így ha nincs leszedve, akkor pillants az előző feladat magyarázatára, ahol megtalálod a szükséges dolgokat ahhoz, hogy le tudjon fordulni a program.
+	</para>
+	<para>
+	Ebben az esetben az <filename>std::complex</filename> osztályt fogjuk használni a program megvalósításához. Ez az osztály, ahogy a neve is utal rá, a komplex számok kezelése miatt jött létre.
+	</para>
+	<para>
+		A program által használt függvényei a következők:
+	</para>
+	<para>
+		A <function>real(C)</function> a komplex szám valós részét határozza meg.
+	</para>
+	<para>
+		A <function>imag(C)</function> a komplex szám képzetes részét határozza meg.
+	</para>
+	<para>
+		Legelőször a program
+		 <programlisting><![CDATA[#include <png++-0.2.9/png.hpp>
+#include <complex>]]></programlisting>
+		beincludeolja a png++-t és a komplex osztályt
+	</para>
+	<para>
+		Ezek után az előző feladathoz hasonlóan itt is megadjuk a végleges értékeket az N, M valamit X és Y maximum és minimum értékeinek.
+	</para>
+	<para>
+	Legnagyobb részben ennek a feladatnak a megoldása megegyezik az előző feladat megoldásával, ezért azt nem írnám le újra, inkább arra koncentrálnék, hogy miben más ez a forrás mint az előző.
+	</para>
+	<para>
+	Az érdemi különbség a két forrás között az az, hogy itt az std::complex osztályt használva, már nem kell létrehoznunk egy saját struktúrát a komplex számoknak.
+	</para>
+	<para>
+	Ehelyett szimplán létrehozzuk a double típusú komplex számokat a következőképpen:
+	</para>
+	<programlisting><![CDATA[std::complex<double> C, Z, Zuj;]]></programlisting>
+	<para>
+	Illetve a for cikluson belül sem a struktúrán belüli elemek imaginárius és valós részére hivatkozunk, hanem a <function>real()</function> és <function>imag()</function> nevű függvényeket meghívva mondjuk meg a komplex szám részeinek értékét.
+	</para>
+	<programlisting>
+	<![CDATA[real(C) = MINX + j * dx;
+imag(C) = MAXY - i * dy;]]>
+	</programlisting>
+	<para>
+		A programot fordítani és futtatni ugyan úgy kell, mint az előző feladatot.
+	</para>
+    </section>        
+                
+    <section>
+        <title>Biomorfok</title>
+        <para>
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=nUAG7xP54AQ">https://www.youtube.com/watch?v=nUAG7xP54AQ</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/Biomorf">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/Biomorf</link>
+        </para>
+	<para>
+	A megoldás forrása <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Biomorf/3.1.3.cpp">Bátfai Norbert</link> tulajdona.
+	</para>
+        <para>
+            A két előző feladathoz hasonlóan itt is szükségünk van a png++ ra, ezért ha még nem szedted le akkor pillants rá a az első feladat magyarázatára, ahol részletesen
+		le vannak írva az ehez szükséges parancsok.
+        </para>   
+	<para>
+		Ez egy olyan mandelbrot program, ahol maga a user adja meg a határokat. Előnye hogy az eredetihez képest teljesen más képeket kapunk, hátránya viszon hogy ha a user nem tudja, hogy mit csinál akkor az egész kép egy nagy fekete semmi lesz.
+	</para>    
+	<para>
+	Először is <programlisting><![CDATA[#include <iostream>
+#include "png++/png.hpp"
+#include <complex>
+]]> </programlisting>	
+	includeoljuk az iostreamet a png++t és a komplex osztályt.
+	</para>   
+	<para>
+	A main argumentumai a bemeneti adatok, amikből előállítjuk magát a képet.
+	</para>
+	<para>
+	Ellenőrzi a program, hogy megfelelő mennyiségű bemeneti értéket adott e meg a felhasználó, és ha nem, akkor felvilágosítja, hogy hogyan kell használni a programot.
+	</para>
+	<programlisting>
+	<![CDATA[if ( argc == 12 )
+    {
+        szelesseg = atoi ( argv[2] );
+        magassag =  atoi ( argv[3] );
+        iteraciosHatar =  atoi ( argv[4] );
+        xmin = atof ( argv[5] );
+        xmax = atof ( argv[6] );
+        ymin = atof ( argv[7] );
+        ymax = atof ( argv[8] );
+        reC = atof ( argv[9] );
+        imC = atof ( argv[10] );
+        R = atof ( argv[11] );
+    }
+    else
+    {
+        std::cout << "Hasznalat: ./3.1.2 fajlnev szelesseg magassag n a b c d reC imC R" << std::endl;
+        return -1;
+    }
+]]>
+	</programlisting>
+	<para>
+	Ha viszont megfelelő mennyiségű argumentumot adott meg a felhasználó, akkor létrehozza a képet aminek a szélessége és a magassága a felhasználó által megadot szélesség és magasság lesz.
+	</para>
+	<programlisting>
+	<![CDATA[png::image < png::rgb_pixel > kep ( szelesseg, magassag );]]>
+	</programlisting>
+	<para>
+	Ezek után a program két egymásba ágyazott for ciklus segítségével kiszámolja, létrehozza a képet és el is menti a felhasználó által megadott néven.
+	</para>
+	<para>
+	A fordítása az előző két programhoz hasonlóan műkődik, a futtatása azonban már igy néz ki:
+	</para>
+	<para>
+	<command> ./3.1.3 fajlnev szelesseg magassag n a b c d reC imC R </command>   Erre egy példa:
+	</para>
+	<para>
+	<command>./3.1.3 biomorf.png 800 800 10 -2 2 -2 2 .285 0 10 </command>
+	</para>
+    </section>                     
+
+    <section>
+        <title>A Mandelbrot halmaz CUDA megvalósítása</title>
+        <para>
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/CUDA/mandelpngc_60x60_100.cu">https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/CUDA/mandelpngc_60x60_100.cu</link>  
+        </para>
+	<para>
+	A megoldás forrása Bátfai Norbert tulajdona.
+	</para>
+	<para>
+	Először is közérdekű közlemény, hogy ennek a programnak a sikeres fordításához szükségünk lesz egy CUDA magokat használó NVIDIA kártyára, illetve az nvidia-cuda-toolkit re amit a következő parancsal tudunk feltenni:
+	</para>
+	<para>
+	<command> sudo apt install nvidia-cuda-toolkit </command>
+	</para>
+	<para>
+	Ez a program ugyanúgy a mandelbrot halmazt rajzolja ki, mint az előzőek, azonban itt egy nagyon fontos különbség az, hogy míg az előző feladatoknál a képet a CPU számolta ki és készítette el, addig itt, az NVIDIA kártyák CUDA magjait használjuk a kép kiszámításához.
+	</para>
+
+	<para>
+	Ez azért fontos, mert az előző feladatoknál egyetlen egy mag dolgozott és számolt ki mindent, addig itt az én GTX 1660 SUPER videókártyám esetében 1408 darab cuda mag számolná és rajzolná ki a képet. Azért írom feltételes módban, mert a virtuális gép egyik hátránya, hogy nem tudja a gép minden részét kihasználni.
+	</para>
+	<para>
+	Ez nyílvánvalóan egy sokszor gyorsabb futási időt eredményez. Az én esetemben például amikor CPU-val futtattam volna a programot akkor egy kb 20 másodperces futási idő jött volna ki.
+	</para>
+	
+	
+	<para>
+	Azonban ha már a fentebb említett GTX 1660 SUPER kártyát használva futtatom a programot, akkor már egy kicsit hamarabb lefut a program.
+	</para>
+	
+	
+	
+	<para>
+	A programot a gcc helyett az nvcc nevű paranccsal kell forditani. Futtatni pedig a szokásos módon.
+	</para>
+    </section>                     
+
+    <section>
+        <title>Mandelbrot nagyító és utazó C++ nyelven</title>
+        <para>
+            Építs GUI-t a Mandelbrot algoritmusra, lehessen egérrel nagyítani egy területet, illetve egy pontot
+            egérrel kiválasztva vizualizálja onnan a komplex iteréció bejárta z<subscript>n</subscript> komplex számokat!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/09/02/ismerkedes_a_mandelbrot_halmazzal">https://bhaxor.blog.hu/2018/09/02/ismerkedes_a_mandelbrot_halmazzal</link>.        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/binom/Batfai-Barki/frak/">https://sourceforge.net/p/udprog/code/ci/master/tree/source/binom/Batfai-Barki/frak/</link>
+        </para>
+<para>
+Visszatérünk a Mandebrot halmazokhoz, de most nem csak egy képet szeretnénk végeredményként kapni, hanem egy olyan ablakot, ahol képesek vagyunk ránagyítani a kapott halmazunkra. Ez lehetséges egy képfájl esetén is, de ott egy idő után a képet nem lehet lesz értelmezni, olyan szinten pixeles lesz.
+</para>
+<para>
+Amit mi itt használni fogunk ennél egy kicsit bonyolultabb, emiatt talán ez a fejezet legnehezebb feladata. A megoldás erre a problémára az, hogy az egérrel kijelölt részre az ablak nem ránagyít, hanem újragenerálja azt a részt. Így elkerülhetőhető az a probléma, hogy nagyon pixelessé válik a kép, ugyanis a pixelszám azonos lesz.
+</para>
+<para>
+Az első probléma még a kódolás előtt megjelenik, hogyan készitsük el ezt az ablakot. Egy nagyszerű megoldás a Qt eszköztár használata, amelyben elkészithető egy gui(grafikus interfész). Ennek az interfésznek a futtatásához 5 kódrészre van szükségünk, ezek szerepei a következők:
+</para>
+<para>
+frakablak.h
+</para>
+<para>
+Ebben a kódrészben egy osztályt hozunk létre, aminek van védett, privát és publikus tagja is. A publikus részben a tartományokat/határokat szabjuk meg, amik között mozoghatunk. A védett részben egy függvényt deklarálunk, amely figyelemmel követi, mit csinál a felhasználó. Ennek fontos szerepe lesz, hogy a program tudja azt, hogy mikor a halmazra ránagyítania. Végül a privát tagban a nagyitandó terület van meghatározva.
+</para>
+<para>
+frakszal.h
+</para>
+<para>
+Ismét egy osztályt láthatunk és még pár változót. Ezek segitenek majd a programnak a számolásban és rajzolásban.
+</para>
+<para>
+frakszal.cpp
+</para>
+<para>
+Ebben a kódrészben történik a legfontosabb dolog: a Madelbrot halmaz elemeinek kiszámolása, ehhez hasonló programot írtunk az első feladatokban is.
+</para>
+<para>
+main.cpp
+</para>
+<para>
+Itt kerül meghívásra a Qt konstruktora, és itt tesszük a kódhoz a Qt könyvtárat.
+</para>
+<para>
+frak.pro
+</para>
+<para>
+A frak.pro lesz a "főnök", alatta fognak futni az előbb bemutatott kódok, az ő feladata lesz a teljes folyamat kezelése.
+</para>
+    </section>             
+                                                                                                                                                                            
+    <section>
+        <title>Mandelbrot nagyító és utazó Java nyelven</title>
+        <para>
+	Megoldás Forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/MandelJava">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/MandelJava</link>
+        </para>
+	
+	<para>
+	A megoldás forrása <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apbs02.html#id570518">Bátfai Norbert</link> tulajdona.
+	</para>
+
+	<para>
+		A feladat az ezt megelőző  feladat átírása Java nyelvre. A GUI megírásához szükség van egy keretrendszerre, ami jelen esetben az Abstract Window Toolkit lesz.
+	</para>
+	<para>
+		Először nézzük a <emphasis>Mandelbrothalmaz.java</emphasis> fájlt.
+	</para>
+	<para>
+	A main-ben a MandelbrotHalmaz() meghívásával létrehozunk egy új halmazt a megadott paraméterekkel. Ezek a paraméterek a tartományok koordinátái, a halmazt tartalmazó tömb szélessége, és a számítás pontossága.
+	</para>
+	<para>
+	Utána a felhasználó tevékenységeit figyeli a program, és megfelelően reagál rájuk, valamint a GUI ablak tulajdonságait adja meg, illetve kirajzolja magának a halmaznak a képét.
+	</para>
+	<para>
+	A következő fájlunk a <emphasis>MandelbrotHalmazNagyító.java</emphasis>
+	</para>
+	<para>
+	A nevéből adódóan ez végzi a halmazon a nagyítást, illetve magának a halmaznak a kirajzolását is. Maga a MandelborHalmazNagyító osztály figyeli a felhasználó egér tevékenységeit, azzal kapcsolatban, hogy hol szeretné nagyítani a képet, illetve kirajzolja az új, nagyított képet.
+	Ezen kívül ez végzi az elmentendő képek készítését, és elmentését is.
+	</para>
+	<para>
+	Végül pedig a <emphasis>MandelbrotIterációk.java</emphasis> fájl szerepe.
+	</para>
+	<para>
+	Ez a programrészlet a nagyított mandelbrot halmazok pontjait tartja nyílván. Ez egy számításra létrehozott osztály, ami a kiválasztott ponthoz tartó utat mutatja meg.
+	</para>
+    </section>
+	<section>
+        <title>Vörös Pipacs Pokol/fel a láváig és vissza</title>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/I6n8acZoyoo">https://youtu.be/I6n8acZoyoo</link>      
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ebben a feladatban az a lényeg, hogy a karakter fusson fel az aréna aljától a tetejéig, majd ha a 3x3-as látóterében lávát érzékel, akkor a lávával együtt szépen sétáljon vissza le az aréna aljáig. 
+        </para>            
+    </section>         
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>
