@@ -16,7 +16,7 @@
             Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/10/10/myrmecologist">https://bhaxor.blog.hu/2018/10/10/myrmecologist</link>
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>               
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/Ant">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/Ant</link>               
         </para>
 	<para>
 	Az osztálydiagram:
@@ -55,7 +55,7 @@ Vagy például a <function>closeEvent()</function> és a <function>keyPressEvent
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>               
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/eletjatek.java">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/eletjatek.java</link>               
         </para>
 	<para>
 	A Megoldás forrása <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apb.html#conway">Bátfai Norbert</link> tulajdona.
@@ -144,7 +144,7 @@ Vagy például a <function>closeEvent()</function> és a <function>keyPressEvent
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>               
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/Qt">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/Qt</link>               
         </para>
 	<para>
 	A megoldás forrása <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/labor/Qt/Sejtauto/">Bátfai Norbert</link> tulajdona.
@@ -182,7 +182,7 @@ Vagy például a <function>closeEvent()</function> és a <function>keyPressEvent
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása: <link xlink:href=""></link>               
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/BrainB">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/BrainB</link>               
         </para>
 	<para>
 	A megoldás forrása <link xlink:href="https://github.com/nbatfai/esport-talent-search">Bátfai Norbert</link> tulajdona.
