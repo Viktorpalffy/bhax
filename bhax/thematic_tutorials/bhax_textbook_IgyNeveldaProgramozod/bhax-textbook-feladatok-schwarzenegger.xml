@@ -11,16 +11,25 @@
             Python
         </para>
         <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/j7f9SkJR3oc">https://youtu.be/j7f9SkJR3oc</link>      
+            Megoldás videó: <link xlink:href="https://youtu.be/rH63aO_CVDg">https://youtu.be/rH63aO_CVDg</link>
         </para>
         <para>
-            Megoldás forrása: <link xlink:href="https://github.com/tensorflow/tensorflow/releases/tag/v0.9.0">https://github.com/tensorflow/tensorflow/releases/tag/v0.9.0</link> (/tensorflow-0.9.0/tensorflow/examples/tutorials/mnist/), <link xlink:href="https://progpater.blog.hu/2016/11/13/hello_samu_a_tensorflow-bol">https://progpater.blog.hu/2016/11/13/hello_samu_a_tensorflow-bol</link>  
+            Megoldás forrása:  <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Schwarzenegger">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Schwarzenegger</link>        
         </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
-    </section>        
-
+	<para>
+	    Ebben a feladatban egy neurális hálót építünk Pythonban, a Tensorflow használatával.
+            A Tensorflow a Google gépi tanulási platformja.
+            
+	</para>
+	<para>
+	    Ez a példa 60000 mintából épít fel egy neurális hálót. A mintákon kézzel írt számjegyek láthatóak.
+            A háló célja az, hogy a megtanult minták alapján meg tudja mondani egy képről, hogy azon milyen szám található.
+            
+	</para>
+	<para>
+		Amint ez a videóban is látható, 5 futtatás után a pontosság egy kicsivel több mint 97 százalék.
+	</para>
+    </section>
 <!--
     <section>
         <title>Szoftmax R MNIST</title>
@@ -38,7 +47,6 @@
         </para>
     </section>        
 -->
-    
     <section>
         <title>Mély MNIST</title>
         <para>
@@ -50,9 +58,8 @@
         <para>
             Megoldás forrása:                
         </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
+        
+	
     </section>        
 <!--
     <section>
@@ -74,16 +81,31 @@
     <section>
         <title>Minecraft-MALMÖ</title>
         <para>
+            Most, hogy már van némi ágensprogramozási gyakorlatod, adj egy rövid általános áttekintést a MALMÖ projektről!
         </para>
         <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/bAPSu3Rndi8">https://youtu.be/bAPSu3Rndi8</link>      
+            Megoldás videó: initial hack: <link xlink:href="https://youtu.be/bAPSu3Rndi8">https://youtu.be/bAPSu3Rndi8</link>.
+            Red Flower Hell: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>.      
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: a Red Flower Hell repójában.               
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            A Minecraft Malmö projekt egy mesterséges intelligencia fejlesztésére szolgáló platform. A projekt a Minecraft nevű játékra épül, mert ahogy annak mottója is hirdeti: "Csak a kreativitásod szab hatrát!". Ezt a játékot sokan csak virtuális LEGO-nak hívják a játékos szabadsága miatt, hogy tényleg bármit el lehet benne készíteni. A projekt nagyon sikeres a fiatalabb tanulók körében, hiszen mégse csak száraz kódot kell írniuk, hanem látják is a munkájuk eredményét egy pillanat alatt.
         </para>
+	<para>
+	A BHAX Malmö projektben egy fordított piramis pályán kell minél több vörös pipacsot összegyűjtenie a karakterünknek 300 másodperc alatt, aminek a mozgását vagy mi, vagy pedig az általunk megírt program szabályozza. A célunk az, hogy előbb utóbb egy teljesen "önműködő" karaktert tudjunk létrehozni, aki a saját belátása szerint, az általa legoptimálisabbnak ítélt módon szedje fel az lehető legtöbb virágot, mielőtt a láva a pálya aljára ér, ezzel őt megölve. Hétről hétre egyre több elemmel bővítjük a tudását. Eleinte csak kezdetleges mozgási parancsokat adtunk ki neki, aztán látóteret is kapott (először 3x3x3-ast, azóta 7x7x7-nél járunk), utasításokat, hogy mit tegyen ha a látóterében virág található. A következő kihívás pedig az, hogy mihez kezdjen egy olyan pályával, ami minden futtatás alkalmával más és más.
+	</para>
     </section>        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-</chapter>                
+    <section>
+        <title>Vörös Pipacs Pokol/javíts a 19 RF-en</title>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Ez a feladat megegyezik az előző fejezetben lévő Malmö-s feldattal, csupán annyi benne a különbség, hogy itt a virágokat nem lentről felfelé haladva kezdjük el gyújteni, hanem a karakter az induláskor azonnal a pálya teteje felé veszi az irányt és onnan halad lefelé a megszokott csigavonalban.
+        </para>            
+    </section>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+</chapter>
