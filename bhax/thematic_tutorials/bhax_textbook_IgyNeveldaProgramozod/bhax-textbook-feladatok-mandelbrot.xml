@@ -9,7 +9,7 @@
         <title>A Mandelbrot halmaz</title>
         
         <para>
-            Megoldás videó:https: <link xlink:href="//www.youtube.com/watch?v=hHKhGdCN2Rolink">//www.youtube.com/watch?v=hHKhGdCN2Rolink</link>
+            Megoldás videó:https: <link xlink:href="https://www.youtube.com/watch?v=hHKhGdCN2Rolink">Saját videó</link>
         </para>
         <para>
             Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrot.cpp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Mandelbrot/mandelbrot.cpp</link>              
@@ -125,7 +125,7 @@ imag(C) = MAXY - i * dy;]]>
         <para>
         </para>
         <para>
-            Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=nUAG7xP54AQ">https://www.youtube.com/watch?v=nUAG7xP54AQ</link>
+            Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=nUAG7xP54AQ">Saját videó</link>
         </para>
         <para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/Biomorf">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/Biomorf</link>

@@ -13,7 +13,7 @@
         </para>
 	
         <para>
-            Megoldás videó:<link xlink:href="https://youtu.be/1_EcjAmCTHA">https://youtu.be/1_EcjAmCTHA</link>
+            Megoldás videó:<link xlink:href="https://youtu.be/1_EcjAmCTHA">Saját videó</link>
         </para>
         <para>
             Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/tm.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/tm.c</link>              
@@ -88,7 +88,7 @@ free (tm);]]></programlisting> függvény használatával felszabadítjuk a töm
             Írj egy EXOR titkosítót C-ben!
         </para>
         <para>
-            Megoldás videó:<link xlink:href="https://youtu.be/osQ0iZu4Swg">https://youtu.be/osQ0iZu4Swg</link>
+            Megoldás videó:<link xlink:href="https://youtu.be/osQ0iZu4Swg">Saját videó</link>
         </para>
         <para>
             Megoldás forrása:  <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/exor.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/exor.c</link>
@@ -129,7 +129,7 @@ Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
         </para>
 
         <para>
-            Megoldás videó:<link xlink:href="https://youtu.be/P7PbIIRZiSA">https://youtu.be/P7PbIIRZiSA</link>
+            Megoldás videó:<link xlink:href="https://youtu.be/P7PbIIRZiSA">Saját videó</link>
         </para>
 
         <para>
@@ -179,7 +179,7 @@ Először is a <programlisting language="c"><![CDATA[#define MAX_KULCS 100
             Írj egy olyan C programot, amely megtöri az első feladatban előállított titkos szövegeket!
         </para>
         <para>
-            Megoldás videó:<link xlink:href="https://youtu.be/oii26G1ubGk">https://youtu.be/oii26G1ubGk</link>
+            Megoldás videó:<link xlink:href="https://youtu.be/oii26G1ubGk">Saját videó</link>
         </para>
         <para>
             Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/tores.c">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/tores.c</link>             

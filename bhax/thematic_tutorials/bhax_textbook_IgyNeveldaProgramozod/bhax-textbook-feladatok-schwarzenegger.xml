@@ -11,7 +11,7 @@
             Python
         </para>
         <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/rH63aO_CVDg">https://youtu.be/rH63aO_CVDg</link>
+            Megoldás videó: <link xlink:href="https://youtu.be/rH63aO_CVDg">Saját videó</link>
         </para>
         <para>
             Megoldás forrása:  <link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Schwarzenegger">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Schwarzenegger</link>        
@@ -53,12 +53,20 @@
             Python            
         </para>
         <para>
-            Megoldás videó:
+            Megoldás videó:<link xlink:href="https://youtu.be/Q6ZtBlP3yxg">Saját videó</link>
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása:<link xlink:href="https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Schwarzenegger">https://github.com/Viktorpalffy/bhax/tree/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Schwarzenegger</link>                        
+        </para>
+          <para>
+            Ebben a feladatban az előzőhöz hasonlóan ismét egy neurális hálót tanítunk számjegyek felismerésére.
+            Az előzőleg használt 60000 mintából dolgozunk, viszont itt már eredményt is fogunk kapni.
+            Futtatásnál bemeneti paraméterként megadhatunk neki egy képfájlt, amiről eldönti, hogy milyen számot ábrázol.
+            Ebben az esetben 10 epoch-ra futtatjuk ~98,5%-os pontossággal.
+	    Viszont ahogy a videóban látszik, sajnos nem találta el a megadott számot ennek a nagy pontosságnak az ellenére sem (8-ast adtam meg neki és 6-ost kaptam eredményül).
         </para>
         
+
 	
     </section>        
 <!--

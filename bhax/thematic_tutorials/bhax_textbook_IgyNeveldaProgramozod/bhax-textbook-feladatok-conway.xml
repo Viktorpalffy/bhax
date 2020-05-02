@@ -52,7 +52,7 @@ Vagy például a <function>closeEvent()</function> és a <function>keyPressEvent
             valósítsa meg a sikló-kilövőt!
         </para>
         <para>
-            Megoldás videó: 
+            Megoldás videó: <link xlink:href="https://youtu.be/iPWy9NPIHFk">Saját videó</link>
         </para>
         <para>
             Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/eletjatek.java">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Conway/eletjatek.java</link>               
