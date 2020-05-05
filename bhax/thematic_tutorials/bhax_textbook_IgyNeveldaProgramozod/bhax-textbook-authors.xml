@@ -72,20 +72,22 @@
                 <email>batfai.greta@gmail.com</email>               
             </address>
         </affiliation>               
-    </author>  
+    </author>
+
     <author>
         <personname>       
-            <surname>Aranyi</surname>
-            <firstname>Ádám</firstname>        
+            <surname>Pálffy</surname>
+            <firstname>Viktor</firstname>        
         </personname>    
         <affiliation>
             <shortaffil>tanuló</shortaffil>
             <jobtitle>tanuló</jobtitle>
             <orgname>Debreceni Egyetem</orgname>
-            <orgdiv>Informatikai Kar</orgdiv>
+            <orgdiv>Informatikai kar</orgdiv>
             <address>
-                <email>aranyiadam@gmail.com</email>               
+                <email></email>               
             </address>
         </affiliation>               
-    </author> 
+    </author>    
 </authorgroup>
+

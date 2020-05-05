@@ -11,11 +11,41 @@
                 
         </para>
         <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/z6NJE2a1zIA">https://youtu.be/z6NJE2a1zIA</link>      
+            Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Iteratív megoldás: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chaitin/iter.lisp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chaitin/iter.lisp</link>          
         </para>
+	<para>
+	Rekurzív megoldás: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chaitin/rek.lisp">https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Chaitin/rek.lisp</link>
+	</para>
+	
+
+	<para>
+	Ebben a feladatban a program faktoriálist számol iteratív illetve rekurzív módon. A lisp a
+ második magas szintű programozási nyelv. Egyedül a fortran előzte meg. Először nézzük az iteratív módszert.
+	</para>
+	<programlisting><![CDATA[(defun fact(n)
+    (setf f 1) 
+    (do ((i n (- i 1))) ((= i 1)) 
+        (setf f (* f i)) 
+    ) 
+fact(4))]]></programlisting>
+	<para>
+	A program első sorában definiáljuk magát a függvényt fact néven. Majd egy f nevű változót, aminek az értéket 1-re állítjuk. Ezután jön egy ciklus, ami i-nek átadja a számot, aminek a faktoriálisát ki kell számolni. A program i-ből folyamatosan kivon 1-et egészen addig, amíg i értéke nem lesz egyenlő 1-el. A ciklus törzsében pedig f értéke f*i lesz. Végül a program meghívja magát a <function>fact()</function> függvényt.
+	</para>
+	<para>
+	Ezzel szemben a rekurzív módszert valamennyivel könnyebb olvasni.
+	</para>
+	<programlisting><![CDATA[(defun fact(n)
+    (if (= n 0) 1 
+        (* n (fact(- n 1))) 
+    ) 
+)
+fact(4)]]></programlisting>
+	<para>
+	Először ebben a példában is a <function>fact()</function> függvény kerül definiálásra. Azonban ezek után itt egy if szerepel, ami azt ellenőrzi, hogy n egyenlő e 0-val. Ha nem, akkor szimplán meghívja a függvény saját magát, azonban itt már n-1 amivel számol, így számolva ki a faktoriális értékét.
+	</para>
     </section>        
 <!--        
     <section>
@@ -43,9 +73,52 @@
         <para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/GIMP_Lisp/Chrome">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/GIMP_Lisp/Chrome</link>               
         </para>
+	
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Ez egy program a Gimp-hez, ami a megadott szöveghez króm effektet ad. Aki nem ismeri a Gimpet, most gyorsan bemutatom: a neve a "GNU Image Manipulation Program" rövidítéséből ered, a program egy ingyenesen használható bittérképes képszerkesztő, ami támogatja a rétegek kezelését és az átlátszóságot is.
         </para>    
+	<para>
+	Maga a forrás egy tömbbel indul, ami a króm effekt megvalósításához szükséges információkat tartalmazza.
+	</para>
+	<programlisting>
+            <![CDATA[(define (color-curve)
+    (let* (
+        (tomb (cons-array 8 'byte))
+    )
+        (aset tomb 0 0)
+        (aset tomb 1 0)
+        (aset tomb 2 50)
+        (aset tomb 3 190)
+        (aset tomb 4 110)
+        (aset tomb 5 20)
+        (aset tomb 6 200)
+        (aset tomb 7 190)
+    tomb)    
+)]]>
+    </programlisting>
+	<para>
+	A következő függvény a betűk méretét határozza meg. A szükséges méreteket  a GIMP a beépített függvényeivel határozza meg a következőképpen:
+	</para>
+	<programlisting><![CDATA[(set! text-width (car (gimp-text-get-extents-fontname text fontsize PIXELS font)))    
+    (set! text-height (elem 2  (gimp-text-get-extents-fontname text fontsize PIXELS font)))
+]]>
+	</programlisting>
+	<para>
+	Ez annyit jelent, hogy a <function>gimp-text-get-extents-fontname</function> első értékét (ami maga a méret) állítja be a text-width illetve a text-height változóknak a set utasítás használatával.
+	</para>
+	<para>
+	Majd a <function>script-fu-bhax-chrome-border</function> függvény hozza létre a tényleges króm effektes szöveget. Ezt egy új rétegen (layer) teszi. Ennek az új rétegnek a háttere fekete, a rá kerülő szöveg pedig fehér színű lesz.
+	</para>
+	<programlisting><![CDATA[ (gimp-image-insert-layer image layer 0 0)
+        
+    (gimp-image-select-rectangle image CHANNEL-OP-ADD 0 (/ text-height 2) width height)
+    (gimp-context-set-foreground '(255 255 255))
+    (gimp-drawable-edit-fill layer FILL-FOREGROUND )
+]]>
+	</programlisting>
+	<para>
+	Végül a program regisztrálásra kerül a Gimp-ben, hogy el tudjuk érni.
+	</para>
     </section>        
 
     <section>
@@ -60,10 +133,76 @@
         <para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/GIMP_Lisp/Mandala">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/GIMP_Lisp/Mandala</link>               
         </para>
+	
+
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Az előző feladathoz hasonlóan itt is egy Gimp kiegészítőről van szó. Itt azonban a bemenő szövegből egy név-mandala fog készülni. A mandala egy szimmetrikus kör alakú kép, ami a Hindu vallásban nagy szerepet játszik az isteneik ábrázolásában.
+        </para> 
+ 
+	<para>
+	Először a program meghatározza a szöveg hosszát, a <function>gimp-text-get-extents-fontname</function> függvény használatával. A kapott értéket a set! utasítással a text-width változó értékenek adja.
+	</para>  
+      
+	<programlisting><![CDATA[(set! text-width (car (gimp-text-get-extents-fontname text fontsize PIXELS font)))]]>
+	</programlisting> 
+ 
+	<para>
+	Ebben a feladatban, ugyanúgy határozzuk meg a szöveg méretét, mint az előzőben:
+	</para>
+
+	<programlisting><![CDATA[(set! text-width (car (gimp-text-get-extents-fontname text fontsize PIXELS font)))    
+    (set! text-height (elem 2  (gimp-text-get-extents-fontname text fontsize PIXELS font)))
+]]>
+	</programlisting>
+	<para>
+	A GIMP beépített <function>gimp-text-get-extents-fontname</function> függvényét, és a set! utasítást felhasználva a text-width és a text-height változók értékei lesznek a szükséges méretek.
+	</para>
+	<para>
+		Ezek után jön a mandala. Először létrejön egy réteg (layer)
+	</para>
+	<programlisting><![CDATA[(gimp-image-insert-layer image layer 0 0)
+    (gimp-context-set-foreground '(0 255 0))
+    (gimp-drawable-fill layer FILL-FOREGROUND)
+    (gimp-image-undo-disable image)
+]]>
+	</programlisting>
+	<para>
+	Amit feltöltünk a felhasználó által megadott adatokkal. Ezek a szöveg, a szöveg betűtípusa. Ezután a réteget tükrözi a program, ezzel elérve a szimmetriát, majd a program elforgatja a képet, és megismétli a tükrözést. Majd a réteget felnagyítja a kép teljes méretére:
+	</para>
+	<programlisting><![CDATA[(gimp-layer-resize-to-image-size textfs)]]>
+	</programlisting>
+	<para>
+	Ezután két körnek álcázott ellipszist illeszt a program a képre ezzel létrehozva a mandalát. Az egyik kör vastagsága 22, a másiké pedig 8 lesz.
+	</para>
+	<programlisting><![CDATA[(gimp-image-select-ellipse image CHANNEL-OP-REPLACE (- (- (/ width 2) (/ textfs-width 2)) 18) 
+        (- (- (/ height 2) (/ textfs-height 2)) 18) (+ textfs-width 36) (+ textfs-height 36))
+	(plug-in-sel2path RUN-NONINTERACTIVE image textfs)
+]]>
+	</programlisting>
+	<programlisting><![CDATA[(gimp-context-set-brush-size 22)
+(gimp-context-set-brush-size 8)]]>
+	</programlisting>
+	<para>
+	Végül pedig megjeleníti a képet:
+	</para>
+	<programlisting><![CDATA[(gimp-display-new image)]]>
+	</programlisting>
+	<para>
+	Ezek után ismét már csak a GIMP-be regisztrálás van hátra.
+	</para>
+    </section>    
+
+    <section>
+        <title>Vörös Pipacs Pokol/javíts tovább a javított 19 RF-eden</title>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat... ezt kell az olvasónak kidolgoznia, mint labor- vagy otthoni mérési feladatot!
+            Ha mi már megtettük, akkor használd azt, dolgozd fel, javítsd, adj hozzá értéket!
         </para>            
-    </section>        
+    </section>              
+       
 
 <!--    
     <section>

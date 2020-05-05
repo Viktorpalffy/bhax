@@ -1,0 +1,6 @@
+(defun fact(n)
+    (setf f 1)
+	(do ((i n (- i 1))) ((= i 1))
+    (setf f (* f i))
+)
+fact(4))

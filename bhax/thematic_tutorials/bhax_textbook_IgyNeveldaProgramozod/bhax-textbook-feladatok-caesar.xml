@@ -78,9 +78,7 @@ free (tm);]]></programlisting> függvény használatával felszabadítjuk a töm
                 <imagedata fileref="img/doublecscs.png"/>
             </imageobject>
         </mediaobject>
-	<para>
-	A képnek az alapját Bátfai Norbert biztosította, azt módosítottam.
-	</para>
+	
     </section>        
     <section>
         <title>C EXOR titkosító</title>
