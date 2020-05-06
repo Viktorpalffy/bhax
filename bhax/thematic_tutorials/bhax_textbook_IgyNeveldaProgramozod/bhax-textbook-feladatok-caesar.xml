@@ -272,26 +272,139 @@ kulcs[0],kulcs[1],kulcs[2],kulcs[3],kulcs[4],kulcs[5],kulcs[6],kulcs[7], buffer)
 	</para>
 
         <para>
-	A neurális hálózatokban például a machine learning esetében, a neuronok egy gráfban elhelyezkedve egymással kommunikálnak ún. "Activation function", magyarul Aktivációs függvény segítségével.
-	</para>
-	<para>
-	Léteznek bemeneti, kimeneti, és rejtett neuronok is.
-	</para>
-	<para>
-	A bemeneti neuronok kapják meg a bemenetet. Itt több különböző fajta neuront is meg lehet különböztetni. Vannak egybemenetű és több bemenetű neuronok is. Ezeknek a neuronoknak nincs különösebb feldolgozó feladatuk, továbbítják a bemenetet a többi neuronnak.
-	</para>
-	<para>
-	A kimeneti neuronok amik a környezetnek adják tovább a kapott információt.
-	</para>
-	<para>
-	A rejtett neuronoknak pedig a bemenete és a kimenete is csakis más neuronokhoz kapcsolódik.
-	</para>
-	<para>
-	Ezek alapján egy neurális hálónak legalább két rétegből kell állnia. Egy bemenetiből, és egy kimenetiből. Felső határ, azaz hogy a bemeneti és a kimeneti neuronok között hány darab további réteg helyezkedik el, elviekben nincs.
-	</para>
-	<para>
-	Először minden neuron megkapja a saját bemeneteit, és minden neuron ebből a bemenetből előállít egy úgynevezett súlyozott összeget, és ezt az értéket vezeti végig az aktivációs függvényen. Egy példa lehet az, hogy ha a súlyozott összeg pozitív lesz, akkor az érték 1, míg ha a súlyozott összeg negatív, akkor az érték -1 lesz.
-	</para> 
+	    Egy neurális háló neuronok sokaságából áll. 
+            A neuronok ingerlékeny sejtek, amelyek képesek az ingerek felvételére és azok továbbítására is.
+            Az emberi agyban ez a hálózat felel az információ feldolgozásáért.
+            Egy ilyen hálózatot kiválóan lehet programozni viszonylag egyszerűen.
+        </para>
+        <para>
+            R-ben fogjuk ezt a feladatot megoldani, így biztosítanunk kell a megfelelő környezetet.
+            <programlisting>
+<![CDATA[sudo apt install r-base]]>
+            </programlisting>
+        </para>
+        <para>
+            Ha ez megvan, telepíteni kell még R-en belül egy csomagot, hogy tudjunk neurális hálókat modellezni.
+            <programlisting>
+<![CDATA[install.packages("neuralnet")]]>
+            </programlisting>
+        </para>
+        <para>
+            Amennyiben ezeket sikeresen telepítettük, neki is láthatunk a háló betanításának.
+            Elsőként az OR műveletet tanítjuk meg neki:
+            <programlisting language="R">
+<![CDATA[library(neuralnet)
+x1 <- c(0,1,0,1)
+x2 <- c(0,0,1,1)
+OR <- c(0,1,1,1)
+
+or.data <- data.frame(x1, x2, OR)
+
+nn.or <- neuralnet(OR~x1+x2, or.data, hidden=0, linear.output=FALSE,
+stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.or)
+
+compute(nn.or, or.data[,1:2])]]>
+            </programlisting>
+        </para>
+        <para>
+            A kód elején változókat definiálunk, aztán ezeket az <function>or.data</function>-ban tároljuk.
+        </para>
+        <para>
+            Az <function>nn.or</function> értéke a <function>neuralnet</function> visszatérési értéke lesz.
+            <programlisting language="R">
+<![CDATA[nn.or <- neuralnet(OR~x1+x2, or.data, hidden=0, linear.output=FALSE,
+stepmax = 1e+07, threshold = 0.000001))]]>
+            </programlisting>
+        </para>
+        <para>
+            Ez a függvény elég sok paramétert kap; nézzük meg ezeket egyesével:
+        </para>
+        
+                <para>
+                    <function>OR~x1+x2</function> - a formula, amit a program meg kell, hogy tanuljon
+                </para>
+            
+            
+                <para>
+                    <function>or.data</function> - a minta, ami alapján tanul
+                </para>
+            
+            
+                <para>
+                    <function>hidden=0</function> - a rejtett neuronok száma
+                </para>
+            
+                <para>
+                    <function>linear.output=FALSE</function> - megadja, hogy a függvény a kimeneti neuronokra ne fusson le
+                </para>
+            
+                <para>
+                    <function>stepmax=1e+07</function> - a maximális lépésszám
+                </para>
+            
+                <para>
+                    <function>threshold=0.000001</function> - a folyamat leállításának kritériuma
+                </para>
+         
+        <para>
+            Ezek után kirajzoltatjuk a hálót a
+            <programlisting language="R">
+<![CDATA[plot(nn.or)]]>
+            </programlisting> parancs használatával.
+            
+        </para>
+        <para>
+            Ugyanezzel a módszerrel tanítjuk fel a hálónak az AND műveletet is. Ebben az esetben az AND értékeit változtatjuk meg, hogy passzoljon a logikai formulánkoz.
+            <programlisting language="R">
+<![CDATA[x1    <- c(0,1,0,1)
+x2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+AND   <- c(0,0,0,1)
+
+orand.data <- data.frame(x1, x2, OR, AND)
+
+nn.orand <- neuralnet(OR+AND~x1+x2, orand.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.orand)
+
+compute(nn.orand, orand.data[,1:2])]]>
+            </programlisting>
+            
+        </para>
+        <para>
+            Legvégül pedig az EXOR műveletet taníttatjuk meg vele.
+            <programlisting language="R">
+<![CDATA[x1      <- c(0,1,0,1)
+x2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+
+exor.data <- data.frame(x1, x2, EXOR)
+
+nn.exor <- neuralnet(EXOR~x1+x2, exor.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.exor)
+
+compute(nn.exor, exor.data[,1:2])]]>
+            </programlisting>
+            
+            Ez azoban ránézésre is helytelen eredményt fog produkálni, így módosítanunk kell a 'hidden' paramétert, hogy helyes értéket adjon.
+            <programlisting language="R">
+<![CDATA[x1      <- c(0,1,0,1)
+x2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+
+exor.data <- data.frame(x1, x2, EXOR)
+
+nn.exor <- neuralnet(EXOR~x1+x2, exor.data, hidden=c(6, 4, 6), linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.exor)
+
+compute(nn.exor, exor.data[,1:2])]]>
+            </programlisting>
+            
+        </para>
   
     </section>        
     <section>
