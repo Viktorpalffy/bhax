@@ -7,35 +7,286 @@
     </info>
 
     <section>
-        <title>A BPP algoritmus Java megvalósítása</title>
+        <title>OO szemlélet</title>
         <para>
+	A módosított polártranszformációs normális generátor beprogramozása Java nyelven. Mutassunk rá, hogy a mi természetes saját megoldásunk (az algoritmus egyszerre két normálist állít elő, kell egy
+példánytag, amely a nem visszaadottat tárolja és egy logikai tag, hogy van-e tárolt vagy futtatni kell
+az algot.) és az OpenJDK, Oracle JDK-ban a Sun által adott OO szervezés ua.! C++ ban
         </para>
         <para>
-            Megoldás videó:
+            Megoldás forrása: 
+	    <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Arroway/polargenerator.java">Forrás</link>       
         </para>
-        <para>
-            Megoldás forrása:                
+        <para>Ebben a feladatban a prog1-en már tárgyalt Polárgenerátor megírása volt a feladat. Ez az objektumorientált paradigma alapjaihoz, az osztály, objektum, és példányosítás alapfogalmakhoz tökéletes példaként szolgálhat. Ennek a programnak az a lényege, hogy először generál két értéket. Az egyik értéket eltárolja, a másikat pedig visszaadja. Majd amikor következőnek ismét generálna, akkor először megnézi, hogy van e már tárolt érték. Ha van akkor azt a tárolt értéket adja vissza, ha viszont nincs, akkor generál két értéket, amiből az egyiket eltárolja, a másikat pedig visszaadja. Azt, hogy van e tárolt érték, egy boolean változóban tartja nyílván.
         </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
+	<para>
+	A program a PolárGenerátor osztállyal kezdődik:
+	<programlisting>
+	<![CDATA[public class PolárGenerátor {
+    boolean nincsTárolt = true;
+    double tárolt;   
+    public PolárGenerátor() {
+        nincsTárolt = true;
+    }]]>
+	</programlisting>
+	Itt kezdőértéknek meg van adva, hogy nincs tárolt érték, valamint egy double változó a majdani tárolt értéknek. Ezek után következik a <function>következő</function> nevű függvény, ami az érdemi munkát végzi. Ha már van tárolt értékünk, akkor a nincsTárolt változó értékét az ellenkezőjére változtatja, és visszaadja a tárolt értéket. Ha viszont nincs, akkor egy do while ciklusban először is az u1 és u2 változókhoz két véletlenszerű értéket rendel, majd pedig a Vx változók értékét úgy határozza meg, hogy Ux-et megszorozza kettővel, és a kapott eredményből kivon 1-et. Ezek után a w változónak az értéke v1 négyzetének, és v2 négyzetének az összege. Ez a ciklus addig fog futni, amíg w értéke nagyobb mint 1. Ha véget ért a ciklus akkor az újonnan deklarált r változó kezdőértékét úgy határozza meg, hogy -2-vel megszorozza w logaritmusát, majd azt elosztja w-vel, és a kapott értéknek a négyzetgyöke lesz az eredmény. Ezek után a nincsTárolt változó értékét az ellenkezőjére állítja. Az eltárolt érték a r és v2 szorzata lesz, a visszaadott érték pedig r és v1 szorzata.
+	<programlisting><![CDATA[public double következő() {
+        if(nincsTárolt) {
+            double u1, u2, v1, v2, w;
+            do{
+                u1 = Math.random();
+                u2 = Math.random();
+                v1 = 2* u1 -1;
+                v2 = 2* u2 -1;
+                w = v1 * v1 + v2 * v2;
+            } while ( w > 1);
+            double r = Math.sqrt((-2 * Math.log(w)) / w);
+            tárolt = r * v2;
+            nincsTárolt = !nincsTárolt;
+            return r * v1;
+        } else {
+            nincsTárolt = !nincsTárolt;
+            return tárolt;
+        }}]]></programlisting>
+	</para>
+
+	<para>Végül pedig a main, ami létrehoz egy PolárGenerátor objektumok, és egy for ciklussal 10 alkalommal futtatja a függvényt, és az eredmény.
+	<programlisting><![CDATA[public static void main(String args[]){
+       PolárGenerátor g = new PolárGenerátor();
+       for ( int i = 0; i< 10; i++) {
+           System.out.println(g.következő() );
+       }}]]></programlisting>
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref=""/>
+            </imageobject>
+        </mediaobject>
     </section>        
 
-    <section>
-        <title>Java osztályok a Pi-ben</title>
+	<section>
+        <title>Gagyi</title>
         <para>
-            Az előző feladat kódját fejleszd tovább: vizsgáld, hogy Vannak-e Java osztályok a Pi hexadecimális kifejtésében!
+            Az ismert formális <programlisting> <![CDATA[while(x <= t && x >= t && t != x);]]> </programlisting> tesztkérdéstípusra adj a szokásosnál (miszerint x, t az egyik esetben az objektum által hordozott érték, a másikban meg az objektum referenciája) „mélyebb” választ, írj Java példaprogramot mely egyszer végtelen ciklus, más x, t értékekkel meg nem! A példát építsd a JDK Integer.java forrására, hogy a 128-nál inkluzív objektum példányokat poolozza!
         </para>
         <para>
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása:<link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Arroway/gagyi.java">Forrás</link>            
+        </para>
+        <para>Ebben a Feladatban létrehoztunk két Int objektumot 'x' és 't' néven. Az egyik alkalommal mindkét Int értékét 127-re, a másik alkalommal pedig 128-ra állítjuk be. Ezután következik egy while ciklus ami addig fut, amíg x kisebb vagy egyenlő t-vel és x nagyobb vagy egyenlő t-vel és t nem egyenlő x-el.
+	</para>
+	<programlisting>
+	<![CDATA[import java.util.Scanner;
+public class Gagyi{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Álljon e le a program? igen ha igen, bármi más ha nem");
+		Integer t;
+		Integer x;		
+		if(sc.nextLine().equals("igen")){
+			x = 127;
+			t = 127;
+		}
+		else{
+			t = 128;
+			x = 128;
+		}
+		while (x <= t && x >= t && t != x);
+	}
+}]]>
+	</programlisting>
+	<para>Az érdekesség ebben a feladatban az, hogy amikor x és t értéke 127, akkor leáll a ciklus, míg amikor 128, akkor pedig egy végtelen ciklust kapunk:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref=""/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	És hogy ez miért történik? Erre a választ a JDK Integer.java forrásában kaphatunk.
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref=""/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Vagyis a -128 és az alapértelmezetten 127 (de ez konfigurálható) közötti értékekre egy már létező pool-ból fogjuk megkapni a nekünk kellő objektumot. Ami azt jelenti, hogy az x és a t ugyan azt az objektumot fogja viszakapni, vagyis ugyanarra a memóriacímre fognak mutatni. Éppen ezért le fog állni a while ciklus az x!=t feltétel miatt. Ezzel szemben, ha az érték 128, akkor nem az előre elkészített poolból fogják megkapni az értéküknek megfelelő objektumot, hanem a <emphasis>return new Integer(i);</emphasis>-vel fognak értéket kapni. Ez azt jelenti, hogy x-nek és t-nek két különböző című objektuma lesz. Ebben az esetben pedig már az x!=t feltétel is igaz lesz, aminek az eredménye pedig egy végtelen ciklus.
+	</para>
+	</section>
+	<section>
+        <title>Yoda</title>
+        <para>
+            Írjunk olyan Java programot, ami java.lang.NullPointerEx-el leáll, ha nem követjük a Yoda
+conditions-t! <link xlink:href="https://en.wikipedia.org/wiki/Yoda_conditions">https://en.wikipedia.org/wiki/Yoda_conditions</link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Megoldás videó:
         </para>
-    </section>        
-        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Arroway/yoda.java">Forrás</link>                 
+        </para>
+        <para>
+            A sokak által tanult összehasonlítási módszer szerint az egyenlőségjel bal oldalára kell kerülnie a változónak minden esetben. Azonban ezzel az a probléma, hogy ha a változónak null az értéke, akkor a programunk le fog állni egy java.lang.NullPointerException-nel. Erre ad megoldást a Yoda conditions, aminek az a lényege, hogy az összehasonlítás bal oldalára írjuk az értéket, a jobb oldalára pedig a változót.
+	<programlisting>
+	<![CDATA[import java.util.Scanner;
+public class Main {   
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        String pelda = null;
+        String legyen; 
+        System.out.println("Kapjunk-e NullPointerException-t? I/N");
+        for(;;){
+            legyen = sc.nextLine();
+            
+            if( legyen.equalsIgnoreCase("I") ){
+                if( pelda.equals("abrakadabra") ){
+                   break;
+                }
+            }           
+            else if( legyen.equalsIgnoreCase("N")){
+                if(!"abrakadabra".equals(pelda) ){
+                    System.out.println("Nem Kaptunk.");
+                    break;
+                }
+            }           
+            else{
+                System.out.println("Nem Tudom értelmezni amit írtál. próbáld újra.");
+            }           
+        }        
+    }}]]>
+	</programlisting>
+	Ebben a példában a 'pelda' egy String aminek null az értéke. A felső elágazás során a program le fog állni a fent említett NullPointerException hibával, mivel a stringet egy null pointerhez hasonlítanánk, ami nem lehetséges. Ezzel szemben az alsó esetben szimplán csak egy hamis értéket fogunk kapni eredményként. És a végeredmény:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref=""/>
+            </imageobject>
+        </mediaobject>
+	</section>
+
+	<section>
+        <title>Kódolás from scratch</title>
+        <para>
+            Induljunk ki ebből a tudományos közleményből: http://crd-legacy.lbl.gov/~dhbailey/dhbpapers/bbp-alg.pdf és csak ezt tanulmányozva írjuk meg Java nyelven a BBP algoritmus megvalósítását!Ha megakadsz, de csak végső esetben: <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apbs02.html#pi_jegyei">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apbs02.html#pi_jegyei</link>   (mert ha csak lemásolod, akkor pont az a fejlesztői élmény marad ki, melyet szeretném, ha átélnél).
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:<link xlink:href="https://github.com/Viktorpalffy/bhax/blob/master/bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Arroway/BBP.java">Forrás</link>                
+        </para>
+        <para>
+            Ebben a feladatban a BBP algoritmust kell megírnunk. A program a main-nel kezdődik:
+        </para>
+	<programlisting>
+	<![CDATA[ public static void main(String[] args) {
+	int k = 6; 
+	System.out.println(magic(k));
+   }]]>
+	</programlisting>
+	<para>
+	Amiben a k változó értéke azt mondja meg, hogy pi-nek 10 a hányadikon számjegyétől kezdve írjuk ki a következő pár számjegyet hexadecimális alakban. Jelen esetben k értéke 6, ami az jelenti, hogy pi-nek az első 10<superscript>6</superscript> számjegye utáni pár számjegyét fogjuk megkapni. Majd kiíratjuk a <function>magic(k)</function> nevű függvény eredményét.
+	</para>
+	<para>
+	Ezután következik a magic függvény, ami egy értékadással kezdődik:
+	</para>
+	<programlisting>
+	<![CDATA[double s1 = solve(Math.pow(10,k), 1);
+	double s4 = solve(Math.pow(10,k), 4);
+	double s5 = solve(Math.pow(10,k), 5);
+	double s6 = solve(Math.pow(10,k), 6);]]>
+	</programlisting>
+	<para>
+	Az s1, s4, s5, és s6 változóknak úgy adunk értéket, hogy meghívjuk a <function>solve()</function> függvényt, ami pedig majd a <function>mod()</function> függvényt fogja használni. A <function>solve()</function> függvény egyik paramétere az 10<superscript>k</superscript> lesz, a másik pedig egy szám. Ha megvan az értékadás, akkor ugyan ezeket a változókat ráeresztjük a <function>cut()</function> függvényre:
+	</para>
+	<programlisting>
+	<![CDATA[s1 = cut(s1);
+	s4 = cut(s4);
+	s5 = cut(s5);
+	s6 = cut(s6);]]>
+	</programlisting>
+	<para>
+	A <function>cut()</function> függvénynek annyi a feladata, hogy visszaadja a paraméterként kapott double változó nem egész részét. Ezt úgy csinálja, hogy ha az értéke negatív, akkor hozzáadja saját magához saját maga egész részét, ha viszont pozitív, akkor pedig kivonja.
+	</para>
+	<programlisting>
+	<![CDATA[public static double cut(double db) {
+	if(db < 0) {
+	   return db - (int)db+1;
+	}
+	else {
+	   return db - (int)db;
+	}
+}]]>
+	</programlisting>
+	<para>
+	Ezek után létrehozzuk, és értéket adunk pi-nek, majd ennek az értéknek kiszámoljuk a nem egész részét, valamint létrehozzuk még a hexadecimális jeleket és a végeredményt is. Egy while ciklusban addig számoljuk pi értékét, amíg a nem egész részének az értéke nem egyenlő nullával. Ha nem egyenlő akkor pi értékét megszorozzuk 16-tal. Majd, ha az egész része pi-nek nagyobb vagy egyenlő mint 10, akkor a végeredményt konkatenáljuk az értéknek megfelelő Hexadecimális jellel. Egyébként pedig szimplán csak a stringgé alakított számjegyeket konkatenáljuk a végeredménnyel, majd pedig elvesszük pi-ből az egész részét, és kezdődik előről a ciklus. Legvégül pedig visszaadjuk a végeredményt.
+	</para>
+	<programlisting>
+	<![CDATA[double pi = 4*s1 -2*s4 - s5 -s6;
+	pi = cut(pi);
+	String[] hexa = {"A", "B", "C", "D", "E", "F"};
+	String result = "";
+	while(cut(pi) != 0) {
+	   pi = pi*16;
+	   if((int)pi >= 10) {
+		result = result.concat(hexa[(int)pi - 10]);
+	   }
+	   else {
+		result = result.concat(Integer.toString((int)pi));
+	   }
+	   pi = cut(pi);
+	}
+	return result;]]>
+	</programlisting>
+	<para>
+	A <function>solve()</function> függvény egy összeget számol. Egy for ciklus addig megy, amíg az első kapott paraméter, azaz d értéke nagyobb, vagy egyenlő i-vel. A cikluson belül pedig minden egyes lépésnél hozzáadja az összeg értékéhez a <function>mod()</function> függvény által kiszámolt értéket.
+	</para>
+	<programlisting>
+	<![CDATA[ public static double solve(double d, double num) {
+	double sum = 0.0;
+	for(int i = 0; i <= d; i++) {
+	   sum += mod(16, (d-i), 8*i+num) / (8*i + num);
+	}
+	return sum ;
+   }]]>
+	</programlisting>
+	<para>
+	Végül pedig a <function>mod()</function> függvény. Létrehoz két double változót 't' és 'r' néven, és az 1 kezdőértéket adja mind a kettőnek. Ezután egy while ciklus addig megy amíg 't' kisebb vagy egyenlő mint 'n'. Az 'n' a második paramétere a függvénynek. A cikluson belül pedig minden egyes iterációban 't' értékét megszorozza kettővel. Ezek után következik még egy while ciklus, ami break utasítással fog leállni. Végül pedig a függvény visszaadja 'r' értékét.
+	</para>
+	<programlisting>
+	<![CDATA[ public static double mod(double b, double n, double k) {
+	double t = 1;
+	double r = 1;
+	while(t <= n) {
+	   t = t * 2;
+	}
+	while(true) {
+	   if(n >= t) {
+		r = (b * r) % k;
+		n= n - t;
+	   }
+	   t = t / 2;
+	   if(t >= 1) {
+		r = (r*r) % k;
+	   }
+	   else {
+		break;
+	   }
+	}
+	return r;
+   }]]>
+	</programlisting>
+	<para>
+	Az eredmény pedig:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref=""/>
+            </imageobject>
+        </mediaobject>
+	</section>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 </chapter>                
