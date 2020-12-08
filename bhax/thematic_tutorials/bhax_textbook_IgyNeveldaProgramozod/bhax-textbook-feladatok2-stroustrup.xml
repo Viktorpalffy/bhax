@@ -1,0 +1,510 @@
+<chapter xmlns="http://docbook.org/ns/docbook" 
+	 xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+	 <info>
+	 <title>Helló, Stroustrup!</title>
+	 <keywordset>
+	 <keyword/>
+	 </keywordset>
+	 </info>
+	 <section>
+	 <title>JDK osztályok</title>
+	 <para>
+	 Írjunk olyan Boost C++ programot (indulj ki például a fénykardból) amely kilistázza a JDK összes
+	osztályát (miután kicsomagoltuk az src.zip állományt, arra ráengedve)!
+	 </para>
+	
+	
+	 <programlisting language="C++">
+	 <![CDATA[ 
+	#include <iostream>
+	#include <string>
+	#include <boost/filesystem.hpp>
+	
+	using namespace boost::filesystem;
+	using namespace std;
+	
+	class Reader
+	{
+	private:
+	 int numberOfClasses;
+	
+	public:
+	 Reader()
+	 {
+	 numberOfClasses = 0;
+	 }
+	
+	 void readClasses(path path)
+	 {
+	 if (is_regular_file(path))
+	 {
+	 string ext(".java");
+	 if (!ext.compare(extension(path)))
+	 {
+	 cout << path;
+	 numberOfClasses++;
+	 }
+	 }
+	 else if (is_directory(path))
+	 for (directory_entry &entry : directory_iterator(path))
+	 {
+	 readClasses(entry.path());
+	 }
+	 }
+	 int getNumberOfClasses()
+	 {
+	 return numberOfClasses;
+	 }
+	};
+	
+	int main()
+	{
+	 Reader reader;
+	 reader.readClasses("src");
+	 cout << "Number of classes:" << reader.getNumberOfClasses() << "\n";
+	
+	 return 0;
+	}
+	]]>
+	 </programlisting>
+	
+	 <para>
+	 A feladat megoldásához használjuk a boost könyvtárat. A program végigmeny a src mappában található összes fájlon és mappán, keresve 
+	 a .java kiterjesztésú fájlokat. A Reader osztályban található readClasses metódusnak átadjuk az src mappa nevét, amiben dolgozik majd. 
+	 A path egy egy file-t fog jelenteni és ellenőrzi, hogy ha file és nem könyvtár és .java kiterjesztéssel rendelkezik, akkor kiiratjuk és 
+	 megnöveljük a számlálót. Viszont ha a path egy könyvtár, akkor rekurzívan megyünk végig az egész könyvtárszerkezeten. A main-ben létrehozzuk a Reader 
+	 objektumot, a konstruktorja beállítja a osztályokat számoló változót 0-ra, majd meghívjuk a readClasses függvényt átadva a mappa nevét majd kiiratjuk 
+	 a talált .java kiterjesztésű fájlok számát JDK13 esetén. A fordításkor fontos linkelni a boost könyvtárakat.
+	 </para>
+	 <screen>
+	 <![CDATA[ 
+	 g++ -o jdkreader jdkreader.cpp -lboost_filesystem -lboost_system
+	]]>
+	 </screen>
+	 <mediaobject>
+	 <imageobject>
+	 <imagedata fileref="pic/boost.png" scale="70" />
+	 </imageobject>
+	 </mediaobject>
+	
+	
+	 </section>
+	 <section>
+	 <title>Másoló-mozgató szemantika + Összefoglaló</title>
+	 <para>
+	 Kódcsipeteken (copy és move ctor és assign) keresztül vesd össze a C++11 másoló és a mozgató
+	szemantikáját, a mozgató konstruktort alapozd a mozgató értékadásra! 
+	 </para>
+	 <para>
+	 Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=iKu9fHrqLS0"></link>
+	</para>
+	 <para>
+	 Másoló konstruktor akkor kerül meghívásra C++ esetén, ha inicializálatlan objektumhoz értéket rendelünk. Gyakran van szükség 
+	 több példányra ugyanabból az objektumból, ekkor szükséges a másoló konstruktor. Ha nem adunk meg saját másoló konstruktort, akkor 
+	 automatikusan keletkezik egy, ami csak egyszerűen lemásolja a nem statikus adattagokat, ezt hívjuk shallow copynak. Ha az adott osztályunk mutatókat vagy 
+	 referenciákat tartalmaz, ez az alapértelmezett másoló konstruktor nem megfelelő, mert nem a mutatott adatokat, hanem a mutatót magát másolja át.
+	 Továbbá a másoló konstruktor paramétere az osztály egy objektumára vonatkozó referencia kell, hogy legyen, különben végtelen ciklus keletkezik, mert 
+	 a paraméterátadáshoz is a másoló konstruktort használjuk. A másoló konstruktor hívódik meg az alábbi esetekben: 
+	 változó kezdeti értékének beállításakor, nem referencia függvényparaméter átadásakor, függvény nem referenciával visszatérésekor és kivétel dobásánál és 
+	 elkapásánál. A másoló konstruktor és az értékadó operátor lehet private elérésű, ekkor az osztály objektumai nem hozhatóak létre és nem 
+	 másolhatóak, de az osztály publikus tagfüggvényei így is elérik őket. A másoló értékadás pedig akkor kerül meghívásra, ha már egy 
+	 létező objektumnak akarunk egy olyan új értéket adni, ami egy már létező másik objektum.
+	 </para>
+	
+	 <para>
+	 Példaként a binfa másoló konstruktora, ami meghívásra kerül, amikor egy új binfa objektumot hozunk létre a régiből, ami egy másolata az eredetinek.
+	 A másoló konstruktorba referenciaként kapjuk a régi, lemásolandó objektumot. Ezután a régi fa minden csomópontjának értékén végig megyünk, hogy beállítsuk
+	 az új fa csomópontjait, ez a másol függvényben kerül sorra. Pontosan ugyanaz a fa lesz kiépítve az új binfába, mint a régibe ami úgy történik, hogy egyszerűen 
+	 megyünk végig a régi fa csomópontjain és közben állítjuk be az új fa értékeit, a régi fa értékeivel. Az ujelem mutató mutat az aktuálisan lemásolt csomópontra,
+	 ,ami ha egyenlő az aktuális régi fa csomópontjával akkor beállítjuk az új fa aktuális csomópontjának. Másoló értékadás esetén (operator=) is hasonló dolog történik.
+	 Mielőtt a másolás megtörténik, először felszabadítjuk az eredeti fát, majd létrehozzuk a gyokeret és az új gyokerbe masoljuk át a másolandó, régi fa elemeit.
+	 </para>
+	
+	 <programlisting language="c++">
+	 <![CDATA[ 
+	
+	 //Másoló konstruktor
+	 LZWBinFa ( const LZWBinFa & regi ) {
+	 std::cout << "LZWBinFa copy ctor" << std::endl;
+	
+	 gyoker = masol(regi.gyoker,regi.fa);
+	 }
+	Csomopont * masol ( Csomopont * elem, Csomopont * regifa ) {
+	
+	 Csomopont * ujelem = NULL;
+	
+	 if ( elem != NULL ) {
+	 ujelem = new Csomopont ( elem->getBetu() );
+	
+	 ujelem->ujEgyesGyermek ( masol ( elem->egyesGyermek (), regifa ) );
+	 ujelem->ujNullasGyermek ( masol ( elem->nullasGyermek (), regifa ) );
+	
+	 if ( regifa == elem )
+	 fa = ujelem;
+	
+	 }
+	
+	 return ujelem;
+	 }
+	 //Másoló értékadás
+	 LZWBinFa &operator=(LZWBinFa &regi)
+	 {
+	 std::cout << "LZWBinFa copy assign" << std::endl;
+	 szabadit(gyoker);
+	 gyoker = new Csomopont();
+	 gyoker = masol(regi.gyoker, regi.fa);
+	 return *this;
+	 }
+	
+	]]>
+	 </programlisting>
+	 <para>
+	 Az első esetben egy új objektumot hozunk létre egy régiből, ezért meghívásra kerül a másoló konstruktor. A második esetben pedig másoló értékadás kerül meghívásra
+	 mivel egy létező objektumnak adunk egy létező objektum értékét. A harmadik esetben újra másoló konstruktor hívódik meg, mivel egy vektorba másolunk be egy objektumot.
+	 </para>
+	 <programlisting language="c++">
+	 <![CDATA[ 
+	int
+	main ( int argc, char *argv[] )
+	{
+	
+	LZWBinFa binFa;
+	//masolo konstruktor meghivodik
+	LZWBinFa binFa2 = binFa; 
+	LZWBinFa binFa4 = binFa;
+	//masolo ertekadas meghivodik
+	binFa2 = binFa4;
+	//masolo konstruktor meghivodik
+	std::vector<LZWBinFa> b;
+	b.push_back(binFa);
+	
+	]]>
+	 </programlisting>
+	
+	 <mediaobject>
+	 <imageobject>
+	 <imagedata fileref="pic/mozgat.png" scale="70" />
+	 </imageobject>
+	 </mediaobject>
+	
+	 <para>
+	 A C++11 verzió egyik legfontosabb újítása a mozgató szemantika bevezetése: a mozgató értékadást és mozgató konstruktort. A másoló értékadás és konstruktor esetében 
+	 egy objektum tartalmát csak átmásolja egy másik objektumba, azonban a másolás erőforrás igényes, mert a másolás idejekor egyszerre kell két objektumnak is memóriát foglalni 
+	 és csak utána lehet felszabadítani a régit. Ezért ahol lehet és nincs szükség a másolandó adat megőrzésére, akkor kerülni kell a másolást, mivel a mozgató konstruktor és értékadás 
+	 egy sokkal hatékonyabb megoldás mint a másolás. Ebben az esetben a régi objektum átadja minden erőforrását az újnak, ezáltal a régi, forrás objektumnak nem lesz tartalma, egy üres objektum lesz.
+	 </para>
+	
+	 <para>
+	 Példaként a binfa mozgató konstruktora és értékadása látható. A mozgató konstruktorban paraméterként kapott régi, mozgatandó objektumot megkapjuk, 
+	 majd a jelenlegi új objektumnak a gyokér mutatóját null-ra állítjuk. 
+	 Ezután *this = std::move(regi) kényszeríti ki a mozgató értékadást, ahol pedig felcseréljük a régi és az új fa gyökerének mutatóit. Mivel kezdetben az új fa gyökér mutatóját 
+	 nullra lett állítva, így a régi fa gyökere most nullra mutat, az új pedig a régi fa gyökerére. Ha nem tettük volna meg a null pointerre való állítást, akkor a régi fa destruktora került 
+	 volna meghívásra és törölte volna a mozgatandó erőforrásokat, így nem történt volna meg a mozgatás.
+	 </para>
+	 <para>
+	 Fontos megjegyezni, hogy a mozgató szemantikában egy nem konstans jobb érték referenciát kap paraméterként, (dupla referencia jel) míg a másolás esetén egy konstans
+	 bal érték referencia kerül paraméterként átadásra. Ezáltal a másolás esetén továbbra is használható lesz a másolt objektum, mozgatás esetén viszont csak ideiglenes szerepet kap 
+	 a mozgatandó objektum és nem lesz utána már használható.
+	 </para>
+	 <programlisting language="c++">
+	 <![CDATA[ 
+	
+	 //Mozgató konstruktor
+	 LZWBinFa(LZWBinFa &&regi)
+	 {
+	 std::cout << "LZWBinFa move ctor" << std::endl;
+	
+	 gyoker = nullptr;
+	 *this = std::move(regi);
+	 }
+	 //Mozgató értékadás
+	 LZWBinFa &operator=(LZWBinFa &&regi)
+	 {
+	
+	 std::swap(gyoker, regi.gyoker);
+	 return *this;
+	 }
+	
+	
+	]]>
+	 </programlisting>
+	 <para>
+	 A main függvényben három alkalommal is meghívódik a mozgató konstruktor és vele együtt a mozgató értékadás. Az első esetben a két különálló fa 
+	 objektumra meghívjuk a swap metódust, ami megcseréli a két objektum erőforrásait, ami mozgatással történik a swapon belül. A második esetben egy vectorba tesszük bele 
+	 az objektumot, ami ezután már nem lesz használható, mivel std::move(binFa) jobb érték referenciaként lett átadva. Ha v.push_back(binFa) bal érték referenciaként került
+	 volna átadásra akkor a másoló konstruktor kerül meghívásra és megmarad az eredeti objektum erőforrása is. A harmadik lehetőség, amikor pedig egy teljesen új objektumba 
+	 mozgatjuk át a binFa2 erőforrásait.
+	 </para>
+	 <programlisting language="c++">
+	 <![CDATA[ 
+	int
+	main ( int argc, char *argv[] )
+	{
+	
+	LZWBinFa binFa;
+	//masolo konstruktor meghivodik
+	LZWBinFa binFa2 = binFa; 
+	LZWBinFa binFa4 = binFa;
+	//masolo ertekadas meghivodik
+	binFa2 = binFa4;
+	//masolo konstruktor meghivodik
+	std::vector<LZWBinFa> t;
+	t.push_back(binFa);
+	
+	//mozgato konstruktor meghivodik
+	std::cout << "Swap" << std::endl;
+	std::swap(binFa2, binFa4);
+	
+	//mozgato konstruktor meghivodik
+	std::cout << "Vector" << std::endl;
+	std::vector<LZWBinFa> v;
+	v.push_back(std::move(binFa));
+	
+	//mozgato konstruktor meghivodik
+	std::cout << "Új fa" << std::endl;
+	LZWBinFa binFa3 = std::move(binFa2);
+	
+	]]>
+	 </programlisting>
+	 
+	
+	
+	 </section>
+
+	<section>
+        <title>Hibásan implementált RSA törése</title>
+        <para>
+	Készítsünk betű gyakoriság alapú törést egy hibásan implementált RSA kódoló:
+https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_3.pdf (71-73 fólia) által
+készített titkos szövegen.
+        </para>
+        
+        <para>
+           Ebben a feladatban egy hibásan implementált RSA titkosítás törését kellett végrehajtani. Kezdjük is a feladat titkosítási részével. Először is ellenőrizzük, hogy kettő e az argumentumok száma, nyílván az első argumentum lesz a szöveg amit titkosítani szeretnénk, a második argumentum pedig az a fájl, amibe kiirjuk a titkosított szöveget. Amennyiben az argumentumok számával nincs gond, akkor létrehozunk egy KulcsPar objektumot, és egy tisztaszöveg változót, amibe a try blokkon belül be is olvassuk a titkosítandó szöveget, és létrehozunk egy File típust, ami pedig az a fájl lesz, amibe kiirjuk a titkosított szöveget, illetve létrehozunk egy PrintWritert is, amivel pedig majd kiirjuk a szöveget a megfelelő fájlba. Ezek után a tisztaszoveg-et átalakítjuk kisbetűssé, mivel a nagy betűk külön lennének titkosítva, ami megnehezítené a szöveg törését. Ezek után pedig a két for cikluson belül megtörténik a titkosítás, valamint a titkosított szöveg kiírása a megadott fájlba. Ezen kívűl van még egy KulcsPar osztálya is a forrásnak, ami pedig a titkosítás matematikai részét végzi.
+        </para>
+	<programlisting>
+	<![CDATA[public class Rsa {
+	
+	public static void main(String[] args) {
+		if(args.length != 2){
+			System.out.println("usage: java Rsa input output");
+			System.exit(-1);
+		}
+		KulcsPar kulcs = new KulcsPar();
+		String tisztaszoveg;
+
+		try{
+			tisztaszoveg = new String (Files.readAllBytes( Paths.get(args[0])));
+			File ki = new File(args[1]);
+		
+			PrintWriter kiir = new PrintWriter(args[1]);
+			
+			tisztaszoveg = tisztaszoveg.toLowerCase();
+
+			for( int i = 0; i<tisztaszoveg.length(); i++){
+				String szoveg = tisztaszoveg.substring(i, i+1);
+				byte[] buffer = szoveg.getBytes();
+				java.math.BigInteger[] titkos = new java.math.BigInteger[buffer.length];
+				byte[] output = new byte[buffer.length];
+				
+				for( int j = 0; j< titkos.length; j++){
+					titkos[j] = new java.math.BigInteger(new byte[] {buffer[j]});
+					titkos[j] = titkos[j].modPow(kulcs.e, kulcs.m);
+					output[j] = titkos[j].byteValue();
+					kiir.print(titkos[j]);
+				}
+				kiir.println();
+			}				
+		}
+		catch(IOException e){
+			System.out.println("hiba " + e);
+		}
+	}
+}
+
+class KulcsPar {
+	java.math.BigInteger d,e,m;
+	public KulcsPar() {
+		int meretBitekben = 700 * (int) (java.lang.Math.log((double) 10) / java.lang.Math.log((double) 2));
+
+		java.math.BigInteger p = new java.math.BigInteger(meretBitekben, 100, new java.util.Random());
+		java.math.BigInteger q = new java.math.BigInteger(meretBitekben, 100, new java.util.Random());
+
+		m = p.multiply(q);
+		java.math.BigInteger z = p.subtract(java.math.BigInteger.ONE).multiply(q.subtract(java.math.BigInteger.ONE));
+
+		do {
+			do {
+				d = new java.math.BigInteger(meretBitekben, new java.util.Random());
+			} while (d.equals(java.math.BigInteger.ONE));
+		} while (!z.gcd(d).equals(java.math.BigInteger.ONE));
+		e = d.modInverse(z);
+	}
+}]]>
+	</programlisting>
+	
+	<para>
+	A program másik része a titkosított szöveg dekódolása. Ebben a forráskódban van egy KulcsPar osztály, aminek három tagváltozója van. Az első a values, ami az adott karakternek a titkosított értékét tárolja, a második a key, ami azt tárolja, hogy mi az adott dekódolt karakter, a harmadik pedig a freq, ami pedig a karakter előfordulásainak a számát tárolja. Ezen kívűl megtalálhatóak még a tagváltozók getterei, illetve setterei, valamint az <function>incFreq()</function> metódus is, ami az előfordulást növeli eggyel.
+	</para>
+	<programlisting>
+	<![CDATA[class KulcsPar{
+    private String values;
+    private char key = '_';
+    private int freq = 0;
+    
+    public KulcsPar(String str, char k){
+        this.values = str;
+        this.key = k;
+    }
+
+    public KulcsPar(String str){
+        this.values = str;
+    }
+
+    public void setValue(String str){
+        this.values = str;
+    }
+
+    public void setKey(char k){
+        this.key = k;
+    }
+
+    public String getValue(){
+        return this.values;
+    }
+
+    public char getKey(){
+        return this.key;
+    }
+
+    public void incFreq(){
+        freq += 1;
+    }
+
+    public int getFreq(){
+        return freq;
+    }
+}]]>
+	</programlisting>
+	<para>
+	Valamint megtalálható a main is, amiben pedig először is megadjuk a programnak, hogy hol van a titkosított fájl, majd pedig létrehozunk egy lines tömböt, amibe be is olvassuk egy while ciklussal a titkosított fájl sorait. Ezek után létrehozunk egy KulcsPár tömböt, egy volt logikai változót, amiben azt fogjuk tárolni, hogy az adott sor szerepel e már a kulcspár tömbben. Majd pedig két egymásba ágyazott for ciklussal, ha már egy adott sor szerepel a tömbünkben, akkor csak növeljük az előfordulásainak a számát eggyel, ha viszont még nem szerepel a tömbben, akkor példányosítunk egy új kulcspárt a tömbbe, aminek beállítjuk a values tagváltozójának az értékét az adott sor értékére. Ezek után rendezzük a kulcspár tömböt az előfordulások száma alapján csökkenő sorrendbe.
+	</para>
+	<programlisting>
+	<![CDATA[ public static void main(String[] args) {
+        try {
+            BufferedReader inputStream = new BufferedReader(new FileReader(args[0]));
+            int lines = 0;
+
+            String line[] = new String[10000];
+
+            while((line[lines] = inputStream.readLine()) != null) {
+                lines++;
+            }
+
+            inputStream.close();
+
+            KulcsPar kp[] = new KulcsPar[100];
+
+            boolean volt = false;
+            kp[0] = new KulcsPar(line[0]);
+            int db = 1;
+
+            for(int i = 1; i < lines; i++) {
+                volt = false;
+                for(int j = 0; j < db; j++) {
+                    if(kp[j].getValue().equals(line[i])) {
+                        kp[j].incFreq();
+                        volt = true;
+                        break;
+                    }
+                }
+
+                if(volt == false) {
+                    kp[db] = new KulcsPar(line[i]);
+                    db++;
+                }
+            }
+
+            for(int i = 0; i < db; i++) {
+                for(int j = i + 1; j < db; j++) {
+                    if(kp[i].getFreq() < kp[j].getFreq() ) {
+                        KulcsPar temp = kp[i];
+                        kp[i] = kp[j];
+                        kp[j] = temp;
+                    }
+                }
+            }]]>
+	</programlisting>
+	<para>
+	Ezek után beolvassuk azt a fájlt, amiben sorrendbe vannak rakva a karakterek gyakoriság alapján. Az én esetemben ez a betugyakorsag.txt nevű fájl. Ezeket a karaktereket belehelyezzük egy karakter tömbbe, és egy while ciklussal a kulcsPár példányoknak a key tagváltozóját beállítjuk a megfelelő karakterekre. Végül pedig végigmegyünk a lines tömbbön, és az alapján kiiratjuk a kp tömbből a megfelelő karaktereket. 
+	</para>	
+	
+    </section>
+
+
+	 <section>
+	 <title>Változó argumentumszámú ctor</title>
+	 <para>
+		Készítsünk olyan példát, amely egy képet tesz az alábbi projekt Perceptron osztályának bemenetére
+	és a Perceptron ne egy értéket, hanem egy ugyanakkora méretű „képet” adjon vissza. (Lásd még a 4
+	hét/Perceptron osztály feladatot is.)
+	 </para>
+	 
+	
+	 <para>
+	 A Perceptron egy neurális háló, aminek csomópontjai vannak. A csomópontok a mesterséges neuronok. Két fő csomópont a bemeneti és kimeneti csomópontok. Van egy központi csúcs is, ahol a 
+	 számolás történik. Az input csúcsokból bejövő kapcsolatok súlyozva vannak, ami alapján történik a számolás a központi csúcsban. A tanulás abból áll, hogy a bejövő kapcsolatok erőssége változik, 
+	 a sokat használt kapcsolatokban erősödik, a ritkán használtakban gyengül. Egy neurális hálózat esetén pedig több réteg lehet egymás után, amik a perceptronok és minden perceptron az eggyel korábbi 
+	 szinten lévőkből kapja az inputot és az eggyel későbbi szintre továbbítja.
+	 </para>
+	
+	 <programlisting language="C++">
+	 <![CDATA[ 
+	#include <iostream>
+	#include "mlp.hpp"
+	#include "png++/png.hpp"
+	
+	int main(int argc, char **argv)
+	{
+	 png::image<png::rgb_pixel> png_image(argv[1]);
+	 int size = png_image.get_width() * png_image.get_height();
+	
+	 Perceptron *p = new Perceptron(3, size, 256, size);
+	
+	 double *image = new double[size];
+	
+	 for (int i{0}; i < png_image.get_width(); ++i)
+	 for (int j{0}; j < png_image.get_height(); ++j)
+	 image[i * png_image.get_width() + j] = png_image[i][j].red;
+	
+	 double *newImage = new double[size];
+	 *newImage = (*p)(image);
+	S
+	 for (int i{0}; i < png_image.get_width(); ++i)
+	 for (int j{0}; j < png_image.get_height(); ++j)
+	 png_image[i][j].red = newImage[i * png_image.get_width() + j];
+	
+	 png_image.write("newMandel.png");
+	
+	 delete p;
+	 delete[] image;
+	 delete[] newImage;
+	}
+	]]>
+	 </programlisting>
+	 <para>
+	 Ebben a projektben használjuk a Perceptron osztályt. A mandel program által előállított kép lesz feldolgozva.
+	 Először eltároljuk png::image objektumként a paraméterként kapott képet. A size változóban a kép méretét tároljuk el. Ezután létrehozzuk a 
+	 perceptron objektumot, mutatóját megadva a konstruktorának a paramétereket, ami változó paraméter számú. A 3 a neurális háló rétegek számát jelenti, a size a kép mérete, a 256 a neuronok száma az egyes 
+	 rétegekben, ellentétben az előző perceptron feladatban, most nem 1 hanem 256 kimeneti neuront adunk meg, ezáltal egy ugyanakkora képet kapunk vissza.
+	 Lefoglaljuk az új kép méretének, pixeleinek a helyét egy double tömbre mutató mutatóval, ami az eredi kép összes pixelét képes tárolni.
+	 Ezután két for ciklussal bejárjuk az eredeti képet, pixeleit és az új helyre tesszük az eredeti kép piros komponenseit.
+	 Miután megvan a kép, meghívjuk a perceptron osztály () operátorát átadva azt a tömböt amiben az eredeti kép pixelei vannak, ami most nem egy double típusú értéket ad vissza, hanem egy double értékeket tároló tömböt, aminek értékeivel módosítjuk 
+	 az eredeti kép pixeleit. Két for ciklussal szintén végigjárunk a pixeleken és most az eredeti kép piros komponenseit cseréljük ki azokra az értékekre, amit kaptunk perceptron osztálytól.
+	 Végül az elkészült képet kimentjük és felszabadítjuk a memóriát.
+	 </para>
+	 
+	
+	 </section>
+	</chapter>

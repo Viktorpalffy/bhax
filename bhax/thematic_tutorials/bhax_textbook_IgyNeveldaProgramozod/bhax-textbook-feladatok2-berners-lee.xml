@@ -1,0 +1,155 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Berners-Lee!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>Nyékyné Dr. Gaizler Judit et al. Java 2 útikalauz programozóknak 5.0 I-II és Benedek Zoltán, Levendovszky Tihamér Szoftverfejlesztés C++ nyelven olvasónapló </title>
+        <para>
+           Az objektumorientált paradigma alapfoglamai. Osztály, objektum, példányosítás
+        </para>
+	<para>
+	Először értsük meg, hogy mi is az objektum, és hogy keletkezik, és mi játszik fontos szerepet a működésében. Az objektum a java programozási nyelv alapvető eleme, éppen ezért a Java egy objektum orientált programozási nyelv. Az objektum a valódi világ egy elemének a rá jellemző tulajdonságai és viselkedései által modellezett eleme. Az objektumokkal általában valamilyen feladatot szeretnénk megoldani. Egy objektum tulajdonságokból(változók), és viselkedésekből(metódusok) áll. A változókkal írhatjuk le az adott objektum állapotát, minden egyednek saját készlete van a változókból, éppen ezért ezeket példányváltozóknak nevezzük. A metódus nagyrészt hasonlít egy függvényre. Azaz utasításokat hajt végre, kaphat paramétereket, és egy értékkel tér vissza.
+	Az osztályok pedig az azonos típusú objektumok modelljét írják le. A program a működése során példányosítja az osztályokat, azaz konkrét objektumokat hoz létre, vagyis amikor egy objektumot létrehozunk, azt valójában egy osztályból hozzuk létre. Amikor egy új egyedet szeretnénk létrehozni, akkor azt a konstruktor fogja felépíteni.
+	Az előzőekben említettem, hogy a változókat a metódusok kezelik. Azonban alaphelyzetben ez nem igaz. Ha csak úgy megírunk egy osztályt, akkor annak a változóihoz kívülről is hozzá lehet férni, a metódosuk figyelembe vétele nélkül. Ez pedig nem jó dolog. Ahhoz, hogy egy objektum biztonságos legyen, priváttá kell tennünk a változóit, ezáltal scak az adott objektum férhet hozzá a saját változóihoz közvetlenül. Minden más csak a metódusain keresztül férhet hozzájuk.
+	Az, hogy a változók és metódusok egy helyen vannak tárolva az osztályokban (egységbe zárás), valamint az, hogy egy objektum változóihoz csak ellenőrzött körülmények között lehet hozzáférni (egységbe zárás) eggyüttesen az adatabsztrakciót, azaz az objektumorientált paradigma egyik alapját alkotják.
+	</para>
+	<para>
+	
+	C++-ban az osztályok példányokat tárolnak, például különböző bankszámlák. Ezen kívűl megtalálhatóak a példányok tulajdonságai is, mintpéldául a számlán lévő egyenleg, illetve a számlán végzett műveletek (pénz betétele, felvétele). Az ilyen egyedeket nevezzük objektumoknak. Fontos, hogy egy objektum tulajdonságaihoz csak a műveletein keresztül lehessen hozzáférni. Ha például egy bankszámla egyenlegét csak úgy át lehetne írni, az nem lenne jó hatással a társadalomra. Éppen ezért az objektumok tulajdonságait és műveleteit egységbe kell zárni, illetve biztosítani kell, hogy az objektum tulajdonságaihoz a program többi része ne tudjon hozzáférni. Ezt hívjuk adatrejtésnek. Ha van egy madár, illetve egy papagáj osztályunk, akkor a két osztály között egyfajta kapcsolat van, mivel a papagáj maga is egy madár. Ezt nevezzük specializációnak. A madár általánosabb fogalom mint a papagáj. Éppen ezért a speciálisabb osztály rendelkezik az általánosabb osztály tulajdonságaival és műveleteivel, másszóval örökli őket. Szóval egy papagájt bármikor kezelhetünk madárként.Ez a három fogalom (adatrejtés, specializáció, öröklődés) alkotja az objektumorientált programozás alapelveit.  Azonban a C++-ban (sok OOP, köztük a JAVA nyelvvel ellentétben) megtalálható a típustámogatás is. Ez azt jelenti,hogy az osztályok ugyan úgy működhetnek, mint a beépített típusok.
+        </para>
+	<para>
+	Öröklődés, osztályhierarchia. Polimorfizmus, metódustúlterhelés. Hatáskörkezelés. A bezárási eszközrendszer, láthatósági szintek. Absztrakt osztályok és interfészek.
+	</para>
+	<para>
+	A legegyszerűbb példa az öröklődésre az az, amikor egy osztály egy már meglévő osztály kiterjesztéseként definiálunk. Ez lehet új műveletek, vagy új változók bevezetése is, maga az osztály pedig lehet public, illetve nem public is. Az eredeti osztályt szülőosztálynak, a kiterjesztettet pedig gyermek osztálynak nevezzük. A gyermekosztály megörökli a szülőosztály változóit és metódusait, ha a láthatósági szintje az adott változónak/metódusnak lehetővé teszi azt. A láthatósági szint lehet public, ami azt jelenti, hogy az adott változót vagy metódust nem csak a gyermek osztályok, hanem bármely másik osztály objektumai is elérik. A láthatósági szint lehet protected is. Ebben az esetben már csak az adott osztályból kiterjesztett gyermekosztályok érik el őket. A harmadik lehetőség pedig a private, amikor pedig csak a szülőosztály objektumai tudják elérni az adott változót/metódust.  Azonban a gyermek osztály nincs csupán ezekre korlátozva, vagyis a gyermekosztályoknak lehetnek saját változói ,és metódusai, illetve fel is tudják írni a szülőtől örökölt metódusokat. 
+	</para>
+	<para>
+	Mivel a gyermek osztály a szülő osztály minden változójával és metódusával rendelkezik, ezért használhatóak minden olyan esetben, amikor a szülő használható. Egy változó pedig nem csak a deklarált típusú, hanem egy leszármazott objektumra is hivatkozhat. Ezt polimorfizmusnak, azaz többalakúságnak nevezzük.
+	</para>
+	<para>
+	Ha egy kiterjesztett osztálybeli metódusnak ugyan az a szignatúrája, és visszatérési értéke, mint a szülőosztály metódusának, akkor a leszármazott osztály felűlírja a szülőosztály metódusát. Ez lehetővé teszi, hogy egy osztály örököljön egy olyan szülőosztálytól, aminek hasonló a viselkedése, majd szükség esetén ezen változtasson. A felülíró metódus neve, paramétereinek a száma és típusa megegyezik a felülírt metódussal.
+	</para>
+	<para>
+	Alapértelmezetten egy újonnan létrehozott osztálynak az Object nevű osztály lesz az őse. Ez áll a Java osztályhierarchia csúcsán. Ebből kiindulva lehet ábrázolni az osztályok hierarchiáját egy fa adatszerkezetben.
+	</para>
+	<para>
+	Lehetőség van Absztrakt osztályokat is létrehozni az <emphasis>abstract</emphasis> módosítóval. Az ilyen osztályok tartalmazhatnak absztrakt, azaz törzs nélküli metódusokat, amiket szintén az <emphasis>abstract</emphasis> módosítóval kell jelölni. Az ilyen osztályok nem példányosíthatóak, mivel a példányokra nem lenne értelmezve minden metódus. Ennek ellenére van értelme absztrakt típusú változókat és paramétereket deklarálni, mivel az ilyen változók az adott absztrakt osztály bármely leszármazottjának példányára hivatkozhatnak.
+	</para>
+	<para>
+	C++ ban az öröklés során egy osztály specializált változatait hozzuk létre, amelyek öröklik a szülőosztály jellemzőit és viselkedését. Ezeket az osztályokat alosztályoknak nevezzük. Az alosztályok megváltoztathatják az öröklött tulajdonságokat, és új metódusokat is adhatunk hozzá (a Java nyelvhez hasonlóan. Az öröklődés fajtája lehet egyszeres öröklés, és többszörös öröklés is (az utóbbi a Java nyelvben csak az Absztrakt osztályok használatánál lehetséges). Az egyszeres öröklés esetén minden származtatott osztály pontosan egy közvetlen szülőosztály tagjait örökli, míg a többszörös öröklődés során a származtatott osztály több közvetlen szülőosztály tagjait örökli. Például létrehozhatunk egymástól független autó és hajó osztályokat, majd pedig ezekből örökléssel definiálhatunk egy kétéltű osztályt, ami egyaránt rendelkezik az autó és a hajó jellemzőivel és viselkedésével is. Ebben különbözik a C++ nagyon sok magasszintű programozási nyelvtől (Java, C# ...), mivel azok csak az egyszeres öröklést támogatják.
+	</para>
+	<para>
+	Modellező eszközök és nyelvek. AZ UML és az UML osztálydiagramja.
+	</para>
+	<para>
+	Az UML, azaz Unified Modeling Language, vagy magyarul egységesített modellezőnyelv segítségével fejlesztési modelleket lehet szemléltetni. Egy integrált diagramkészletből áll, amelyet a szoftverfejlesztők számára fejlesztettek ki a programok megjelenítésére, felépítésére és dokumentálására. Az objektumorientált szoftverfejlesztési folyamat nagyon fontos részre. Többnyire grafikus jelöléseket használ a projektek tervezésére. Rengeteg diagram, azaz modell van hozzá.
+Az UML használható bármelyik ma ismert programozási nyelvvel, mivel azoktól független absztrakciós szinten fogalmazza meg a rendszer modelljét. Maga az UML egy grafikus modellező nyelv, azaz a diagramok téglalapokból, vonalakból, ikonokból, és szövegből állnak.
+	</para>
+	<para>
+	A Class diagram egy központi modellezési technika, amely szinte minden objektum-orientált módszert átfut. A rendszerben található osztályokat, interfészeket, egyéb tipusokat, és a közöttük lévő kapcsolatot irja le. Rendkívűl jól lehet osztálydiagrammal megmutatni egy program felépítését, valamint az osztályok között fennálló asszociációt, aggregációt, és kompozíciót. Ha egy modellben két osztálynak kommunikálnia kell egymással, akkor szükségünk van egy kapcsolatra a két osztály között. Ezt a kapcsolatot reprezentálja az asszociáció. Az asszociációt egy a két osztály között lévő vonal, valamit az azon lévő irányt mutató nyil(ak) jelöli(k). Ha a vonal mindkét oldalán van nyíl, akkor az asszociáció kétirányú. Az aggregáció és kompozíció az asszociáció részhalmazai, vagyis az asszociáció különleges esetei. Mind a két esetben egy osztály objektuma "birtokol" egy másik osztály másik objektumát, de van a kettő között egy kis különbség. Az aggregáció egy olyan kapcsolatot jelent, amiben a gyerek a szülőtől függetlenül létezhet. Például ha van tanóra, ami a szülőosztály, és tanuló, ami a gyerekosztály. Ha töröljük a tanórát, attól a tanulók még léteznek. Ezzel szemben a kompozíció esetében egy olyan kapcsolatról van szó, amiben a gyerek nem létezhet a szülő nélkül. Például ha van egy ház szülőosztályunk, és egy szoba gyerekosztályunk. A szoba nem létezhet a ház nélkül. Az aggregációt és a kompozíciót is vonal+rombusz kombinációval lehet jelölni, azonban az aggregációnál a rombusz üres, a kompozíciónál pedig nem.
+	</para>
+
+	<para>
+	Objektumorientált programozási nyelvek programnyelvi elemei: karakterkészlet, lexikális egységek, kifejezések, utasítások.
+	</para>
+		
+	<para>
+	Java-ban a charset egy osztályt jelöl, ami tizenhat bites Unicode kód egységek és a bájt szekvenciák megnevezett leképezése. Ez az osztály meghatározza a dekóderek és kódolók létrehozásának, valamint a karakterkészlethez társított különféle nevek lekérésének módszereit. Ez az osztály immutable, azaz állandó. Ennek az osztálynak vannak statikus metódusai, amiknek a segítségével le lehet tesztelni, hogy egy adott karakterkészlet támogatott e. Ezen kívűl lehet ezeket a metódusokat karakterkészletek név szerinti keresésére is használni. A Java platform minden implementációjának támogatnia kell a következő karakterkészleteket: US-ASCII, ISO-8859-1, UTF-8, UTF-16BE, UTF-16LE, UTF-16. A JVM minden példányának van egy alapértelmezett karakterkészlete, ami a JVM bootolásakor kerül meghatározásra, és általában az operációs rendszer karakterkészletétől függ.
+	</para>
+	
+	<para>
+	A kifejezés egy olyan változókból, operátorokból, és metódushívásokból álló programrészlet, amelynek egyetlen érték lesz az eredménye. A kifejezés által visszaadott érték típusa a kifejezésben használt elemektől függ. Például az int a = 0; kifejezés int értékkel tér vissza. De egy kifejezés más típusú értékkel is visszatérhet, például logikai, vagy string. A Java programozási nyelv lehetővé teszi összetett kifejezések létrehozását különféle kissebb kifejezésekből, feltéve, hogy a kifejezés egyik részének a típusa megegyezik a kifejezés másik részének a típusával. De ilyen esetben figyelni kell a számolási sorrendre is intek esetében. Ha például csak szorzás szerepel az összetett kifejezésben, akkor teljesen mindegy a sorrend, de ha van összeadás és szorzás is, akkor előbb a szorzás lesz elvégezve. Ha azt szeretnénk, hogy előbb az összeadás hajtódjon végre, akkor zárójeleket kell használni. Az utasítások nagyjából megegyeznek a természetes nyelvek mondataival. Egy utasítás egy teljes végrehajtási egységet képez.
+	</para>
+
+	<para>
+	Objektumorientált programozási nyelvek típusrendszere, Típusok tagjai: mezők, (nevesített) konstansok, tulajdonságok, metódusok, események, operátorok, indexelők, konstruktorok, destruktorok, beágyazott típusok.
+	</para>
+
+	<para>
+	Java nyelvben négy fontos típus létezik. Ezek a primitív típusok, amelyek a primitív értékeknek megfelelő típusok, például int, short, long, byte, char, float, double, boolean.
+	Null típusok, tömb típusok, valamint az osztály típusok.
+	</para>
+
+	<para>
+	A primitív típusok olyan primitív értékeket tárolnak, mint az egész számok, lebegőpontos számok, karakterek és logikai értékek. A négy egész szám típus abban különbözik egymástól, hogy milyen nagy az a szám, amit maximum el tudnak tárolni. Hasonlóképpen a lebegőpontos számok két típusa, között is az a különbség, hogy milyen nagy számot tudnak eltárolni. Egy kissebb típusú változó értékét gond nélkül bele lehet helyezni egy nagyobb típusú változóba, azonban ha egy nagyobb típusú szám értékét szeretnénk belehelyezni egy kissebb típusú változóba, akkor át kell alakítanunk azt. A tömb olyan adatstruktúra, amely állandó hozzáférést tesz lehetővé a tömb elemeihez. A tömbök rögzített méretűek. Az osztály típusok pedig az objektumok típusai.
+	</para>
+
+	<para>
+	Java-ban egy mező egy osztályon belüli változó, amit a következő szintaxissal lehet létrehozni: <emphasis>[elérés] [static] [final] típus név [= kezdőérték];</emphasis>. A szögletes zárójel azt jelenti, hogy az adott rész opcioális. Először is egy mezőhöz deklarálhatunk hozzáférési módosítót. A hozzáférés-módosító meghatározza, hogy mely osztályok objektumai férhetnek hozzá a mezőhöz. Másodszor pedig, a mező típusát kell megadni. Ez lehet pl int, string, boolean stb. Harmadszor, a Java mező statikusnak nyilvánítható. A Java-ban a statikus mezők az osztályhoz tartoznak, nem pedig az osztály példányai. Így bármely osztály minden objektuma ugyanazt a statikus mezőváltozót fogja elérni. A nem statikus mező értéke az osztály minden objektumánál eltérő lehet. Negyedszer, a Java mező konstansnak is nyilvánítható. A konstans mező értékét nem lehet megváltoztatni. Ötödször, a Java mezőnek nevet kell adni. Végül pedig adhatunk a mezőnek kezdőértéket.
+A nevesített konstans egy azonosító, amely állandó értéket képvisel. A változó értéke a program végrehajtása során változhat, de a nevesített konstansok állandó adatokat képviselnek, amelyek soha nem változnak. ilyen például pi. Két féle állandó létezik java-ban, final és static final. Ha csak simán final, akkor az értéknek csak az adott osztálypéldányban kell állandónak lennie, ha viszont static final, akkor az értéknek minden osztálypéldányban ugyan annak kell lennie.
+	</para>
+
+	<para>
+	A Properties osztály tulajdonságok halmazát reprezentálja. Ezek a tulajdonságok elmenthetőek streambe, vagy pedig betölthetőek egy streamből. A Properties a Hashtable osztály alosztálya. Egy értéklista fenntartására szolgál, amelyben a kulcs és az érték is egy string. A Properties osztály egyik hasznos képessége, hogy meghatározhat egy alapértelmezett tulajdonságot, amely visszaadódik, ha egy adott kulcshoz nincs érték társítva. A metódusok olyan utasítások összessége, amelyek egy konkrét feladatot hajtanak végre, és az eredmént visszaadják annak, ami meghívta a metódust. De az is lehet, hogy csak végrehajtanak egy feladatot, és nem térnek vissza semmivel. A metódusok lehetővé teszik a kód újra felhasználását a kód újraírása nélkül. Java-ban, a C++-al ellentétben minden metódusnak egy osztály részének kell lennie. A konstruktor objektumokat inicializál, amikor azok létrejönnek. Ugyan az a neve, mint az osztálynak, a szintaktikája pedig hasonló egy metódushoz. Jellemzően konstruktorokkal adjuk meg az objektumok kezdőértékeit. Java-ban minden osztály rendelkezik konstruktorral, attól függetlenül, hogy a programozó definiált e egyet vagy nem, mert ha nem, akkor a Java automatikusan megad egy alapértelmezett konstruktort, amely az összes tagváltozó értékét null-ra inicializálja.
+	</para>
+
+	<para>
+	Interfészek. Kollekciók. és Funkcionális nyelvi elemek. Lambda kifejezések.
+	</para>
+	<para>
+	Pont úgy mint az osztályoknak, az interfészeknek lehetnek metódusai és változói. De az interfészben deklarált metódusok alapértelmezés szerint absztraktak. Az interfészek meghatározzák, hogy az osztálynak mit kell tennie, és nem pedig azt hogy hogyan. Az interfész meghatározza azokat a metódusokat, amelyeket az osztálynak végre kell hajtania. Interface deklarálásához bármilyen meglepő, az interface kulcsszót kell használni. Ez a teljes absztrakció biztosítására szolgál. Ez azt jelenti, hogy az interfészben az összes metódus üres testtel kerül deklarálásra, hozzáférhetőségük public, és alapértelmezés szerint minden mező publikus, statikus és final. Az interfészt megvalósító osztálynak végre kell hajtania az interfészben deklarált összes metódust. A Collection az egyedi objektumok csoportja, amely egyetlen egységként van ábrázolva. A java biztosít egy Colletction Framework-ök, amely meghatároz több osztályt és interfészt azért, hogy egy objektumcsoportot egyetlen egységként képviseljen. A Collection interfész és a Map interfész a két gyökér interfésze a Java Collection osztályának. A Lambda kifejezések, amelyek Java 8-tól érhetőek el, alapvetően a funkcionális interfészek példáit fejezik ki (egy absztrakt módszerrel rendelkező interfészt funkcionális interfésznek hívunk. Példa erre a java.lang.Runnable). A lambda kifejezések megvalósítják az egyetlen elvont funkciót, éppen ezért megvalósítják a funkcionális interfészeket. A lambda kifejezések lehetővé teszi a funkcionalitás metódus argumentumként kezelését, vagy a kód adatként kezelését. A lambda kifejezést úgy lehet átadni, mintha objektum lenne, és igény szerint végrehajtható.A lambda kifejezés teste tartalmazhat nulla, egy vagy több állítást is. Ha egynél több állítás van, akkor kapcsos zárójelbe kell őket zárni.
+	</para>
+
+	<para>
+	Adatfolyamok kezelése, streamek és állománykezelés. Szerializáció.
+	</para>
+
+	<para>
+	A Java 8-ban bevezetett Stream API az objektumgyűjtemények feldolgozására szolgál. A stream nem adatszerkezet, hanem egy Collection-ból, tömbből vagy I/O csatornából származó adatot veszi be. A streamek nem változtatják meg az eredeti adatszerkezetet, csak az eredményt mondják meg a megvalósított metódusok alapján. Támogat különféle műveleteket az ilyen elemekre vonatkozó számítások elvégzéséhez. A stream műveletek közbenső vagy terminális műveletek. A közbenső műveletek steam-mel térnek vissza, ezért több is követheti egymást pontosvessző nélkül. A terminális műveletek vagy voidok, vagy nem stream adatot eredményeznek. A java.io csomag szinte minden olyan osztályt tartalmaz, amelyre esetleg szükség lehet a Java bemenet és kimenet (I/O) megvalósításához. Kétféle stream létezik, az InPutStream, ami egy forrásból származó adatok olvasására szolgál, és az OutPutStream, ami pedig az adatot egy célhelyre írja. A java byte streameket 8 bit méretű bájtok írására és olvasására lehet használni. Sok ilyen van, de a leggyakrabban használtak a FileInputStream és FileOutputStream. Az össze programozási nyelv támogatja azt a szabványos i/o-t ahol a felhasználó a konzolon keresztül tud adatot megkapni és megadni. Ilyen Java-ban a Standard Input, ami olvassa a felhasználó által megadott adatot, a Standard Output, ami a progam által előállított adatot adja át a felhasználónak, és a Standard Error, ami a program által előállított hibák adatait közli a felhasználónak. A Java biztosít egy olyan mechanizmust, amelyet objektum-szerializációnak nevezünk, ahol egy objektum egy olyan bájtsorozatként ábrázolható, amely tartalmazza az objektum adatait, valamint az objektum típusára és az objektumban tárolt adatok típusára vonatkozó információkat.
+	</para>
+
+	<para>
+	Kivételkezelés és Reflexió. A fordítást és a kódgenerálást támogató nyelvi elemek.
+	</para>
+
+	<para>
+	A Kivétel egy nem kívánt vagy váratlan esemény, amely egy program végrehajtásakor fordul elő, azaz futási időben, és megzavarja a program utasításainak normál folyamatát. Egy hiba olyan komoly problémát jelent, amelyet egy ésszerű alkalmazásnak nem szabad catchelnie. A kivétel ezzel szemben olyan feltételeket jelent, amelyeket egy ésszerű alkalmazás megpróbálhat catchelni. Az összes kivétel és hiba típus a Throwable osztály alosztálya, amely a hierarchia alaposztálya. Az egyik ágnak az Exception a feje. Ez az osztály kivételes körülmények között használatos, amelyeket a felhasználói programoknak el kellene kapniuk, például NullPointerException. Másik ág, azaz a Hiba, JVM használatával jelzi azokat a hibákat, amelyek a JRE-vel kapcsolatosak, pl: StackOverflowError. A Java kivételkezelés öt kulcsszón keresztül történik: try, catch, throw, throws, és finally. Azok a kódrészletek amelyek exception-t okozhatnak, egy try blokkba kerülnek. Ha exception történik a try blokkban, akkor azt eldobja (throw), amit a catch blokk elkap, és kezeli. Az a kód pedig, amelyet mindenképp végre kell hajtani exception esetén is, a final-be kerül.
+	</para>
+	
+	<para>
+ A reflexió egy olyan API, amelyet a metódusok, osztályok, interfészek viselkedésének megvizsgálására vagy módosítására használnak futási időben. A reflexióhoz szükséges osztályokat a java.lang.reflect csomag tartalmazza. Reflexión keresztül metódusokat lehet futtatni, függetlenül a metódusok hozzáférési szintjétől. A reflexió segítségével információkat szerezhetünk az Osztályról, a getClass() metódussal, ez a metódus annak az osztálynak a nevét adja vissza, amelyhez az adott objektum tartozi. Információt szerezhetünk a konstruktorról, a getConstructors() metódussal. Ezzel annak az osztálynak a nyilvános konstruktorait kapjuk meg, amelyhez az adott objektum tartozik. Valamint lekérhetjük még a metódusokat is, a getMethods() függvénnyel, amely annak az osztálynak a publikus metódusait adja vissza, amelyhez az adott objektum tartozik. Az annotációk kiegészítő információkkal szolgálnak a programról. Az annotációk @ karakterrel kezdődnek, és nem változtatják meg a program működését, de megváltoztathatják azt, hogy hogyan kezeli a fordító a programot. Három féle annotáció létezik. Az első a Jelölő Annotációk, amelyek deklarációt jelölnek, a második az eggyértékű Annotációk, a harmadik pedig a Teljes Annotációk.
+	</para> 
+
+	<para>
+	Multiparadigmás nyelvek és Programozás multiparadigmás nyelveken.
+	</para>
+	<para>
+	A paradigműt úgy is nevezhetnénk, mint egy módszer valamilyen probléma megoldására vagy valamilyen feladat elvégzésére. A programozási paradigma pedig a probléma megoldásának megközelítése valamilyen programozási nyelv használatával. Sok féle paradigma létezik a különböző igények kielégítésére. Én most az Imperatív programozási paradigmáról fogok írni, amely az egyik legrégebbi programozási paradigma. Szoros kapcsolatban áll a gép architektúrájával. Úgy működik, hogy a program állapotát hozzárendelési utasításokkal változtatja meg. Az állapot megváltoztatásával lépésről lépésre hajtja végre a feladatot. A fő hangsúly a cél elérésének módja. Az előnyei, hogy nagyon egyszerű implementálni, valamint ciklusokat, változókat, stb. tartalmaz. Hátránya, hogy összetett problémákat nem lehet vele megoldani, valamint a párhuzamos programozás nem lehetséges vele. Az imperativ programozást három kategóroába lehet sorolni: eljárási, OOP és párhuzamos. Ezek a következők: A Procedurális programozási paradigma az eljárásokat hangsúlyozza. Az Objektumorientált programozás alapján készült program a kommunikációra szánt osztályok és objektumok gyűjteményeként van írva. A legkisebb és alapvető entitás az objektum, és mindenféle számítást csak az objektumokon végeznek. Nagyobb hangsúly van az adatokon az eljárás helyett. Szinte minden valós problémát képes kezelni, amelyek manapság forgatókönyvbe kerülnek. A Párhuzamos feldolgozási megközelítés jelentése a program utasításainak feldolgozása több processzor közötti elosztással. A párhuzamos feldolgozási rendszer számos processzort tartalmaz, azzal a céllal, hogy a feladatokat rövidebb idő alatt végezze el azok megosztásával.
+	</para>
+    </section>  
+  
+
+    <section>
+        <title>Forstner Bertalan, Ekler Péter, Kelényi Imre: Bevezetés a mobilprogramozásba</title>
+	<para>
+            A Python programozási nyelvet Guido van Rossum alkotta meg 1990-ben. Maga a python egy magas szintű, dinamikus, objektumorientált, és platformfüggetlen programozási nyelv. Leginkább egyszerű alkalmazások készítésére használatos. Viszonylag könnyen meg lehet tanulni a használatát, ezért hamar el lehet vele érni látványos eredményeket. Különlegessége más nyelvekkel szemben (pl. C, C++, Java), hogy nincs szükség a programkód fordítására. Elegendő egy forrás fájlt megírni, és az automatikuson fut is. A python programok általában sokkal rövidebbek, mint ugyanazon programok C++ vagy Java nyelven. Ennek több oka is van. Egyrészt az adattípusai lehetővé teszik, hogy összetett kifejezéseket írjunk le rövid állításokban. Másrészt nincs szükség a változók definiálására. És végül, a legkedveltebb ok, hogy a python nyelv nem használ se zárójeleket, se pontosvesszőket. Ezek helyett a kód csoportosítása új sorral és tabulátorral történik. Pythonban egy programblokk végét egy kissebb behúzású sor jelzi, az utasítások pedig a sorok végéig tartanak. Éppen ezért nincs szükség pontosvesszőre. Ha viszont egy utasítás nem fér el egy sorban, akkor az adott sor végére egy \ jelet kell tenni, a megjegyzéseket pedig kettőskereszt jellel tujuk jelezni. 
+        </para>
+	<para>
+	A python nyelvben a változók az objektumokra mutató referenciák. Egy változó hozzárendelését a del kulcsszóval tudjuk törölni, ha pedig egy objektumra már egy változó se mutat, akkor a garbage collector fogja törölni az adott objektumot. Érdekesség ezzel kapcsolatban, hogy a változóknak nem kell konkrét típust adnunk, mivel kitalálja, hogy mire gondolunk. Az adattípusok a következőek lehetnek: számok, sztringek, ennesek, listák, és szótárak.
+	A számok lehetnek egészek, komplexek, és lebegőpontosak is, a sztringeket pedig idézőjelek, illetve aposztrófok közé írva lehet megadnunk.
+	</para>
+	<para>
+	Maguk a változók lehetnek globálisak vagy lokálisak. Alapvetően a lokális az alapértelmezett, ezért ha azt szeretnénk, hogy egy változó globális legyen, akkor azt a változót a függvény elején kell felvenni, illetve eléírni a global kulcsszót.
+	A különböző típusok közötti konverziók támogatottak, ha van értelmük. Például int, long, float, illetve complex típusok közötti konverzió. De sztringekből is képezhetünk számot. Ehhez csak a használt számrendszert kell megadni, pl: int. Ezeknek a változóknak a kiiratását a <function>print</function> függvénnyel lehet megoldani. Ha több változó értékét szeretnénk kiiratni, akkor vesszővel kell elválasztani őket egymástól. Ezeken kívül a python nyelvben ugyanúgy elérhetőek az elágazások, illetve a ciklusok is, mint más magasszintű programozási nyelvekben. A for, illetve a while ciklus is elérhető, azokon pedig a break, illetve a continue utasítások is használhatóak. Léteznek címkék, amiket a label kulcsszóval kell elhelyezni a kódban, majd pedig a kód más részeiről a goto utasítás használatával a labelhez ugorhatunk.
+	</para>
+	<para>
+	Python nyelven a függvényeket a <emphasis>def</emphasis> kulcsszóval lehet definiálni. A függvényekre úgy is lehet tekinteni, mint értékekre, mivel továbbadhatóak más függvényeknek, és objektumkonstruktoroknak is. Ettől függetlenül a függvényeknek vannak paraméterei, amelyeknek adhatunk alapértelmezett értéket is. A legtöbb paraméter érték szerint adódik át, ezalól kivételek a mutable típusok, amelyeknek a függvényben történő megvalósítása hatással van az eredeti objektumra is. A függvény hívásánál a paraméterek úgy követik egymást, mint a függvény definíciójában. Emellett van lehetőség közvetlenül az egyes konkrét argumentumoknak értéket adni a függvény hívásakor, ha a zárójelben elé írjuk a változó nevét és egy egyenlőségjelet. A függvényeknek egy visszatérési értékük van.
+	</para>
+	<para>
+	A Python nyelvben -más nyelvekhez hasonlóan- létrehozhatunk osztályokat, és ezekből példányosíthatunk objektumokat. Az osztályok tartalmazhatnak metódusokat, amiket akár örökölhetnek is más osztályokból. Az osztály metódusait ugyanúgy lehet definiálni, mint a globális függvényeket, azonban az első paraméterük a <emphasis>self</emphasis> kell hogy legyen, amelynek az értéke mindig az az objektumpéldány lesz, amelyen a metódust meghívták. Ezen kívűl az osztályoknak lehet egy speciális, konstruktor tulajdonságú metódusa, az <function>__init__</function>.
+	</para>
+
+	<para>
+	Léteznek különböző modulok, amelyeknek a célja a fejlesztés megkönnyebbítése. ilyen például az <emphasis>appuifw</emphasis>, ami a felhasználói felület kialakításást, kezelését segíti. A <emphasis>messaging</emphasis> modul az SMS és MMs üzenetek kezelését segíti. A <emphasis>sysinfo</emphasis> a mobilkészülékekkel kapcsolatos információk lekérdezésére használható. A <emphasis>camera</emphasis> modullal lehet elvégezni minden, a készülék kamerájával kapcsolatos műveletet. Az <emphasis>audio</emphasis> modul pedig a hangfelvételek készítéséért és lejátszásáért felelős.
+	</para>
+	<para>
+	Más nyelvekhez hasonlóan a Python nyelvben is van lehetőség a kivételkezelésre a <emphasis> try, except </emphasis> és opcionálisan egy <emphasis>else</emphasis> utasítással. A try kulcsszó után szerepel az a kódblokk, amelyben a kivétel előállhat. Ha bekövetkezik a hiba, akkor az except részre ugrik a program, és az ott lévő utasításokat hajtja végre.
+	</para>
+    </section>     
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

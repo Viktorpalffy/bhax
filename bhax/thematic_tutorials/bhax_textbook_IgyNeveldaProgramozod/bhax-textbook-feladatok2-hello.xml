@@ -1,0 +1,466 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, !</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+    <section>
+        <title>FUTURE tevékenység editor</title>
+        <para>
+	Javítsunk valamit a ActivityEditor.java JavaFX programon!
+https://github.com/nbatfai/future/tree/master/cs/F6
+Itt láthatjuk működésben az alapot: https://www.twitch.tv/videos/222879467
+        </para>
+        
+        <para>
+            Ebben a feladatban egy meglévő programban kellett hibát keresni, és azt kijavítani. Először is elmondanám azt, hogy ha egy
+		tevékenységre jobb egérgombbal rákattintunk, akkor létre tudunk hozni egy új altevékenységet. Ha pedig erre a tevékenységre 
+		kétszer rákattintunk, akkor át tudjuk nevezni az adott tevékenységet. Én egy olyan hibát találtam, hogy 
+		ha létrehozunk egy Új altevékenységet, azzal még nincs semmi gond, mivel minden probléma nélkül létrehozza a program. 
+		Azonban ha azt a tevékenységet átnevezzük, akkor a program nem átnevezi a tevékenységet, hanem létrehoz egy másik
+		altevékenységet ugyan azzal a névvel. Ezt láthatjuk az első két fényképen:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/uj1.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	    
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/uj2.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Érzékelhető, hogy ha kellően sok új altevékenységet hoznánk létre és neveznénk át,
+		akkor a végeredmény egy átláthatatlan mappahalom lenne, aminek senki se örül. A hiba javítása elég egyszerű volt.
+		Először is ki kell keresni, hogy hol történik a forráskódban maga az átnevezés. Ez a TextFieldTreeCell osztályon belül
+		az <function>editCell()</function> metóduson belül történik, ami a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[private void editCell() {
+
+            if (getItem() == null) {
+                return;
+            }
+
+            String oldText = getItem().toString();
+            textField.setText(oldText);
+            
+            textField.setOnKeyReleased((javafx.scene.input.KeyEvent t) -> {
+                if (t.getCode() == javafx.scene.input.KeyCode.ENTER) {
+
+                    String newText = textField.getText();
+
+                    java.io.File newf = new java.io.File(newText);
+                    java.io.File oldf = new java.io.File(oldText);
+                    try {
+                        if (oldf.isDirectory()) {
+                            //newf.mkdir();
+                            oldf.renameTo(newf);
+                        } else {
+                            newf.createNewFile();
+                        }
+                    } catch (java.io.IOException e) {
+
+                        System.err.println(e.getMessage());
+
+                    }
+
+                    commitEdit(newf);
+                } 
+                
+            });
+
+        }]]>	    
+	</programlisting>
+	<para>
+		Itt a <emphasis>newf.mkdir();</emphasis> parancsot kellett átírni arra hogy <emphasis>oldf.renameTo(newf)</emphasis>
+		Ez ténylegesen annyit jelent, hogy egy új mappa létrehozása helyett a régi mappát nevezze át az újra. Ezek után már 
+		normálisan működik az átnevezés, ami a képeken is látható:
+	</para>
+	    
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/uj3.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	    
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/uj4.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Egy másik hiba az az, hogy ha létrehozunk egy új altevékenységet, akkor amíg át nem nevezzük azt, addig nem tudunk
+		létrehozni mégegyet, mivel az új altevékenység név már létezik. Erről a program csak annyi tájékoztatást ad a felhasználónak,
+		hogy nem sikerült létrehozni a tevékenységet.
+	</para>
+	<para>
+		Ezt is viszonylag könnyű javítani. A <emphasis>TextFieldTreeCell</emphasis> osztályon belül létre kellett hozni egy
+		számlálót, aminek jelen esetben az i nevet adtam, majd pedig amikor meghatározza a program a fájl nevét, akkor a végére még
+		hozzáfűzzük i-t. Ezek után egy while cikluson belül ellenőrizzük, hogy sikerült e létrehozni az altevékenységet, azaz a mappát.
+		Ha sikerült akkor megszakítjuk a ciklust és haladunk tovább, ha viszon nem, akkor növeljük i értéket 1-el és újrapróbáljuk.
+		Maga a kódcsipet a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[public TextFieldTreeCell(javafx.scene.control.TextArea propsEdit) {
+            this.propsEdit = propsEdit;
+            javafx.scene.control.MenuItem subaMenuItem = new javafx.scene.control.MenuItem("Új altevékenység");//"New subactivity");
+            addMenu.getItems().add(subaMenuItem);
+            subaMenuItem.setOnAction((javafx.event.ActionEvent evt) -> {
+                java.io.File file = getTreeItem().getValue();
+
+                boolean sikerulte = false;
+                java.io.File f;
+
+                int i = 1;
+                while(true){
+                f = new java.io.File(file.getPath() + System.getProperty("file.separator") + "Új altevékenység"+ i);
+
+                if (f.mkdir()) {
+                    javafx.scene.control.TreeItem<java.io.File> newAct
+ //                           = new javafx.scene.control.TreeItem<java.io.File>(f, new javafx.scene.image.ImageView(actIcon));
+                           = new FileTreeItem(f, new javafx.scene.image.ImageView(actIcon));                            
+                    getTreeItem().getChildren().add(newAct);
+                    sikerulte = true;
+                    break;
+                } else {
+                    i++;
+                }
+            }
+
+            if(!sikerulte){
+                System.err.println("Cannot create " + f.getPath());
+            }
+            });]]>	
+	</programlisting>
+	    <para>
+		Valamint kép a működésről:
+	    </para>
+	    <mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/create2.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	A hibák kijavítása nagyon jó gyakorlati tudást adott az adatfolyamoz kezeléséhez, a streamekhez, és az I/O állománykezeléshez.
+	</para>
+    </section>
+
+   <section>
+        <title>OOCWC Boost ASIO hálózatkezelése</title>
+        <para>
+	Mutassunk rá a scanf szerepére és használatára! https://github.com/nbatfai/robocar-
+emulator/blob/master/justine/rcemu/src/carlexer.ll
+        </para>
+       
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll">https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll</link>                
+        </para>
+        <para>
+            Ebben a feladatban a megadott forrásban meg kell magyarázni azt, hogy mi a szerepe az <function>sscanf()</function>-nek. Ebben a forráskóban összesen 10-szer fordul elő az <function>sscanf()</function>. Ebből most megmutatnék egy párat:
+        </para>
+	<programlisting>
+	<![CDATA[{POS}{WS}{INT}{WS}{INT}{WS}{INT}	{
+					  std::sscanf(yytext, "<pos %d %u %u", &m_id, &from, &to);
+					  m_cmd = 10001;
+					}
+{CAR}{WS}{INT}				{
+					  std::sscanf(yytext, "<car %d", &m_id);
+					  m_cmd = 1001;
+					}
+{STAT}{WS}{INT}				{
+					  std::sscanf(yytext, "<stat %d", &m_id);
+					  m_cmd = 1003;
+					}
+{GANGSTERS}{WS}{INT}			{
+					  std::sscanf(yytext, "<gangsters %d", &m_id);
+					  m_cmd = 1002;
+					}]]>
+	</programlisting>
+	<para>
+	Ezekről lenne tehát szó. Ahhoz viszont, hogy megértsük, hogy itt mi a feladatuk, először is azt kéne tudnunk, hogy mit is csinál a <function>sscanf()</function>. Az <function>sscanf()</function> egy fájlkezelő függvény, amelyet arra szoktak használni, hogy  a standard input, vagy billentyűzet helyett formázott inputot olvassanak egy Stringből, vagy bufferből. A deklarálása a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[int sscanf( const char* buffer, const char* format, ... );]]>
+	</programlisting>
+
+	<para>
+	Ahol a buffer tartalmazza az olvasandó adatot, a format pedig a beolvasandó adat formája.
+	A formák jelölései mellesleg a következőek lehetnek: %c - karakter | %s - String | %d - decimális szám | %i - integer | %u - unsigned decimális szám | %o - oktális integer | %x - hexadecimális integer | %a %e %f %g - lebegőpontos szám | %n - az eddig olvasott karakterek számát adja vissza.
+	</para>
+
+	<para>
+Ezek alapján nézzük meg a forráskódban található legelső <function>sscanf()</function>-et, ami a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[std::sscanf(yytext, "<pos %d %u %u", &m_id, &from, &to);]]>
+	</programlisting>
+	<para>
+	Akkor az előbbiek alapján ez a függvény a <emphasis>yytext</emphasis> bufferből kellene hogy beolvassa az adatokat, amiknek a formája úgy néz ki, hogy először egy <![CDATA["<pos"]]> szöveg van benne, majd egy %d ami egy decimális számot jelöl, valamit két darab %u, amik egy-egy unsigned int-et jelölnek. A decimális szám értékét az m_id változónak, az első unsigned int értékét a from változónak, a második unsigned int értékét pedig a to változónak adja át a függvény. De nézzünk meg egy másikat is, ami pedig a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[std::sscanf(yytext, "<init guided %s %d %c>", name, &num, &role);]]>
+	</programlisting>
+
+	<para>
+	Itt szintén a yytext-ből olvassuk az adatokat, amiknek úgy kell kinéznie, hogy először egy <![CDATA["<init guided]]> szövegnek kell jönnie, aztán pedig egy %s-nek, ami egy Stringet jelöl, majd pedig egy decimális szám, amit ugye a %d jelöl, és végül pedig egy karaktert kell olvasnia, amit a %c jelöl. A String értékét a name változónak, a decimális szám értékét a num változónak, a karakter értékét pedig a role változónak adja át a függvény.
+	</para>
+	
+	<para>
+	Ezzel pedig már az összes <function>sscanf()</function> feladatát meg tudjuk határozni a fentiek alapján.
+	</para>
+    </section>
+   <section>
+        <title>SamuCam</title>
+        <para>
+	Mutassunk rá a webcam (pl. Androidos mobilod) kezelésére ebben a projektben:
+https://github.com/nbatfai/SamuCam
+        </para>
+        
+        <para>
+            Ebben a feladatban a webcan kezelését kellett megmutatni a megadott forrásban, ami Qt-t, valamint opencv-t használ. Éppen ezért ha saját magunk is ki szeretnénk próbálni a programot, akkor előbb fel kell telepítenünk a Qt-t, valamint az opencv-t is, amihez rengeteg segítség található az interneten, éppen ezért ebbe én most nem mennék bele, hanem kezdjük is a webkamera használatának az elemzését. Ehhez két forrásfájl lesz nekünk fontos. Az egyik a main.cpp, ami kevésbé fontos, a másik pedig a SamuCam.cpp, ami sokkal inkább fontosabb, éppen ezért kezdjük is a main-nel, amiben csak az alábbi pár sor fontos nekünk:
+        </para>
+	<programlisting>
+	<![CDATA[std::string videoStream = parser.value ( webcamipOption ).toStdString();
+  SamuLife samulife ( videoStream, 176, 144 );]]>
+	</programlisting>
+	<para>
+	Itt az történik, hogy a felhasználó által megadott ip címet felhasználja ahhoz, hogy elkezdődhessen a videózás. Ezek után nézzük a SamuCam.cpp-t, az első részlete a példányosítás, ami a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[SamuCam::SamuCam ( std::string videoStream, int width = 176, int height = 144 )
+  : videoStream ( videoStream ), width ( width ), height ( height )
+{
+  openVideoStream();
+}
+
+SamuCam::~SamuCam ()
+{
+}
+
+void SamuCam::openVideoStream()
+{
+  videoCapture.open ( videoStream );
+
+  videoCapture.set ( CV_CAP_PROP_FRAME_WIDTH, width );
+  videoCapture.set ( CV_CAP_PROP_FRAME_HEIGHT, height );
+  videoCapture.set ( CV_CAP_PROP_FPS, 10 );
+}]]>
+	</programlisting>
+	<para>
+	A <function>videocapture.open(VideoStream)</function> utasítás megnyitja a VideoStream által eltárolt ip-n keresztül folyó streamet, majd pedig az azt követő három utasítás beállítja a stream szélességét, illetve magasságát, amiknek az értékeit korábban állítottuk be 176-ra illetve 144-re, valamint beállítja a stream fps-ét is 10-re. Ezek után jön a <function>void SamuCam::run()</function> metódus, ami steam működését irányítja, és a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[void SamuCam::run()
+{
+  cv::CascadeClassifier faceClassifier;
+
+  std::string faceXML = "lbpcascade_frontalface.xml"; // https://github.com/Itseez/opencv/tree/master/data/lbpcascades
+
+  if ( !faceClassifier.load ( faceXML ) )
+    {
+      qDebug() << "error: cannot found" << faceXML.c_str();
+      return;
+    }
+
+  cv::Mat frame;
+
+  while ( videoCapture.isOpened() )
+    {
+
+      QThread::msleep ( 50 );
+      while ( videoCapture.read ( frame ) )
+        {
+
+          if ( !frame.empty() )
+            {
+
+              cv::resize ( frame, frame, cv::Size ( 176, 144 ), 0, 0, cv::INTER_CUBIC );
+
+              std::vector<cv::Rect> faces;
+              cv::Mat grayFrame;
+
+              cv::cvtColor ( frame, grayFrame, cv::COLOR_BGR2GRAY );
+              cv::equalizeHist ( grayFrame, grayFrame );
+
+              faceClassifier.detectMultiScale ( grayFrame, faces, 1.1, 3, 0, cv::Size ( 60, 60 ) );
+
+              if ( faces.size() > 0 )
+                {
+                  cv::Mat onlyFace = frame ( faces[0] ).clone();
+
+                  QImage* face = new QImage ( onlyFace.data,
+                                              onlyFace.cols,
+                                              onlyFace.rows,
+                                              onlyFace.step,
+                                              QImage::Format_RGB888 );
+
+                  cv::Point x ( faces[0].x-1, faces[0].y-1 );
+                  cv::Point y ( faces[0].x + faces[0].width+2, faces[0].y + faces[0].height+2 );
+                  cv::rectangle ( frame, x, y, cv::Scalar ( 240, 230, 200 ) );
+
+                  emit  faceChanged ( face );
+                }
+
+              QImage*  webcam = new QImage ( frame.data,
+                                             frame.cols,
+                                             frame.rows,
+                                             frame.step,
+                                             QImage::Format_RGB888 );
+
+              emit  webcamChanged ( webcam );
+            }
+
+          QThread::msleep ( 80 );
+
+        }
+      if ( ! videoCapture.isOpened() )
+        {
+          openVideoStream();
+        }
+    }
+}]]>
+	</programlisting>
+	
+	<para>
+	Itt először is betölt a program egy CascadeCassifier-t, amely az arcról készült képeket fogja elemezni. Majd pedig jön két while ciklus, ami a frameket fogja olvasni. A külső while ciklus addig fog menni, amíg megy a stream, a belső pedig addig, amíg jönnek a framek. Ezek után ha az adott fram nem üres, akkor az adott képkockát átméretezzük 176x144-es méretre. Minden egyes képet eltárol a program a Mat tömbbe, valamint szürkés árnyalatúra állítja az összes eltárolt képkockát. Ezek után a <function>detectMultiScale()</function> fogja megkeresni az arcokat a képkockákon. Minden egyes megtalált arc egy téglalapként kerül eltárolásra egy listában. Majd pedig végül az arcokból egy QImage fog készülni. Maga a program pedig működés közben a következőképpen néz ki:
+	</para>
+
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/samu.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+   <section>
+        <title>BrainB</title>
+        <para>
+	Mutassuk be a Qt slot-signal mechanizmust ebben a projektben: https://github.com/nbatfai/esport-talent-search
+        </para>
+        
+        <para>
+            Ebben a feladatban a Qt slot-signal mechanizmust kellett bemutatni a megadott forráskódban. Ahhoz, hogy ezt be tudjuk mutatni, először azt kellene megtudni, hogy mi is az. Erre a Qt dokumentációja nagyon jó választ ad, mi szerint a slot-signal mechanizmus az objektumok közötti kommunikációra szolgálnak. Ez a Qt egyik központi jellemzője. Egy adott esemény bekövetkezésekor egy jel (signal) bocsájtódik ki. A slot pedig egy funkció, amely egy jelre adott válaszként hívódik meg. Egy jelhez több slot is tartozhat, és egy slot több jelre is lehet válasz. Ezt a <function>connect()</function> függvénnyel lehet létrehozni aminek a szintaktikája a következőképpen néz ki: <function>connect(obj1, signal, obj2, slot)</function>. Ezek alapján már tudjuk, hogy ilyen <function>connect()</function> függvényeket kell keresnünk a forrásokban. Valamennyi keresés után a BrainBWin.cpp fájlban, azon belül pedig a konstruktorban fogunk találni két ilyet, amelyek a következőképpen néznek ki:
+        </para>
+	<programlisting>
+	<![CDATA[connect ( brainBThread, SIGNAL ( heroesChanged ( QImage, int, int ) ),
+                  this, SLOT ( updateHeroes ( QImage, int, int ) ) );
+
+        connect ( brainBThread, SIGNAL ( endAndStats ( int ) ),
+                  this, SLOT ( endAndStats ( int ) ) );]]>
+	</programlisting>
+	<para>
+	Ahhoz, hogy ezeket megmagyarázzam, néhány szó a játékról. Az a lényege, hogy négyzetek vannak egy képernyőn, bennük pedig körök. A játék lényege pedig, hogy a bal egérgombot nyomva tartva a Samu Entropy-n tartsuk az egerünket. Minél jobbak vagyunk, annál több entropy, azaz hős lesz a képernyőn. Egy kép a játékról:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/brainb.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	És akkor így már elmondható, hogy mi történik a két előfordulásnál. Az elsőnél, minden esetben, amikor a hősök, azaz Entropy-k helyzete, pozíciója megváltozik, azaz lefut a <function>heroesChanged()</function> metódus, akkor a BrainBThread fog kibocsájtani egy jelet, amit a BrainBWin fog megkapni, és ő pedig frissíteni fogja a hősök helyzetét, azaz le fog futni nála az <function>updateHeroes()</function> metódus. A második előfordulásnál pedig, amikor véger ér a játék valami oknál fogva, azaz lefut az <function>endAndStats()</function> metódus, akkor a brainBThread kibocsájt egy jelet, amit a BrainBWin fog észlelni, és nála is le fog futni a saját <function>endAndStats</function> metódusa. Még érdekes lehet a signal elküldése, amiket a következő függvényekben találhatunk meg:
+	</para>
+	<programlisting>
+	<![CDATA[void draw () {
+
+        cv::Mat src ( h+3*heroRectSize, w+3*heroRectSize, CV_8UC3, cBg );
+
+        for ( Hero & hero : heroes ) {
+
+            cv::Point x ( hero.x-heroRectSize+dispShift, hero.y-heroRectSize+dispShift );
+            cv::Point y ( hero.x+heroRectSize+dispShift, hero.y+heroRectSize+dispShift );
+
+            cv::rectangle ( src, x, y, cBorderAndText );
+
+            cv::putText ( src, hero.name, x, cv::FONT_HERSHEY_SIMPLEX, .35, cBorderAndText, 1 );
+
+            cv::Point xc ( hero.x+dispShift , hero.y+dispShift );
+
+            cv::circle ( src, xc, 11, cCenter, CV_FILLED, 8, 0 );
+
+            cv::Mat box = src ( cv::Rect ( x, y ) );
+
+            cv::Mat cbox ( 2*heroRectSize, 2*heroRectSize, CV_8UC3, cBoxes );
+            box = cbox*.3 + box*.7;
+        }
+
+        cv::Mat comp;
+
+        cv::Point focusx ( heroes[0].x- ( 3*heroRectSize ) /2+dispShift, heroes[0].y- ( 3*heroRectSize ) /2+dispShift );
+        cv::Point focusy ( heroes[0].x+ ( 3*heroRectSize ) /2+dispShift, heroes[0].y+ ( 3*heroRectSize ) /2+dispShift );
+        cv::Mat focus = src ( cv::Rect ( focusx, focusy ) );
+
+        cv::compare ( prev, focus, comp, cv::CMP_NE );
+
+        cv::Mat aRgb;
+        cv::extractChannel ( comp, aRgb, 0 );
+
+        bps = cv::countNonZero ( aRgb ) * 10;
+
+        //qDebug()  << bps << " bits/sec";
+
+        prev = focus;
+
+        QImage dest ( src.data, src.cols, src.rows, src.step, QImage::Format_RGB888 );
+        dest=dest.rgbSwapped();
+        dest.bits();
+
+        emit heroesChanged ( dest, heroes[0].x, heroes[0].y );
+    }]]>
+	</programlisting>
+	<para>
+	Valamint:
+	</para>
+	<programlisting>
+	<![CDATA[void BrainBThread::run()
+{
+        while ( time < endTime ) {
+
+                QThread::msleep ( delay );
+
+                if ( !paused ) {
+
+                        ++time;
+
+                        devel();
+                }
+                draw();
+        }
+       emit endAndStats ( endTime );
+}]]>
+	</programlisting>
+	<para>
+	Mind a két esetben az emit utasítás fog lefutni, ami kibocsájtja a jelet, amit a BrainBWin fog megkapni. Ez viszont a slot-signal mechanizmus régi szintaxisa, ami a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[connect(
+    sender, SIGNAL( valueChanged( QString, QString ) ),
+    receiver, SLOT( updateValue( QString ) )
+);]]>
+	</programlisting>
+	<para>
+	Azonban ez a Qt-5 ben a következőre változott:
+	</para>
+	<programlisting>
+	<![CDATA[connect(
+    sender, &Sender::valueChanged,
+    receiver, &Receiver::updateValue
+);]]>
+	</programlisting>
+	<para>
+	Azaz mostmár egyszerűbb a szintaktika. Először a signalt küldő osztályt kell megadni, majd pedig azt kell megadni, hogy melyik metódus fog lefutni a küldőnél, végül pedig azt, hogy a fogadónál melyik metódusnak kell lefutnia. Ez az új szintaktika ebben a programban a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[connect ( brainBThread, &BrainBThread::heroesChanged ,
+                  this, &BrainBWin::updateHeroes);
+
+        connect ( brainBThread, &BrainBThread::endAndStats,
+                  this, &BrainBWin::endAndStats );]]>
+	</programlisting>
+    </section>
+
+</chapter>

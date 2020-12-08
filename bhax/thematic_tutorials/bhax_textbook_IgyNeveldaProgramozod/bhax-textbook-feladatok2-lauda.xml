@@ -1,0 +1,243 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Lauda!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+    <section>
+        <title>Port scan</title>
+        <para>
+	Mutassunk rá ebben a port szkennelő forrásban a kivételkezelés szerepére!
+https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/ch01.html#id527287
+        </para>
+        
+        <para>
+            Ez a feladat nagyon jó gyakorlati tudást adott a kivételkezelés elméleti részhez. Ebben a feladatban a kivételkezelésre kellett rámutatni a megadott forrásban. Nézzük is meg magát a forráskódot, illetve azt, hogy milyen eredményt ad a program futtatás közben:
+        </para>
+	<programlisting>
+	<![CDATA[public class KapuSzkenner {    
+    public static void main(String[] args) {
+        
+        for(int i=0; i<1026; ++i)
+            
+            try {                
+                java.net.Socket socket = new java.net.Socket(args[0], i);
+                
+                System.out.println(i + " figyeli");
+                
+                socket.close();
+                
+            } catch (Exception e) {
+                
+                System.out.println(i + " nem figyeli");               
+            }
+    }   
+}]]>
+	</programlisting>
+	<para>
+	És a kép a futtatásról:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/port.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Ebből annyit tudunk meg, hogy van egy for ciklus, ami 0-tól 1025-ig fut. Azon belül van egy try-catch szerkezet. A try-ban létrehozunk egy socket objektumot aminek ip címnek a legelső argumentum értékét, portnak pedig i aktuális értékét adjuk. Ilyenkor a program megpróbál a program egy TCP kapcsolatot létrehozni. Ha ez az utasítás nem dob exception-t, akkor kiiratjuk, hogy egy szerver folyamat figyeli a portot, vagy röviden: figyeli, és bezárja a program a socketet. Azonban, ha itt exception-t dob a program, akkor kiirja, hogy nem figyeli. Ezután egy kicsit módosítottam a programot annak érdekében, hogy megtudjam azt, hogy milyen exceptiont dob pontosan a try. A következő eredményt kaptam:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/port2.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Mint azt láthatjuk, ha nem sikerül kialakítani a kapcsolatot, akkor egy ConnectException-t kapunk. Az oracle <link xlink:href="https://docs.oracle.com/javase/7/docs/api/java/net/ConnectException.html">dokumentációja</link> tisztán és érthetően megmagyarázza, hogy a ConnectException jelzi azt, hogy hiba történt egy socket egy távoli címhez és porthoz történő csatlakoztatásakor. Általában a kapcsolatot távolról tagadják meg, pl: egy folyamat sem figyeli a cím adott portját. Vagyis, ha sikerül kapcsolatot létrehoznia a programnak, akkor tudja, hogy azt a portot figyelik, ha pedig nem, akkor pedig tudja azt, hogy nem figyelik.
+	</para>
+    </section>
+
+   <section>
+        <title>AOP</title>
+        <para>
+	Szőj bele egy átszövő vonatkozást az első védési programod Java átiratába! (Sztenderd védési
+feladat volt korábban.)
+        </para>
+        
+        <para>
+            Ez a feladat a fordítást és a kódgenerálást támogató nyelvi elemek elméleti részhez ad egy jó gyakorlati alapot. Ebben a feladatban egy átszövő vonatkozást kellett írni az LZWBinFa java átiratába. Mivel az eredeti forráshoz semmit nem kellett hozzáírni, ezért arról nem is beszélnék, hanem térjünk is át rögtön az átszövő vonatkozásra. Ezt a feladatot Aspectj-vel kellett megvalósítani, ami lehetőséget ad arra, hogy anélkül módosítsuk egy program forráskódját, hogy ténylegesen módosítanánk azt a forráskódot. Itt is pontosan ugyan ez történt. Meg kellett adni kódcsipeteket egy külön fájlban, amiknek megmondhattuk, hogy egy adott metódus előtt vagy után fussanak le. Az Aspectj telepítését linuxon a következő parancs kiadásával lehet megtenni: <command>apt install aspectj</command>. Ha ez sikerült, akkor fordítani pedig nem a <command>javac</command>, hanem az <command>ajc</command> parancs kiadásával kell. Ha jól emlékszem BevProg védési feladat volt, hogy in és post order módon is irassuk ki a fát. Itt most ugyan ezt valósítottam meg aspectj segítségével. Nézzük is a kód első részletét:
+        </para>
+	<programlisting>
+	<![CDATA[import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+public aspect BinFa{
+	int melyseg = 0;
+
+	public pointcut callkiir(LzwBinFa fa, LzwBinFa.Csomopont n, PrintWriter os):call(void LzwBinFa.kiir(LzwBinFa.Csomopont, PrintWriter)) && args(n,os) && target(fa) && within(LzwBinFa);
+
+	after(LzwBinFa fa, LzwBinFa.Csomopont n, PrintWriter os):callkiir(fa,n,os){
+
+
+	}
+
+	public pointcut hivas(LzwBinFa.Csomopont n, PrintWriter os): call(void LzwBinFa.kiir(LzwBinFa.Csomopont, PrintWriter)) && args(n,os);
+
+	after(LzwBinFa.Csomopont n, PrintWriter os) : hivas(n, os){
+
+		try{
+			kiirPre(n, new PrintWriter("preorder.txt"));
+		}
+		catch(FileNotFoundException e) {
+			System.out.println(e);
+		}
+
+		melyseg = 0;
+
+		try{
+			kiirPost(n,new PrintWriter("postorder.txt"));
+		}
+		catch(FileNotFoundException e){
+			System.out.println(e);
+		}
+	}]]>
+	</programlisting>
+	<para>
+	Először is importáljuk a PrintWritert és a FileNotFoundException-t, hiszen ezeket használni fogjuk. Majd pedig megmondjuk a programnak, hogy az után, hogy ha meghívódik az eredeti programban az <function>LzwBinFa.kiir()</function> metódus, akkor annak a metódusnak az argumentumait elkérjük, és mután lefutott, próbálja meg lefuttatni a <function>kiirPre()</function> valamint a <function>kiirPost()</function> függvényeket. Nyílvánvalóan itt kaphatunk FileNotFound exceptiont, éppen ezért ezt try-catch blokkba írjuk, és kezeljük.
+	</para>
+
+	<programlisting>
+	<![CDATA[public void kiirPost(LzwBinFa.Csomopont elem, java.io.PrintWriter os) {
+
+	 if(elem != null) {
+		++melyseg;
+		
+		
+		kiirPost(elem.nullasGyermek(), os);
+		kiirPost(elem.egyesGyermek(),os);	
+
+		for(int i = 0; i < melyseg; i++){
+			os.print("---");
+		}
+		os.print(elem.getBetu());
+		os.print("(");
+		os.print(melyseg -1);
+		os.println(")");
+
+		
+		--melyseg;
+	 }
+	}
+
+	public void kiirPre(LzwBinFa.Csomopont elem, java.io.PrintWriter os) {
+
+	 if(elem != null) {
+		++melyseg;
+
+		for(int i = 0; i < melyseg; i++){
+			os.print("---");
+		}
+		os.print(elem.getBetu());
+		os.print("(");
+		os.print(melyseg -1);
+		os.println(")");
+
+		kiirPre(elem.nullasGyermek(), os);
+		kiirPre(elem.egyesGyermek(),os);		
+		--melyseg;
+	 }
+	}]]>
+	</programlisting>
+	<para>
+	A maradék része a kódnak pedig a két függvény. Az eredeti programban a fát in order módon járta be a program, azaz először az adott elem bal oldali gyerekét dolgozta fel, aztán az adott elemet, és végül pedig az adott elem bal oldali gyerekét. Ezzel szemben itt az első függvény a Post order bejárás, ahol jól láthatóan először az adott elem bal oldali gyerekét dolgozza fel a függvény, aztán az adott elem jobb oldali gyerekét, és végül pedig magát az elemet. A második függvény pedig a pre order bejárás, ahol először az adott elemet dolgozza fel a függvény, majd pedig az adott elem bal oldali gyerekét, és végül pedig az adott elem jobb oldali gyerekét. Ez a két függvény vég számon tartja és kiirja a fa mélységét is. Végül pedig kép az eredményről:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/aop.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+
+
+   <section>
+        <title>Junit teszt</title>
+        <para>
+	A https://progpater.blog.hu/2011/03/05/labormeres_otthon_avagy_hogyan_dolgozok_fel_egy_pedat
+poszt kézzel számított mélységét és szórását dolgozd be egy Junit tesztbe (sztenderd védési feladat
+volt korábban).
+        </para>
+        
+        <para>
+            Ebben a feladatban egy a Binfához megadott bemenethez kellett Junit tesztet írni, és remélhetőleg az eredmény megegyezik a papíron kiszámolt eredménnyel. A megadott bemenet az volt hogy 01111001001001000111. Erre kézzel kiszámolva 4-es mélység, 2.75-ös átlag, és 0.9574-es értékű szórás jött ki, ahogy az a feladat leírásában lévő linket megnyitva is látszik. Szóval ha minden jól megy, akkor a JUnit tesztünk is ugyan ezeket az eredményeket fogja kiszámolni. Én ennek a feladatnak a megoldásához Intellij Idea-t használtam. Mivel az eredeti LZWBinFa kódján megint nem kellett változtatni, ezért azt most sem taglalnám, hanem térjünk rá egyből a tesztre. Szerencsére Intellij-ben lehet tesztet generálni. Ezt azonban ugyan úgy kell elképzelni, mint amikor UML-ből generálunk kódot. Azaz csak egy sablont fogunk kapni. Egyszerűen csak a tesztelni kívánt osztály nevére jobb egérrel kattintunk, és aztán pedig a generate test-re. Éppen ezért ez a feladat a fordítást és a kódgenerálást támogató nyelvi elemek elméleti részhez ad egy jó gyakorlati alapot.
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/junit1.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+
+	<para>
+	Itt kijelölhetjük, hogy mely metódusokat szeretnénk tesztelni. Majd pedig ha leokézzuk, akkor az előbb említett sablont kapjuk ami a következőképpen néz ki:
+	</para>
+
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/junit2.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Ezt ha egy kicsit kibővítgetjük akkor a következő kódot fogjuk kapni eredményül:
+	</para>
+	<programlisting>
+	<![CDATA[package junit;
+import static org.junit.jupiter.api.Assertions.*;
+
+class LZWBinFaTest {
+
+    private LZWBinFa binfa = new LZWBinFa();
+    private static final String testStr = "01111001001001000111";
+
+    @org.junit.jupiter.api.Test
+    void getMelyseg() {
+        for (char i : testStr.toCharArray())
+            binfa.addBit(i);
+        double melyseg = binfa.getMelyseg();
+        System.out.println("getMelyseg() teszt -- expecting: 4, got: " + melyseg);
+        assertEquals(4, melyseg);
+    }
+
+    @org.junit.jupiter.api.Test
+    void getAtlag() {
+        for (char i : testStr.toCharArray())
+            binfa.addBit(i);
+        double atlag = binfa.getAtlag();
+        System.out.println("getMelyseg() teszt -- expecting: 2.75, got: " + atlag);
+        assertEquals(2.75, atlag);
+    }
+
+    @org.junit.jupiter.api.Test
+    void getSzoras() {
+        for (char i : testStr.toCharArray())
+            binfa.addBit(i);
+        double szoras = binfa.getSzoras();
+        System.out.println("getSzoras() teszt -- expecting: 0.9574, got: " + szoras);
+        assertEquals(0.9574, szoras, 0.001);
+    }
+}]]>
+	</programlisting>
+	<para>
+	Menjünk sorba. Először is létrehozunk egy LZWBinFa objektumot, illetve létrehozzuk a stringet, amivel teszteljük. Ezek után jönnek a metódusok. Először is a <function>void getMelyseg()</function> metódus, amiben egy for-each ciklussal belepakoljuk a stringünk karaktereit a binfába, majd pedig meghatározzuk a keletkezett fa mélységét, kiirjuk azt a felhasználó számára, és az <function>assertEquals()</function> függvénnyel összehasonlítjuk a kapott eredményt a várt eredménnyel. Pontosan ugyan ez történik a további két metódusban is. Belepakoljuk a string karaktereit a fába, meghatározzuk az átlagot/szórást, és összehasonlítjuk a kapott eredményt a várt eredménnyel.
+	</para>
+
+	<para>
+	Végül pedig kép az eredményről:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/junit3.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+</chapter>

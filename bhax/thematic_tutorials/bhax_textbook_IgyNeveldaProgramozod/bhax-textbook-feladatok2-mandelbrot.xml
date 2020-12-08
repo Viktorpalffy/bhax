@@ -1,0 +1,354 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Mandelbrot!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+    <section>
+        <title>Reverse engineering UML osztálydiagram</title>
+        <para>
+	UML osztálydiagram rajzolása az első védési C++ programhoz. Az osztálydiagramot a forrásokból
+generáljuk (pl. Argo UML, Umbrello, Eclipse UML) Mutassunk rá a kompozíció és aggregáció
+kapcsolatára a forráskódban és a diagramon, lásd még: https://youtu.be/Td_nlERlEOs.
+https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog1_6.pdf (28-32 fólia)
+        </para>
+        
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/uml.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+        <para>
+            Ebben a feladatban a BevProgon és Prog1-en már tárgyalt <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/vedes/elso/z3a7.cpp">z3a7.cpp</link> program forrásából kellett UML diagramot létrehozni. Én ehhez a <link xlink:href="https://www.visual-paradigm.com/">Visual Paradigm</link> 30 napos ingyenes próbaverzióját használtam. A diagramot roppant egyszerű legenerálni. A visual paradigm feltelepítése és elindítása után oda kell navigálnunk, hogy Tools > Code > Instant Reverse..., majd pedig ki kell választani, hogy milyen nyelvű forrásból szeretnénk diagramot generálni, és meg kell adni a fájl helyét. Ezek után már csak ki kell választani azokat az osztályokat, amelyeket meg szeretnénk mutatni a diagrammon, és kész is. Az általam generált diagramot a fentebb található képen lehetett látni. Ez a feladat nagyon jó gyakorlati tudást ad a modellező nyelvekhez, valamint az UML-hez.
+        </para>
+	<para>
+	Ezen kívűl rá kell mutatni az aggregáció és kompozíció kapcsolatára. Azonban, mielőtt ezt megtehetnénk, először az asszociáció fogalmát kell tisztázni.
+	</para>
+	<para>
+	Ha egy modellben két osztálynak kommunikálnia kell egymással, akkor szükségünk van egy kapcsolatra a két osztály között. Ezt a kapcsolatot reprezentálja az asszociáció. Az asszociációt egy a két osztály között lévő vonal, valamit az azon lévő irányt mutató nyil(ak) jelöli(k). Ha a vonal mindkét oldalán van nyíl, akkor az asszociáció kétirányú.
+	</para>
+	<para>
+	Az aggregáció és kompozíció az asszociáció részhalmazai, vagyis az asszociáció különleges esetei. Mind a két esetben egy osztály objektuma "birtokol" egy másik osztály másik objektumát, de van a kettő között egy kis különbség.
+	</para>
+	<para>
+	Az aggregáció egy olyan kapcsolatot jelent, amiben a gyerek a szülőtől függetlenül létezhet. Például ha van tanóra, ami a szülőosztály, és tanuló, ami a gyerekosztály. Ha töröljük a tanórát, attól a tanulók még léteznek.
+	</para>
+	<para>
+	Ezzel szemben a kompozíció esetében egy olyan kapcsolatról van szó, amiben a gyerek nem létezhet a szülő nélkül. Például ha van egy ház szülőosztályunk, és egy szoba gyerekosztályunk. A szoba nem létezhet a ház nélkül.
+	</para>
+	<para>
+	Az aggregációt és a kompozíciót is vonal+rombusz kombinációval lehet jelölni, azonban az aggregációnál a rombusz üres, a kompozíciónál pedig nem.
+	</para>
+	<para>
+	Ezek alapján meg tudjuk mondani, hogy a fentebb látható ábrán a <programlisting><![CDATA[Csomopont gyoker;]]></programlisting> elem a kompozíció.
+	</para>
+	
+    </section>
+
+   <section>
+        <title>Forward engineering UML osztálydiagram</title>
+        <para>
+	UML-ben tervezzünk osztályokat és generáljunk belőle forrást!
+        </para>
+       
+        <para>
+            Ebben a feladatban UML-ben kellett osztályokat megtervezni, majd pedig a diagramból forrást generálni. Ez a feladat nagyon jó gyakorlati tudást ad a modellező nyelvekhez, valamint az UML-hez. Én ehhez a feladathoz, ha már Mandelbrot a csokor neve, a MandelbrotHalmazt próbáltam meg lemodellezni a visual paradigm nevű szoftver segítségével. Ehhez a következő diagrammot sikerült összeállítani:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/genuml.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+  	<para>
+	Ahogy láthatjuk a MandelbrotIterációk forrásfájl nagyító objektuma asszociációban áll a MandelbrotHalmazNagyító osztállyal, ami pedig kompozícióban áll a MandelbrotHalmaz osztállyal. Ezek után a kód generálása már gyerekjáték. Annyit kell tenni, hogy rákattintunk a Tools > generate java code... opcióra, majd pedig a kapott menüben megadjuk azt, hogy hova szeretnénk generálni a forrást, és a visual paradigm automatikusan legenerálja nekünk. Ha a fent megjelölt forrást összehasonlítjuk az eredetivel, akkor elmondhatjuk, hogy a generált forrás nagyon hasonlít az eredetire, hiszen a források szerkezete megyegyezik.
+	</para>
+	<programlisting>
+	<![CDATA[public void update(java.awt.Graphics g) {
+		// TODO - implement MandelbrotHalmaz.update
+		throw new UnsupportedOperationException();
+	}
+
+	public void pillanatfelvétel() {
+		// TODO - implement MandelbrotHalmaz.pillanatfelvétel
+		throw new UnsupportedOperationException();
+	}
+
+	public void run() {
+		// TODO - implement MandelbrotHalmaz.run
+		throw new UnsupportedOperationException();
+	}
+
+	public int getSz() {
+		// TODO - implement MandelbrotHalmaz.getSz
+		throw new UnsupportedOperationException();
+	}
+
+	public int getM() {
+		// TODO - implement MandelbrotHalmaz.getM
+		throw new UnsupportedOperationException();
+	}
+
+	public java.awt.image.BufferedImage kép() {
+		// TODO - implement MandelbrotHalmaz.kép
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO - implement MandelbrotHalmaz.main
+		throw new UnsupportedOperationException();
+	}]]>
+	</programlisting>
+	<para>
+	Ez a generált forrásnak egy része. És ha ezt összehasonlítjuk az eredeti forrássnak ugyan ezen részével, akkor észrevehetjük, hogy a két forrás szerkezete megegyezik, viszont nyílvánvalóan, ha kódot generálunk, akkor csak a függvények létrehozása történik meg, a törzsük viszont üres marad. Azonban, ha már valakinek összeállt a fejében egy ötlet arról, hogy hogyan fog kinézni a forrásának a felépítése, akkor annak az embernek nagyon jól tud jönni, ha azt a vázat létre tudja hozni egy UML diagramban, és abból generálni tud forrást.
+	</para>
+   </section>
+
+   <section>
+        <title>Egy esettan</title>
+        <para>
+	A BME-s C++ tankönyv 14. fejezetét (427-444 elmélet, 445-469 az esettan) dolgozzuk fel!
+        </para>
+        
+        <para>
+            Ebben a feladatban a Szoftverfejlesztés C++ nyelven című könyvben szereplő részletet kellett feldolgozni. Az elméleti része főképp az UML nyelvet mutatja be. Szó esik az osztálydiagrammokról, azon belül arról, hogy az osztályokat téglalapokban lehet ábrázolni, amik három részre vannak osztva. Ezen kívűl szó esik még az osztály nevéről, ami a tégalap felső részében található meg, az osztály attrubútumairól, amik a téglalap középső részében helyezkednek el, illetve az osztály műveleteiről is, amelyek pedig a téglalap alsó részében találhatóak.
+	</para>
+
+	<para>
+Majd pedig szó esik a láthatóságról, ami ugyebár lehet public, protected, és private. Ezeken kívűl szó esik még a  kapcsolatokról is, amit a könyv egy üres háromszöggel jelöl, valamit szó esik az asszociációkról, amelyet pedig egy nyíllal jelöl a könyv. Említést kap a kompozíció aminek a jelölése egy teli rombusz, illetve az aggregáció is, aminek pedig egy üres rombusz. Valamint ezek jelentésére is kitér.
+Ahogy azt már egy korábbi feladat leírásában említettem:
+	</para>
+	<para>
+	Az aggregáció egy olyan kapcsolatot jelent, amiben a gyerek a szülőtől függetlenül létezhet. Például ha van tanóra, ami a szülőosztály, és tanuló, ami a gyerekosztály. Ha töröljük a tanórát, attól a tanulók még léteznek. Ezzel szemben a kompozíció esetében egy olyan kapcsolatról van szó, amiben a gyerek nem létezhet a szülő nélkül. Például ha van egy ház szülőosztályunk, és egy szoba gyerekosztályunk. A szoba nem létezhet a ház nélkül.
+	</para>
+	<para>
+Végül pedig a kódgenerálásról és a kód visszafejtésről. Ezen belül arról, hogy pontosan mik ezek, ugye forward és reverse engineering, azaz a kész kódból UML diagram generálása, valamit kész UML diagramból kód generálása, amikről az első két feladat szólt. Éppen ezért lehet hogy nem utolsóként kellett volna megcsinálni ezt a feladatot, hanem elsőként. Mivel nagy segítség lehetett volna a többi feladat megoldásánál, ha már ismerem ezeket a dolgokat.
+        </para>
+	
+	<para>
+	Ezek után következett maga az esettanulmány, ami egy program elkészítéséből állt. Maga a feladat egy számítógép kereskedéssel volt kapcsolatos. Eléggé összetett programról van szó, ami támogatja a termékek állományból való betöltését, képernyőre történő listázását, állományba való kiírását, és az árképzés rugalmas alakítását. És ha ez még nem lenne elég, még a lehetséges jövőbeli befektetésekre is gondolni kell, azaz a teljesen új termékcsaládok értékesítésének bevezetésére is lehetőséget kell biztosítani. Magához a feladathoz volt megadva forrás, azonban még kell mellé írni saját magunktól is. Na de nézzük, hogy mi mit is jelent a programunk kódja
+	</para>
+	<para>
+	Az első a product osztály, ami a programunk szülőosztálya, magyarra lefordítva termék. Ebből az osztályból lesz származtatva a többi három osztály, a display, azaz kijelző, a harddisk, azaz merevlemez, és a compositeproduct, ami pedig az összetett termék, például egy kész számítógép.
+	</para>
+	<para>
+	A product osztálynak három tagváltozója van. Ezek a name, ami a termék neve InitialPrice, azaz a termék eredeti ára, illetve a dateOfAcquisition, ami pedig a temék beszerzési ideje. Ezek a tagváltozók protectedek, éppen ezért szükség van getter függvényekre is hozzájuk. Valamint van két még másik getter függvényünk is, a getAge, ami a beszerzési, és a jelenlegi idő felhasználásával kiszámolja, hogy milyen idős az adott termék. Valamint a getCurrentPrice, ami a termék jelenlegi árát adná vissza, azonban jelenleg ennek a függvénynek a visszatérési értéke az eredeti ár. Maga az osztály:
+	</para>
+	<programlisting>
+	<![CDATA[time_t Product::getDateOfAcquisition() const {
+    return dateOfAcquisition;
+}
+
+int Product::getInitialPrice() const {
+    return initialPrice;
+}
+
+std::string Product::getName() const {
+    return name;
+}
+
+Product::Product() {}
+
+Product::Product(std::string name, int initialPrice, time_t dateOfAcquisition): name(name), initialPrice(initialPrice),
+    dateOfAcquisition(dateOfAcquisition) {
+}
+
+int Product::getAge() const{
+    time_t currentTime;
+    time(&currentTime);
+    double timeDiffInSec = difftime(currentTime, dateOfAcquisition);
+    return (int)(timeDiffInSec/(3600*24));
+}
+
+int Product::getCurrentPrice() const {
+    return initialPrice;
+}]]>
+	</programlisting>
+
+	<para>
+	Az inputstream, illetve az outputstream operátorok segítségével a következő függvények fogják elvégezni a termékek beolvasását, illetve kiíratását:  <function>print()</function>, amely megadja a termék típusát, és nevét, a <function>printParams()</function>, amely megadja a termék paramétereit, azaz a eredeti árat, a beszerzési időt, a termék korát, és a termék jelenlegi árát, a <function>writeParamsToStream()</function>, amely megadja a termék nevét, eredeti árát, és a beszerzési idejét stringgé alakítva, és a <function>loadParamsFromStream()</function>, amely pedig beolvassa a termékeket. Maga az osztály:
+	</para>
+	<programlisting>
+	<![CDATA[void Product::print(std::ostream &os) const {
+    os << "Type: " << getType() << ", ";
+    os << "Name: " << getName();
+    printParams(os);
+}
+
+void Product::printParams(std::ostream &os) const {
+    char strDateOfAcquisition[9];
+    strftime(strDateOfAcquisition, 9, "%Y%m%d",
+             gmtime(&dateOfAcquisition));
+
+    os << ", " << "Initial price: " << initialPrice
+       << ", " << "Date of acquisition: " << strDateOfAcquisition
+       << ", " << "Age: " << getAge()
+       << ", " << "Current price: " << getCurrentPrice();
+}
+
+void Product::writeParamsToStream(std::ostream &os) const {
+    char strDateOfAcquisition[9];
+    tm* t = localtime(&dateOfAcquisition);
+    strftime(strDateOfAcquisition, 9, "%Y%m%d", t);
+    os << " " << name << " " << initialPrice << " " <<strDateOfAcquisition;
+}
+
+void Product::loadParamsFromStream(std::istream &is) {
+    is >> name;
+    is >> initialPrice;
+
+    char buff[9];
+    is.width(9);
+    is >> buff;
+    if (strlen(buff) != 8)
+        throw range_error("Invalid time format");
+
+    char workBuff[5];
+    tm t;
+    int year;
+    strncpy(workBuff, buff, 4); workBuff[4] = '\0';
+    year = atoi(workBuff); t.tm_year = year - 1900;
+    strncpy(workBuff, &buff[4], 2); workBuff[2] = '\0';
+    t.tm_mon = atoi(workBuff) - 1;
+    strncpy(workBuff, &buff[6], 2); workBuff[2] = '\0';
+    t.tm_mday = atoi(workBuff);
+    t.tm_hour = t.tm_min = t.tm_sec = 0;
+    t.tm_isdst = -1;
+
+    dateOfAcquisition = mktime(&t);
+}
+
+std::istream& operator>>(istream& is, Product& product) {
+    product.loadParamsFromStream(is);
+    return is;
+}
+
+std::ostream& operator<<(ostream& os, Product& product) {
+    os <<product.getCharCode();
+    product.writeParamsToStream(os);
+    return os;
+}]]>
+</programlisting>
+
+	<para>
+	A harddisk, azaz merevlemez osztálynak a tagváltozói szintén a name, initialPrice, dateOfAcquisition, amelyek megtalálhatóak a product osztályban is, azonban, itt még van egy speedRPM változó is, amely megmondja, hogy hány RPM-es a merevlemez. Ezen kívűl itt az io függvényekhez hozzá lett fűzve, hogy az RPM-et is ki kell írni, illetve be kell olvasni. Valamint a <function>getCurrentPrice()</function> függvény itt már úgy működik, hogy ha a termék fiatalabb 30 napnál, akkor az eredeti árat, ha 30 és 90 nap közötti, akkor az eredeti ár 80 százalékát, ha pedig idősebb mint 90 nap, akkor pedig az eredeti ár 80 százalékát adja vissza jelenlegi árként. Illetve található egy <function>getSpeedRPM()</function> függvény is, ami visszaadja a merevlemez RPM értékét. Maga az osztály:
+	</para>
+	<programlisting>
+	<![CDATA[int HardDisk::getCurrentPrice() const{
+    int ageInDays = getAge();
+    if(ageInDays < 30)
+        return initialPrice;
+    else if (ageInDays >= 30 && ageInDays < 90)
+        return (int)(0.9 * initialPrice);
+    else
+        return (int)(0.8 * initialPrice);
+}
+
+HardDisk::HardDisk() {};
+
+HardDisk::HardDisk(std::string name, int initialPrice, time_t dateOfAcquisition, int speedRPM):
+    Product(name, initialPrice, dateOfAcquisition), speedRPM(speedRPM) {}
+
+int HardDisk::getSpeedRPM() const {
+    return speedRPM;
+}
+
+void HardDisk::printParams(std::ostream& os) const {
+    Product::printParams(os);
+    os << ", " << "SpeedRPM: " << speedRPM;
+}
+
+void HardDisk::writeParamsToStream(std::ostream &os) const {
+    Product::writeParamsToStream(os);
+    os << ' ' << speedRPM;
+}
+
+void HardDisk::loadParamsFromStream(std::istream &is) {
+    Product::loadParamsFromStream(is);
+    is >> speedRPM;
+}]]>
+	</programlisting>
+	<para>
+	A Display osztály tagváltozói a name azaz név, az initialPrice, azaz kezdő ár, a dateOfAcquisition, azaz beszerzési idő, az inchWidth, azaz a szélesség col-ban, illetve az inchHeight azaz a magasság colban. A két új tagváltozó kap gettereket, illetve az input output részben is beolvastatjuk, illetve kiírattatjuk ezeknek a változóknak az értékeit a programmal. A <function>getCurrentPrice()</function> pedig ugyan úgy működik itt is, mint a merevlemez esetében, azaz ha a termék fiatalabb 30 napnál, akkor az eredeti árat, ha 30 és 90 nap közötti, akkor az eredeti ár 80 százalékát, ha pedig idősebb mint 90 nap, akkor pedig az eredeti ár 80 százalékát adja vissza jelenlegi árként. Maga az osztály:
+	</para>
+	<programlisting>
+	<![CDATA[void Display::printParams(std::ostream& os) const {
+    Product::printParams(os);
+    os << ", " << "InchWidth: " << inchWidth;
+    os << ", " << "InchHeight: " << inchHeight;
+}
+
+void Display::writeParamsToStream(std::ostream &os) const {
+    Product::writeParamsToStream(os);
+    os << ' ' << inchWidth << ' ' << inchHeight;
+}
+
+void Display::loadParamsFromStream(std::istream &is) {
+    Product::loadParamsFromStream(is);
+    is >> inchWidth >> inchHeight;
+}
+
+Display::Display() {}
+
+Display::Display(std::string name, int initialPrice, time_t dateOfAcquisition, int inchWidth, int inchHeight):
+    Product(name, initialPrice, dateOfAcquisition), inchWidth(inchWidth), inchHeight(inchHeight) {}
+
+int Display::getCurrentPrice() const {
+    int ageInDays = getAge();
+    if(ageInDays < 30)
+        return initialPrice;
+    else if (ageInDays >= 30 && ageInDays < 90)
+        return (int)(0.9 * initialPrice);
+    else
+        return (int)(0.8 * initialPrice);
+}
+
+int Display::getInchWidth() const {
+    return inchWidth;
+}
+
+int Display::getInchHeight() const {
+    return inchHeight;
+}]]>
+	</programlisting>
+	<para>
+	És végül pedig képek a működésről:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/esettan.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/esettan2.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	
+   </section>
+   <section>
+        <title>BPMN</title>
+        <para>
+	Rajzoljunk le egy tevékenységet BPMN-ben!
+https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_7.pdf (34-47 fólia)
+        </para>
+      
+        <para>
+            Ebben a feladatban BPMN-ben, azaz Business Process Model and Notation használatával kellett modellezni valamit. Ez a feladat nagyon jól bemutat egy modellező nyelvet a gyakorlatban. Maga a BPMN egy folyamatábra, egy grafikai reprezentációja az üzleti folyamatoknak. Az UML-hez hasonlóan szintén egy modellező eszköz. Az én példám egy mindennapi esetet ír le, egy csomag megrendelését egy webáruházból, vagyis, hogy mi történik a között, hogy a vásárló megrendeli, és megkapja a csomagot. Ennek a feladatnak a megoldásához a visual paradigm nevű szoftvert választottam. A folyamatábra a következőképpen néz ki:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/bpmn.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Látható a folyamatábrán, hogy három különböző entitás dolgozik a csomagért. Az egyik a vásárló, aki a csomagot rendeli, a második a webáruház, ami a csomagot eladja, és a harmadik pedig egy futárszolgálat, ami pedig házhoz viszi a csomagot. Maga a folyamat rendkívűl egyszerű. Először is a vásárló meglátogatja a webáruházat, itt kezdődik a folyamatábra. Majd megkeresi a csomagot, amit rendelni szeretne. Ezek után jön egy elágazás, mégpedig hogy van e a keresett termék raktáron. Amennyiben nincs, úgy itt véget is ér a folyamat. Azonban ha van, akkor megrendeli. Itt történik egy interakció a vásárló és a webáruház között. A webáruház megkapja a rendelést, azt feldolgozza és előkészíti a szállításra. Ezek után két interakció is történik. Egyrészt a webáruház átadja a futárszolgálatnak a csomagot, másrészt pedig szól a vásárlónak, hogy át lett adva a csomagja a futárnak. Majd a futárszolgálat kiszállítja a csomagot a vevőnek, amit az átvesz és kifizet. Ezek után a vevő már csak használja a terméket, ezzel az ő folyamata véget ér. A futár pedig a kapott pénzt átadja a webáruháznak, és ezzel mindkettőjük folyamata véget ér. Ez nyílván egy nagyon egyszerű példa, amit lehetett volna sokkal bonyolultabb is, de a BPMN működésének a bemutatására tökéletes.
+	</para>
+	</section>
+
+</chapter>

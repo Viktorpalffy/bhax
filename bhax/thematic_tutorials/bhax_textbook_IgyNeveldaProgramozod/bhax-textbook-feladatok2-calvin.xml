@@ -1,0 +1,337 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Calvin!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+    <section>
+        <title>MNIST</title>
+        <para>
+	Az alap feladat megoldása, +saját kézzel rajzolt képet is ismerjen fel,
+https://progpater.blog.hu/2016/11/13/hello_samu_a_tensorflow-bol Háttérként ezt vetítsük le:
+https://prezi.com/0u8ncvvoabcr/no-programming-programming/
+        </para>
+        
+        
+        <para>
+            Ebben a feladatban a Tensorflow segítségével kellett megtanítani egy mesterséges intelligenciának azt,
+			hogy felismerjen egy kézzel írott, 28x28 pixeles képen lévő számot. Ehhez az MNIST könyvtárat használja tanulásként.
+			A Bátfai Norbert által megadott forrást kicsit át kellett alakítani, mert azóta, hogy az elkészült, rengeteget
+			változott a tensorflow. Legtöbbszöt függvényhívásokat kellett átírni, vagyis inkább hozzáadni a függvényhíváshoz azt, hogy
+			<emphasis>compat.v1.</emphasis> és már működtek is. Azonban volt pár sor, amit másképp kellett átírni. Ezek a következők:
+			 Először is a 46. sorban a függvényhívást a következőképpen kellett átírni:
+        </para>
+		
+		<programlisting>
+		<![CDATA[img = tf.image.decode_png(file, channels=1)]]>
+		</programlisting>
+		
+		<para>
+		Ez annyit jelent, hogy a saját képünknek, amit fel kellene, hogy ismerjen a program, a grayscale-es változata
+		lesz felhasználva. Arra, hogy ez miért kell, két okunk van. Az első az az, hogy az mnist képei is grayscale képek,
+		a másik (a fontosabb) ok pedig az, hogy ha ezt a változtatást nem tesszük meg, akkor hibát fogunk kapni. Éppen ezért ez
+		egy erősen ajánlott változtatás. A következő változtatást pedig a 72. sorban kellett elvégezni, ahol is a paramétereket kellett
+		nevesíteni, amit a következőképpen lehet megoldani:
+		</para>
+		
+		<programlisting>
+			<![CDATA[cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y, labels=y_))]]>
+		</programlisting>
+		
+		<para>
+		Valamint az utolsó kis kódcsipet amit nem át, hanem hozzáírtam a forráshoz, az a következő sor:
+		</para>
+		
+		<programlisting>
+			<![CDATA[tf.io.write_graph(sess.graph, "models/", "mnist.pbtxt")]]>
+		</programlisting>
+		
+		<para>
+		Ez annyit jelent, hogy a models mappába hozzon létre egy mnist.pbtxt nevű fájlt, ami a programnak a gráfja.
+		Ezt később Tensorboard-al meg fogjuk tudni nyitni és elemezni. Ezek után nézzük magát a forráskódot:
+		</para>
+		
+		<programlisting>
+		<![CDATA[ tf.compat.v1.disable_eager_execution()
+  x = tf.compat.v1.placeholder(tf.float32, [None, 784])
+  W = tf.Variable(tf.zeros([784, 10]))
+  b = tf.Variable(tf.zeros([10]))
+  y = tf.matmul(x, W) + b
+  y_ = tf.compat.v1.placeholder(tf.float32, [None, 10])
+  cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y, labels=y_))
+  train_step = tf.compat.v1.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+  
+  tf.compat.v1.initialize_all_variables().run()
+  print("-- A halozat tanitasa")  
+  for i in range(1000):
+    batch_xs, batch_ys = mnist.train.next_batch(100)
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+    if i % 100 == 0:
+      print(i/10, "%")
+  print("----------------------------------------------------------")
+  
+  # Test trained model
+  print("-- A halozat tesztelese")  
+  correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+  accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))  
+  print("-- Pontossag: ", sess.run(accuracy, feed_dict={x: mnist.test.images,
+                                      y_: mnist.test.labels}))
+  print("----------------------------------------------------------")
+  ]]>
+		</programlisting>
+		
+		<para>
+			Először is eltároljuk magát a képet, ami ugye 28x28, azaz összesen 784 pixel. Majd pedig elkezdjük a for
+			ciklussal tanítani a programunkat. Ezer képpel tanítjuk, és minden századik képnél kiirjuk azt, hogy hol járunk.
+			Ezek után ellenőrizzük a pontosságát, és azt is a felhasználó tudomására hozzuk. Majd pedig megpróbálunk felismertetni
+			először egy mnist képet, majd pedig a saját magunk által rajzolt nyolcast.
+		</para>
+		<programlisting>
+			<![CDATA[img = mnist.test.images[42]
+  image = img
+
+  matplotlib.pyplot.imshow(image.reshape(28, 28), cmap=matplotlib.pyplot.cm.binary)
+  matplotlib.pyplot.savefig("4.png")  
+  matplotlib.pyplot.show()
+
+  classification = sess.run(tf.argmax(y, 1), feed_dict={x: [image]})
+
+  print("-- Ezt a halozat ennek ismeri fel: ", classification[0])
+  print("----------------------------------------------------------")
+
+  print("-- A sajat kezi 8-asom felismerese, mutatom a szamot, a tovabblepeshez csukd be az ablakat")
+
+  img = readimg()
+  image = img.eval()
+  image = image.reshape(28*28)
+
+  matplotlib.pyplot.imshow(image.reshape(28, 28), cmap=matplotlib.pyplot.cm.binary)
+  matplotlib.pyplot.savefig("8.png")  
+  matplotlib.pyplot.show()
+
+  classification = sess.run(tf.argmax(y, 1), feed_dict={x: [image]})
+
+  print("-- Ezt a halozat ennek ismeri fel: ", classification[0])
+  print("----------------------------------------------------------")
+  
+  tf.io.write_graph(sess.graph, "models/", "mnist.pbtxt")]]>
+		</programlisting>
+		<para>
+		Mind a két kép esetében elmentjük az adott képet, aztán pedig kirajzoltatjuk a <function>matplotlib.pyplot.show()</function>
+		függvénnyel. Ezek után pedig meghatározza a program, hogy ő minek gondolja az adott számot, és végül pedig kiiratjuk a konzolra az eredményt.
+		Az eredmény pedig:
+		</para>
+		<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/mnist.png" contentwidth="5in"/>
+            </imageobject>
+        </mediaobject>
+		<para>
+		Ezek után már csak a gráf megjelenítése van hátra Tensorboard-ban:
+		</para>
+		<mediaobject>
+            <imageobject>
+		          <imagedata fileref="pic/mnist-graph.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+   <section>
+        <title>Deep MNIST</title>
+        <para>
+	Mint az előző, de a mély változattal.
+        </para>
+        
+        <para>
+            Ebben a feladatban az előző Tensorflow-os feladatot kellett ismét megoldani, azonban ezúttal már deep mnist-es változattal. Az alap forráskód megtalálható a Tensorflow github repójában, én is azt vettem alapul. Viszont pár dolgot át kellett irni, azonban mindenhol ugyan azt. A következő sorokban: 76, 101, 111, 117, 121, 124, 135, 144, 145, 147, 148, és 179. Ezekben a sorokban a tf és a függvény neve közé azt kellett irni, hogy <emphasis>.compat.v1</emphasis> és már működött is az alap program. Azonban az alap program nem tartalmazza a saját magunk által rajzolt kép beolvasását és felismerését. De szerencsénkre ezt egy az egyben kimásolhatjuk az előző forrásból:
+        </para>
+        <programlisting>
+          <![CDATA[img = readimg()
+    image = img.eval()
+    image = image.reshape(28*28)
+    matplotlib.pyplot.imshow(image.reshape(28, 28), cmap=matplotlib.pyplot.cm.binary)
+    matplotlib.pyplot.savefig("8.png")
+    matplotlib.pyplot.show()
+    print("-- Ezt a halozat ennek ismeri fel: ", classification[0])]]>
+        </programlisting>
+        <para>
+          Erről már tudjuk, hogy azt jelenti, hogy beolvassuk a saját képünket, átalakítjuk, és elmentjük 8.png néven. Ezek után pedig megjelenítjük az elmentett képet, és kiíratjuk azt, hogy mit gondol a képről a program. Most pedig nézzük a forráskód többi részét.
+        </para>
+        <programlisting>
+          <![CDATA[ with tf.name_scope('reshape'):
+          tf.compat.v1.disable_eager_execution()
+  mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
+
+  x = tf.compat.v1.placeholder(tf.float32, [None, 784])
+
+  y_ = tf.compat.v1.placeholder(tf.float32, [None, 10])
+
+  y_conv, keep_prob = deepnn(x)
+
+  with tf.name_scope('loss'):
+    cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_,
+                                                            logits=y_conv)
+  cross_entropy = tf.reduce_mean(cross_entropy)
+
+  with tf.name_scope('adam_optimizer'):
+    train_step = tf.compat.v1.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+
+  with tf.name_scope('accuracy'):
+    correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
+    correct_prediction = tf.cast(correct_prediction, tf.float32)
+  accuracy = tf.reduce_mean(correct_prediction)
+
+  graph_location = tempfile.mkdtemp()
+  print('Saving graph to: %s' % graph_location)
+  train_writer = tf.compat.v1.summary.FileWriter(graph_location)
+  train_writer.add_graph(tf.compat.v1.get_default_graph())
+    ]]>
+        </programlisting>
+        <para>
+          Először is létrehozza modellt a program, és mivel csak a grayscale-es képekre vagyunk kíváncsiak, éppen ezért átalakítjuk őket úgy hogy számunkra megfeleljenek.
+        </para>
+        <programlisting>
+          <![CDATA[with tf.compat.v1.Session() as sess:
+    sess.run(tf.compat.v1.global_variables_initializer())
+    for i in range(20000):
+      batch = mnist.train.next_batch(50)
+      if i % 100 == 0:
+        train_accuracy = accuracy.eval(feed_dict={
+            x: batch[0], y_: batch[1], keep_prob: 1.0})
+        print('step %d, training accuracy %g' % (i, train_accuracy))
+      train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+
+    print('test accuracy %g' % accuracy.eval(feed_dict={
+        x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))]]>
+        </programlisting>
+        <para>
+          Ezek után jön a tanítás része a dolognak. Húszezer képpel tanítjuk a programot, és 100 képenként kiíratjuk azt, hogy éppen hol járunk, illetve azt is, hogy mekkora pontosságal ismeri fel a képeket. Itt egy elég kis számmal fog kezdődni, de ahogy egyre több képet dolgoz fel, úgy fogja egyre jobban felismerni a képeket. Amint kész a tanítás, megmutatjuk neki a saját képünket, és reménykedünk abban, hogy felismeri. Szerencsére az én esetemben igen lett a válasz. Azt még érdemes hozzátenni, hogy a tanítás sokkal több időt vesz igénybe, mint az előző feladatnál. Nekem körülbelül egy órába telt a folyamat. És végül pedig egy kép az eredményről:
+        </para>
+		<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/deep.png" contentwidth="5in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	A program működését jól szemlélteti az alábbi ábra:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/deepmodell.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+   
+
+   <section>
+        <title>SMNIST for Machines</title>
+        <para>
+	Készíts saját modellt, vagy használj meglévőt, lásd: https://arxiv.org/abs/1906.12213
+        </para>
+        
+        <para>
+            Ebben a feladatban az SMNIST for humans program továbbfejlesztett változatát kellett kipróbálni. Az SMNIST for humans még prog1-es téma volt, és az a lényege, hogy egy programban található egy kör, és a körben pedig 0 és 9 darab közötti véletlenszerűen változó számú pontok találhatóak. Minden egyes váltásnál fel kell ismernie a felhasználónak azt, hogy hány darab négyzet van a körben, és az ennek megfelelő számjegyre bökni. Egy kép erről a programról:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/smnist.jpg" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Egy átlag ember körülbelül a hatodik szintig képes eljutni. Azonban egy gép valószínűleg sokkal ügyesebb egy embernél. Éppen ezért jött létre az SMNIST for Machines. Ami nagyon hasonló a for humans verzióhoz, azonban ez kifejezetten számítógépek számára jött létre. A mi feladatunk az volt, hogy próbáljunk ki egy ilyen SMNIST for Machines modellt. A futtatáshoz szükségünk lesz a mxnet-re, amit egy egyszerű parancs kiadásával fel lehet telepíteni: <command>pip install mxnet</command>. Valamint szükségünk lesz még pár fájlra is, de ezeknek a beszerzési lehetőségét a forrás tágyalása közben fogom elmondani, amit nézzük is meg.
+	</para>
+	<programlisting>
+	<![CDATA[import numpy as np
+import gzip
+import os, sys
+import mxnet as mx
+import logging
+logging.getLogger().setLevel(logging.INFO)
+
+# Fix the seed
+mx.random.seed(43)
+
+# Set the compute context
+ctx = mx.cpu()
+
+#Load the data
+os.listdir()
+os.chdir('D:\smnist')
+
+with gzip.open('t10k-images-idx3-ubyte.gz', 'r') as f:
+            test_data = np.frombuffer(f.read(), np.uint8, offset=16)
+            
+with gzip.open('t10k-labels-idx1-ubyte.gz', 'r') as f:
+            test_labels = np.frombuffer(f.read(), np.uint8, offset = 8)
+            
+with gzip.open('train-images-idx3-ubyte.gz', 'r') as f:
+            train_data = np.frombuffer(f.read(), np.uint8, offset=16)
+            
+with gzip.open('train-labels-idx1-ubyte.gz', 'r') as f:
+            train_labels = np.frombuffer(f.read(), np.uint8, offset = 8)]]>
+	</programlisting>
+	<para>
+	Először is beimportálunk pár dolgot, amire szükség lesz. Az első a numpy, amire a tesztképek átalakításához lesz szükség, a második a gzip, amivel a fájlokat fogjuk megnyitni, a harmadik az os, amivel abba a mappába fog navigálni a program, amelybe a szükséges fájlok találhatóak. Negyedik az mxnet, aminek a tanítás lesz a fő feladata, és végül pedig a logging, amivel logolni fog a program. Majd pedig rögtön látunk egy <function>setLevel()</function> függvényt, amivel azt lehet beállítani, hogy milyen szintig ignorálja a program a logging üzeneteket. Ezek után beállítjuk, hogy a cpu fogja elvégezni a munkát, és megnyitjuk a szükséges fájlokat. Ezeket a fájlokat <link xlink:href="http://yann.lecun.com/exdb/mnist/">Erről</link> a linkről lehet beszerezni, ás ezek tartalmazzák a tanításhoz szükséges képeket.
+	</para>
+	<programlisting>
+	<![CDATA[#Reshape and prepare data         
+train_data = np.reshape(train_data, (-1,1,28,28))
+test_data = np.reshape(test_data, (-1,1,28,28))
+batch_size = 100
+train_iter = mx.io.NDArrayIter(train_data, train_labels, batch_size, shuffle=True)
+val_iter = mx.io.NDArrayIter(test_data, test_labels, batch_size)
+
+data = mx.sym.var('data')
+# first conv layer
+conv1 = mx.sym.Convolution(data=data, kernel=(5,5), num_filter=32)
+tanh1 = mx.sym.Activation(data=conv1, act_type="relu")
+pool1 = mx.sym.Pooling(data=tanh1, pool_type="max", kernel=(2,2), stride=(2,2))
+
+#second conv layer
+conv2 = mx.sym.Convolution(data=pool1, kernel=(5,5), num_filter=64)
+tanh2 = mx.sym.Activation(data=conv2, act_type="relu")
+pool2 = mx.sym.Pooling(data=tanh2, pool_type="max", kernel=(2,2), stride=(2,2))
+
+# first fullc layer
+flatten = mx.sym.flatten(data=pool2)
+fc1 = mx.symbol.FullyConnected(data=flatten, num_hidden=1024)
+tanh3 = mx.sym.Activation(data=fc1, act_type="relu")
+dropout = mx.sym.Dropout(data=tanh3, p=0.5)
+
+# second fullc
+fc2 = mx.sym.FullyConnected(data=dropout, num_hidden=10)
+
+# softmax loss
+lenet = mx.sym.SoftmaxOutput(data=fc2, name='softmax')
+
+
+lenet_model = mx.mod.Module(symbol=lenet, context=ctx)
+
+lenet_model.fit(train_iter,
+                optimizer='sgd',
+                optimizer_params={'learning_rate':0.001},
+                eval_metric='acc',
+                batch_end_callback = mx.callback.Speedometer(batch_size, 100),
+                num_epoch=50)
+
+test_iter = mx.io.NDArrayIter(test_data, test_labels, batch_size)
+# predict accuracy for lenet
+acc = mx.metric.Accuracy()
+lenet_model.score(test_iter, acc)
+print(acc)]]>
+	</programlisting>
+	<para>
+	Ezek után átalakítjuk a képeket 28x28-as grayscale-es képekre, és létrehozzuk a szükséges rétegeket. Majd pedig megkezdődik a gép tanítása. Minden századik kép után kiíratjuk azt, hogy hol járunk, hogy milyen gyorsan dolgozik a gép, és a gép pontosságát, illetve minden ötszázadik kép után pedig kiiratunk egy összesített pontosságot. Végül pedig egy kép a futtatásról:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/smnist.png" contentwidth="5in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+
+</chapter>

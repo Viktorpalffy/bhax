@@ -1,0 +1,466 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Gödel!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+
+   <section>
+        <title>C++11 Custom Allocator</title>
+        <para>
+	https://prezi.com/jvvbytkwgsxj/high-level-programming-languages-2-c11-allocators/ a
+CustomAlloc-os példa, lásd C forrást az UDPROG repóban!
+        </para>
+        
+        <para>
+            C++ nyelvben az allokátoroknak elég sokatmondó neve van, mivel pontosan az a feladatuk, hogy memóriát allokálljanak az adatszerkezeteknek. Erre van egy beépített <emphasis>std::allocator</emphasis> allokátor, de írhatunk sajátot is. Ez a program pont egy saját allokátor működését mutatja be, de lássuk is, hogy hogyan. Kezdjük a CustomAlloc osztállyal, ami az allokálást végzi, illetve minden alkalommal amikor memóriát foglal, valamint tájékoztatja a felhasználót arról, hogy hány darab objektumnak, milyen méretű memóriát allokál, valamint arról is tájékoztat, hogy milyen típusú változónak allokálja az adott memóriát. Azt, hogy az allokátor több különböző fajta típussal is tud dolgozni, a <programlisting><![CDATA[template<typename T>]]></programlisting>-nek köszönhetjük. A deallocate metódus pedig felszabadítja a lefoglalt helyet.
+        </para>
+	<programlisting>
+	<![CDATA[#include <iostream>
+#include <cxxabi.h>
+#include <vector>
+
+template<typename T>
+struct CustomAlloc
+{
+    using size_type         = size_t;
+    using value_type        = T;
+    using pointer           = T*;
+    using const_pointer     = const T*;
+    using reference         = T&;
+    using const_reference   = const T&;
+    using difference_type   = ptrdiff_t;
+
+    CustomAlloc() {}
+    CustomAlloc ( const CustomAlloc &) {}
+    ~CustomAlloc() {}
+
+    pointer allocate(size_type n) {
+        int s;
+        char *p = abi::__cxa_demangle(typeid(T).name(), 0, 0, &s);
+        std::cout << "Allocating "
+                  << n << " object(s) of "
+                  << n * sizeof(T)
+                  << " bytes. "
+                  << typeid(T).name() << "=" << p
+                  << std::endl;
+        free(p);
+        return reinterpret_cast<T*> (new char[n*sizeof(T)]);
+    }
+
+    void deallocate(pointer p, size_type n) {
+	std::cout << "Deallocate " << n*sizeof(T)<< " bytes." << std::endl;
+        delete[] reinterpret_cast<char *> (p);
+    }
+
+};]]>
+	</programlisting>
+	<para>
+	Ezek után jön a main, amiben a CustomAllokátorunk segítségével helyet foglalunk először is egy intnek, aminek a 3 értéket adjuk, majd pedig egy long-ot, aminek a 3213125211 értéket adjuk, és végül pedig egy Stringet, aminek pedig az "a" értéket adjuk. Ez az alábbi futás közbeni képen is jól látszik. Köszönhetően a nyomonkövetkésnek a program a tudtunkra adja, hogy először is allokált egy 4 bájt méretű int típusú objektumnak helyet, majd pedig egy 8 bájt méretű long objektumnak, végül pedig egy 32 bájt méretű String objektumnak is. Majd pedig a deallokált először 32, majd 8, végül pedig 4 bájtot.
+	</para>
+	<programlisting>
+	<![CDATA[int main(int argc, char *argv[])
+{
+    std::vector<int, CustomAlloc<int>> ints;
+    ints.push_back(3);
+
+    std::vector<long, CustomAlloc<long>> longs;
+    longs.push_back(3213125211);
+
+    std::vector<std::string, CustomAlloc<std::string>> strings;
+    strings.push_back("a");
+    return 0;
+}]]>
+	</programlisting>
+	<para>
+	A kép amiről fentebb beszéltem:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/custom.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+  <section>
+        <title>STL map érték szerinti rendezése</title>
+        <para>
+	Például: https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180
+        </para>
+        
+        <para>
+            Ebben a feladatban kulcs-érték párokat kellett rendezni. Alapvetően ezt kulcs alapján tennénk meg, viszont itt érték alapján kellett. Lássuk hogyan működik a program, kezdve a Map osztállyal:
+        </para>
+	<programlisting>
+	<![CDATA[package stlmap;
+
+public class Map 
+{
+    private String kulcs;
+    private int ertek;
+    
+public Map( String[] tomb)
+{
+    kulcs = tomb[0];
+    ertek = Integer.parseInt(tomb[1]);
+    
+}
+
+    @Override
+    public String toString() {
+        return "kulcs=" + kulcs + ", ertek=" + ertek;
+    }
+
+    public String getKulcs() {
+        return kulcs;
+    }
+
+    public int getErtek() {
+        return ertek;
+    }
+
+    public void setKulcs(String kulcsra){
+    	kulcs = kulcsra;
+    }
+
+    public void setErtek(int ertekre){
+    	ertek = ertekre;
+    }
+    
+}]]>
+	</programlisting>
+	<para>
+	Itt látható, hogy a kulcs-érték párok egy osztályban vannak eltárolva, aminek a két tagváltozója a kulcs és érték. Mivel ezek privát tagváltozók, éppen ezért megtalálhatóak a hozzájuk tartózó setterek és getterek is. Ezeken kívűl van még egy <function>toString()</function> metódus is, ami kiírja az objektumok tagváltozóinak az értékeit. Érdemes még megemlíteni, hogy a konstruktor egy String tömböt kap, aminek az első eleme lesz az adott objektum kulcsa, a második eleme pedig az adott objektum értéke. Az, hogy ez miért van így, arra később fogok kitérni. Ez elég egyszerű, ezért térjünk is át magára a beolvasásra, illetve a rendezésre. Az egész úgy kezdődik, hogy megszámoljuk azt, hogy hány darab kulcs érték párunk van a feladat.txt nevű fájlban, majd pedig egy RandomAccessFile segítségével beolvassuk azokat a Map tömbbe: 
+	</para>
+	<programlisting>
+	<![CDATA[public static void main(String args[] ){
+		
+	RandomAccessFile raf;
+        String sor;
+        Map[] tomb;
+        int db;
+
+        try
+        {
+            raf = new RandomAccessFile("stlmap/feladat.txt","r");
+            db = 0;
+            
+            for( sor = raf.readLine(); sor!= null; sor = raf.readLine() )
+            {
+                db++;
+            }
+
+            tomb = new Map[db];
+            db = 0;
+            raf.seek(0);
+            
+            for( sor = raf.readLine(); sor != null; sor = raf.readLine() )
+            {
+                tomb[db] = new Map(sor.split(","));
+                db++;
+            }           
+            raf.close();]]>
+	</programlisting>
+	<para>
+	Négy változóval kezdünk. Az első a RandomAccessFile, ami a kulcs-érték párokat tartalmazó fájl elérési útját fogja tárolni, egy sor String, ami a beolvasásnál a fájl egy-egy sorát fogja tárolni, egy Map[] tomb, amibe a kulcs-érték párok kerülnek, illetve egy int db, amivel pedig a fájlban lévő sorok számát, illetve a tomb hosszát fogja megmondani. Ezek után inicializáljuk a RandomAccessFile-t és a db változót is, majd pedig egy for ciklussal megszámoljuk a sorok számát. Ezek után inicializáljuk a Map tömböt, a db változó értékét nullára állítjuk, és visszaugrunk a fájl elejére. Ezek után végigmegyünk a fájl sorain, amikben a kulcs-érték párok vesszővel vannak elválasztva egymástól, éppen ezért a konstruktornak egy kételemű tömböt adunk át, ami az adott sor elválasztva a vesszőnél a <function>sor.split(",");</function> függvény segítségével.
+	Ezek után kiíratjuk az eredeti tömbböt egy for each ciklussal, amit aztán shell rendezéssel rendezünk, majd pedig ismét kiírjuk a rendezett értékeket:
+	</para>
+	<programlisting>
+	<![CDATA[System.out.println("eredeti értékek: ");
+
+            for( Map i : tomb )
+            {
+                System.out.println(i.toString());
+            }
+
+            for( int gap = db / 2; gap > 0; gap /=2){
+                for( int i = gap; i< db; i++){
+                    Map temp= tomb[i];
+                    int j;
+                    for( j = i; j >= gap && tomb[j - gap].getErtek() > temp.getErtek(); j -= gap){
+                        tomb[j] = tomb[j - gap];
+                    }
+
+                    tomb[j] = temp;
+                }
+            }
+            System.out.println("\nRendezett értékek:");
+            for( Map i : tomb){
+                System.out.println(i.toString());
+            }
+        }
+        catch(IOException e){
+        	System.out.println("Hiba a beolvasas soran: "+e);
+        }
+	}
+}]]>
+	</programlisting>
+	<para>
+	A program működés közben pedig a következőképpen néz ki:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/stl.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+   <section>
+        <title>Alternatív Tabella rendezése</title>
+        <para>
+	Mutassuk be a https://progpater.blog.hu/2011/03/11/alternativ_tabella a programban a java.lang
+Interface Comparable<programlisting><![CDATA[<T>]]></programlisting> szerepét!
+        </para>
+        
+        <para>
+            Ez a feladat nagyon jó gyakorlati tudást ad a kollekciókhoz. Először is ahhoz, hogy a 2017-2018 as bajnokságot mutassuk be, el kell végeznünk pár módósítást a forráskódokban. Először is a Wiki2Matrix.java forrásfájlban -ami előállítja a saját tabellánk előállításához szükséges mátrixot- a táblázat mátrixot át kell írnunk a 2017-18-as bajnokság keresszttáblázatára. Ezt elég egyszerű megcsinálni. A 18-as bajnokság kereszttáblázatát nézve, ha egy cella üres, akkor a mi táblázatunkba arra a helyre 0-t, ha a hazai csapat nyert, akkor 1-et, ha a vendég csapar nyert, akkor hármat, ha pedig döntetlen, akkor kettőt írunk. Ha mindezt elvégeztünk, akkor valamennyivel kevesebb sora és oszlopa lesz a 18-as bajnokság táblázatának, és a következőképpen fog kinézni:
+        </para>
+	<programlisting>
+	<![CDATA[int[][] tablazat= {
+			      {0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 3 },
+			      {3, 0, 3, 2, 1, 2, 2, 1, 1, 1, 1, 3 },
+			      {1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			      {3, 2, 1, 0, 3, 3, 3, 3, 3, 1, 1, 3 },
+			      {1, 1, 2, 3, 0, 1, 2, 1, 1, 1, 2, 3 },
+			      {1, 2, 3, 1, 3, 0, 2, 1, 2, 1, 3, 2 },
+			      {2, 1, 3, 1, 1, 2, 0, 3, 1, 1, 2, 1 },
+			      {3, 1, 3, 1, 3, 3, 3, 0, 3, 1, 1, 3 },
+			      {1, 3, 3, 2, 2, 1, 1, 1, 0, 1, 3, 3 },
+			      {1, 1, 1, 1, 1, 3, 1, 2, 2, 0, 3, 1 },
+			      {1, 1, 2, 1, 2, 1, 1, 3, 2, 1, 0, 1 },
+			      {1, 3, 1, 1, 1, 1, 1, 3, 2, 3, 1, 0 }
+			    };]]>
+	</programlisting>
+	<para>
+	Ha ezzel készen vagyunk, akkor le kell futtatni ezt a programot, és a következő kép alján látható mátrixot kell bemásolni az AltTabella L mátrixába. Majd pedig a csapatNevE, az ep, illetve az csapatNevL tömb elemeit is át kell írni. Ha ezeket megcsináljuk, akkor a github linken látható módon fog kinézni a táblázat. Ezt most ide nem másolnám be, mert nagyon hosszú és ronda lenne.
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/wiki.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Most nézzük meg, hogy mit is csinál a Comparable. Ehhez a következő kódcsipetek a lényegesek számunkra:
+	</para>
+	<programlisting>
+	<![CDATA[java.util.List<Csapat> rendezettCsapatok = java.util.Arrays.asList(csapatok);
+    java.util.Collections.sort(rendezettCsapatok);
+    java.util.Collections.reverse(rendezettCsapatok);
+    java.util.Iterator iterv = rendezettCsapatok.iterator();]]>
+	</programlisting>
+	<para>
+	Illetve:
+	</para>
+	<programlisting>
+	<![CDATA[class Csapat implements Comparable<Csapat> {
+
+  protected String nev;
+  protected double ertek;
+
+  public Csapat(String nev, double ertek) {
+    this.nev = nev;
+    this.ertek = ertek;
+  }
+
+  public int compareTo(Csapat csapat) {
+    if (this.ertek < csapat.ertek) {
+      return -1;
+    } else if (this.ertek > csapat.ertek) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+}]]>
+	</programlisting>
+	<para>
+	Az, hogy mit is jelent a Comparable és a compareTo, azt a hivatalos <link xlink:href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html">dokumentációban</link> találhatjuk meg. E szerint a <function>compareTo</function> függvény visszatérési értéke minden esetben vagy nulla, vagy egy negatív szám, vagy pedig egy pozitív szám attól függően, hogy az az objektum amit hasonlítunk kissebb, nagyobb, vagy egyenlő e azzal az objektummal, amihez hasonlítjuk. A <function>Collections.sort(rendezettCsapatok)</function> is ezt a metódust fogja használni, viszont overrideolnunk kell. Azaz ha a vizsgált objektum értéke kissebb mint a másik, akkor -1-et fog visszaadni, ha nagyobb, akkor +1-et, ha pedig egyenlőek, akkor nullát. Még kérdés lehet az, hogy miért is van szükségünk a Comparable implementálására. A rövid és tömör válasz az az, hogy a <function>Collections.sort()</function> miatt. A hosszabb választ pedig megtaláljuk a hivatalos <link xlink:href="https://docs.oracle.com/javase/7/docs/api/java/util/Collections.html#sort(java.util.List)">dokumentációban</link>, ami tisztán kimondja azt, hogy "All elements in the list must implement the Comparable interface." Azaz a lista minden elemének implementálnia kell a Comparable interfészt. A végeredmény pedig:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/csapat.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+   <section>
+        <title>GIMP Scheme hack</title>
+        <para>
+	Ha az előző félévben nem dolgoztad fel a témát (például a mandalás vagy a króm szöveges
+dobozosat) akkor itt az alkalom!
+        </para>
+        <para>
+            Írj olyan script-fu kiterjesztést a GIMP programhoz, amely név-mandalát készít a
+            bemenő szövegből!               
+        </para>
+        
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/GIMP_Lisp/Mandala">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/GIMP_Lisp/Mandala</link>               
+        </para>
+
+        <para>
+            Ez egy prog1-en már tárgyalt feladat, amiben egy gimp kiegészítőről van szó, amiben a bemenő szövegből egy név-mandala fog készülni. A mandala egy szimmetrikus kör alakú kép, ami a Hindu vallásban nagy szerepet játszik a Hindu istenek ábrázolásában. 
+	Először a program meghatározza a szöveg hosszát, a kapott értéket a set! utasítással a text-width változó értékenek adja. A következő függvény a betűk méretét határozza meg. A szükséges méretekek a a GIMP beépített függvényeivel határozza meg a következőképpen. Alapvetően nem feltétlenül szükséges tudnunk a szöveghosszt a mandala előállításához, de ahhoz, hogy szép legyen a kép, ezt is tudnia kell a programnak. Ezt elég könnyű meghatározni, mivel a <function>gimp-text-get-extents-fontname</function> egy listát fog visszaadni, aminek a szöveghossz a legelső eleme, ami nekünk kell. Azt pedig a <function>car</function> függvénnyel határozzuk meg. A car függvény egy lista fejét adja vissza, jelen esetben a lista első elemét, pont ami nekünk kell.
+	</para>  
+      
+	<programlisting>
+<![CDATA[(define (elem x lista)
+
+    (if (= x 1) (car lista) (elem (- x 1) ( cdr lista ) ) )
+
+)
+
+(define (text-width text font fontsize)
+(let*
+    (
+        (text-width 1)
+    )
+    (set! text-width (car (gimp-text-get-extents-fontname text fontsize PIXELS font)))    
+
+    text-width
+    )
+)
+
+(define (text-wh text font fontsize)
+(let*
+    (
+        (text-width 1)
+        (text-height 1)
+    )
+    ;;;
+    (set! text-width (car (gimp-text-get-extents-fontname text fontsize PIXELS font)))    
+    ;;; ved ki a lista 2. elemét
+    (set! text-height (elem 2  (gimp-text-get-extents-fontname text fontsize PIXELS font)))    
+    ;;;    
+    
+    (list text-width text-height)
+    )
+)
+
+
+;(text-width "alma" "Sans" 100)
+
+(define (script-fu-bhax-mandala text text2 font fontsize width height color gradient)
+(let*
+    (
+        (image (car (gimp-image-new width height 0)))
+        (layer (car (gimp-layer-new image width height RGB-IMAGE "bg" 100 LAYER-MODE-NORMAL-LEGACY)))
+        (textfs)
+        (text-layer)
+        (text-width (text-width text font fontsize))
+        ;;;
+        (text2-width (car (text-wh text2 font fontsize)))
+        (text2-height (elem 2 (text-wh text2 font fontsize)))
+        ;;;
+        (textfs-width)
+        (textfs-height)
+        (gradient-layer)
+    )
+]]>
+	</programlisting> 
+
+	<para>
+		Ezek után jön maga a mandala. Először létrejön egy réteg (layer) Amit feltöltünk a felhasználó által megadott adatokkal. Ezek a a szöveg, a szöveg betűtítusa, illetve a szöveg mérete. A felhasználó által megadott szöveget elhelyezzük a réteg közepére, a megadott betűtípussal és betűmérettel. Ezután a réteget vízszintesen tükrözi a program, és ráhelyezzük az eredeti réteg felé ezzel elérve a szimmetriát, majd a program elforgatja az így keletkezett képet először 90 majd 45 és végül 30 fokkal és minden egyes elforgatás után megismétli a tükrözést. Ezek után a szövegréteget felnagyítja a teljes réteg méretére.
+	</para>
+	<programlisting>
+	<![CDATA[(gimp-image-insert-layer image layer 0 0)
+
+    (set! textfs (car (gimp-text-layer-new image text font fontsize PIXELS)))
+    (gimp-image-insert-layer image textfs 0 -1)
+    (gimp-layer-set-offsets textfs (- (/ width 2) (/ text-width 2))  (/ height 2))
+    (gimp-layer-resize-to-image-size textfs)
+
+    (set! text-layer (car (gimp-layer-new-from-drawable textfs image)))
+    (gimp-image-insert-layer image text-layer 0 -1)
+    (gimp-item-transform-rotate-simple text-layer ROTATE-180 TRUE 0 0)
+    (set! textfs (car(gimp-image-merge-down image text-layer CLIP-TO-BOTTOM-LAYER)))
+
+    (set! text-layer (car (gimp-layer-new-from-drawable textfs image)))
+    (gimp-image-insert-layer image text-layer 0 -1)
+    (gimp-item-transform-rotate text-layer (/ *pi* 2) TRUE 0 0)
+    (set! textfs (car(gimp-image-merge-down image text-layer CLIP-TO-BOTTOM-LAYER)))
+
+    (set! text-layer (car (gimp-layer-new-from-drawable textfs image)))
+    (gimp-image-insert-layer image text-layer 0 -1)
+    (gimp-item-transform-rotate text-layer (/ *pi* 4) TRUE 0 0)
+    (set! textfs (car(gimp-image-merge-down image text-layer CLIP-TO-BOTTOM-LAYER)))
+    
+    (set! text-layer (car (gimp-layer-new-from-drawable textfs image)))
+    (gimp-image-insert-layer image text-layer 0 -1)
+    (gimp-item-transform-rotate text-layer (/ *pi* 6) TRUE 0 0)
+    (set! textfs (car(gimp-image-merge-down image text-layer CLIP-TO-BOTTOM-LAYER)))    
+    
+    (plug-in-autocrop-layer RUN-NONINTERACTIVE image textfs)
+    (set! textfs-width (+ (car(gimp-drawable-width textfs)) 100))
+    (set! textfs-height (+ (car(gimp-drawable-height textfs)) 100))
+        
+	(gimp-layer-resize-to-image-size textfs)
+]]>
+	</programlisting>
+	<para>
+	Ezután két körnek álcázott ellipszist illeszt a képre, amik a szöveget fogják kézrefogni. Az egyik kör vastagsága 8, a másiké pedig 22. Ezek után megtörténik a színátmenet egy új rétegre, és megjeleníttetjük a képet.
+	</para>
+	<programlisting>
+	<![CDATA[(gimp-image-select-ellipse image CHANNEL-OP-REPLACE (- (- (/ width 2) (/ textfs-width 2)) 18) 
+        (- (- (/ height 2) (/ textfs-height 2)) 18) (+ textfs-width 36) (+ textfs-height 36))
+	(plug-in-sel2path RUN-NONINTERACTIVE image textfs)
+        
+    (gimp-context-set-brush-size 22)
+    (gimp-edit-stroke textfs)
+    
+    (set! textfs-width (- textfs-width 70))
+    (set! textfs-height (- textfs-height 70))
+    
+    (gimp-image-select-ellipse image CHANNEL-OP-REPLACE (- (- (/ width 2) (/ textfs-width 2)) 18) 
+        (- (- (/ height 2) (/ textfs-height 2)) 18) (+ textfs-width 36) (+ textfs-height 36))
+	(plug-in-sel2path RUN-NONINTERACTIVE image textfs)
+        
+    (gimp-context-set-brush-size 8)
+    (gimp-edit-stroke textfs)
+        
+    (set! gradient-layer (car (gimp-layer-new image width height RGB-IMAGE "gradient" 100 LAYER-MODE-NORMAL-LEGACY)))
+    
+    (gimp-image-insert-layer image gradient-layer 0 -1)
+	(gimp-image-select-item image CHANNEL-OP-REPLACE textfs)
+	(gimp-context-set-gradient gradient) 
+	(gimp-edit-blend gradient-layer BLEND-CUSTOM LAYER-MODE-NORMAL-LEGACY GRADIENT-RADIAL 100 0 REPEAT-NONE FALSE TRUE 5 .1 TRUE 500 500 (+ (+ 500 (/ textfs-width 2)) 8) 500)
+	
+	(plug-in-sel2path RUN-NONINTERACTIVE image textfs)
+
+    ;(gimp-selection-none image)
+    ;(gimp-image-flatten image)
+    
+    (gimp-display-new image)
+    (gimp-image-clean-all image)
+    )
+)
+]]>
+	</programlisting>
+	<para>
+	Ezek után már csak a GIMP-be regisztrálás van hátra.
+	</para>
+	<programlisting>
+	<![CDATA[(script-fu-register "script-fu-bhax-mandala"
+    "Mandala9"
+    "Creates a mandala from a text box."
+    "Norbert Bátfai"
+    "Copyright 2019, Norbert Bátfai"
+    "January 9, 2019"
+    ""
+    SF-STRING       "Text"      "STRING1"
+    SF-FONT         "Font"      "Sans"
+    SF-ADJUSTMENT   "Font size" '(100 1 1000 1 10 0 1)
+    SF-VALUE        "Width"     "1000"
+    SF-VALUE        "Height"    "1000"
+    SF-GRADIENT     "Gradient"  "Deep Sea"
+)
+(script-fu-menu-register "script-fu-bhax-mandala" 
+    "<Image>/File/Create/BHAX"
+)
+]]>
+	</programlisting> 
+    </section>
+
+</chapter>

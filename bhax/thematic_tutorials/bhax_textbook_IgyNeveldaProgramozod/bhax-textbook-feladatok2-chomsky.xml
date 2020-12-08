@@ -1,0 +1,305 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Chomsky!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+    <section>
+        <title>Encoding</title>
+        <para>
+	Fordítsuk le és futtassuk a Javat tanítok könyv MandelbrotHalmazNagyító.java forrását úgy, hogy a fájl nevekben és a forrásokban is meghagyjuk az ékezetes betűket!
+https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html
+        </para>
+
+        
+
+        
+
+        <para>
+            Ebben a feladatban a Bátfai Norbert által megadott <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/ch04.html">MandelbrothalmazNagyító.java</link>
+	    forrást kellett futtatni. Ezzel csupán annyi a gond, hogy a forrás tele van ékezetes betűkkel. Éppen ezért, amikor megpróbáljuk lefordítani, akkor a képen látható hibákat kapjuk:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/mandelerror.png" contentwidth="5in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Ez a feladat nagyon jó gyakorlati tudást ad a java karakterkészletekhez. Mint nagyon sokszor, a fordító most is a barátunk: "Unmappable character for encoding UTF-8". Vagyis a forrás kódolásával van a gond. Vagyis ezek a karakterek nem találhatóak meg az UTF-8 kódolásban. Ez azt jelenti, hogy egy másik kódolásra kell átállítani a forrást, amit a -encoding kapcsolóvan lehet bállítani. Mostmár csak arra kellett rájönni, hogy mire kellene átállítani a kódolást. Ehhez megkerestem a <link xlink:href="https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html">Java által támogatott karakterkódolásokat.</link> Itt amire felkaptam a fejem, az a windows-1250 kódolás, aminek a leírása az, hogy a Windows Kelet Európai karakterkódolása, és arra gondolva, hogy vagy jó vagy nem, kipróbáltam hogy működik-e, és működött.
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/mandelfut.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+	
+    </section>
+
+
+   <section>
+        <title>Leetspeak</title>
+        <para>
+            Lexelj össze egy l33t ciphert!
+        </para>
+        
+        <para>A program első szegmensében, azon belül is a l337d1c7 struktúrában megadjuk a saját leet-speech szótárunkat. Itt az angol ABC összes betüjére és a 0-9 számjegyekre hasonlító speciális karakterekkel ábrázoljuk őket. Minden karaktert négyféleképpen adhatunk meg:
+        <programlisting language="c"><![CDATA[%{
+  #define L337SIZE (sizeof l337d1c7 / sizeof (struct cipher))
+    
+  struct cipher {
+    char c;
+    char *leet[4];
+  } l337d1c7 [] = {
+
+  {'a', {"4", "4", "@", "/-\\"}},
+  {'b', {"b", "8", "|3", "|}"}},
+  {'c', {"c", "(", "<", "{"}},
+  {'d', {"d", "|)", "|]", "|}"}},
+  {'e', {"3", "3", "3", "3"}},
+  {'f', {"f", "|=", "ph", "|#"}},
+  {'g', {"g", "6", "[", "[+"}},
+  {'h', {"h", "4", "|-|", "[-]"}},
+  {'i', {"1", "1", "|", "!"}},
+  {'j', {"j", "7", "_|", "_/"}},
+  {'k', {"k", "|<", "1<", "|{"}},
+  {'l', {"l", "1", "|", "|_"}},
+  {'m', {"m", "44", "(V)", "|\\/|"}},
+  {'n', {"n", "|\\|", "/\\/", "/V"}},
+  {'o', {"0", "0", "()", "[]"}},
+  {'p', {"p", "/o", "|D", "|o"}},
+  {'q', {"q", "9", "O_", "(,)"}},
+  {'r', {"r", "12", "12", "|2"}},
+  {'s', {"s", "5", "$", "$"}},
+  {'t', {"t", "7", "7", "'|'"}},
+  {'u', {"u", "|_|", "(_)", "[_]"}},
+  {'v', {"v", "\\/", "\\/", "\\/"}},
+  {'w', {"w", "VV", "\\/\\/", "(/\\)"}},
+  {'x', {"x", "%", ")(", ")("}},
+  {'y', {"y", "", "", ""}},
+  {'z', {"z", "2", "7_", ">_"}},
+  
+  {'0', {"D", "0", "D", "0"}},
+  {'1', {"I", "I", "L", "L"}},
+  {'2', {"Z", "Z", "Z", "e"}},
+  {'3', {"E", "E", "E", "E"}},
+  {'4', {"h", "h", "A", "A"}},
+  {'5', {"S", "S", "S", "S"}},
+  {'6', {"b", "b", "G", "G"}},
+  {'7', {"T", "T", "j", "j"}},
+  {'8', {"X", "X", "X", "X"}},
+  {'9', {"g", "g", "j", "j"}}]]></programlisting>
+</para>
+        <para>
+            A program következő szegmensében a kapott input minden karakterére megpróbálunk egy új helyettesítőkaraktert találni az általunk definiált szótár segítségével:
+            <programlisting><![CDATA[
+{     
+      int found = 0;
+      for(int i=0; i<L337SIZE; ++i)
+      {
+      
+        if(l337d1c7[i].c == tolower(*yytext))
+        {
+        
+          int r = 1+(int) (100.0*rand()/(RAND_MAX+1.0));
+        
+          if(r<91)
+            printf("%s", l337d1c7[i].leet[0]);
+          else if(r<95)
+            printf("%s", l337d1c7[i].leet[1]);
+          else if(r<98)
+            printf("%s", l337d1c7[i].leet[2]);
+          else 
+            printf("%s", l337d1c7[i].leet[3]);
+
+          found = 1;
+          break;
+        }
+        
+      }
+      
+      if(!found)
+         printf("%c", *yytext);   
+}]]>
+    </programlisting>
+    Ha megtaláljuk a karaktert a szótárunkban egy random számot generálunk 1-től 100-ig. Ez a szám dönt arról, hogy melyik karakterrel helyettesítjük a megadott 4-ből. (90% esély az elsőre, 4% a másodikra, 3-3% a harmadik és negyedikre)
+        </para>
+        <para>
+            Majd ezt követi a formázott szöveg kiíratása, a Ctrl+D-vel megszakíthatjuk az inputot.
+        </para>
+        <programlisting><![CDATA[
+A program első szegmensében, azon belül is a l337d1c7 struktúrában megadjuk a saját leet-speech szótárunkat. Itt az angol ABC összes betüjére a 0-9 számjegyekre hasonlító speciális karakterekkel ábrázoljuk őket. Minden karaktert négyféleképpen adhatunk meg.
+
+4 pr0gr4m 3|_ső sz3gm3nséb3n, 4z0|\| b3lül 1s 4 lEETdIcT struktúráb4n m3g4djuk 4 s4ját l33t-sp33c[-] szótárunk4t. 1tt 4z 4ng01 @bc össz3s b3tüjér3 4 D-g számj3gy3kr3 h4$0nlító sp3c1ál1s k4r4kt3r3kk3l áb12áz0ljuk ők37. m1nd3n k4r4kt3|27 négyfél3képp3n 4dh4tunk m3[.
+]]></programlisting>
+    </section>                     
+
+   <section>
+        <title>Full screen</title>
+        <para>
+	Készítsünk egy teljes képernyős Java programot!
+Tipp: https://www.tankonyvtar.hu/en/tartalom/tkt/javat-tanitok-javat/ch03.html#labirintus_jatek
+        </para>
+
+        <para>
+            Megoldás videó:
+        </para>
+	
+        
+
+        <para>
+            Ebben a feladatban egy teljes képernyős java programot kellett írni, amihez én egy korábbi projektemet használtam fel. Mivel maga a program elég hosszú, ezért csak azokra a részekre koncentrálnék, ami a teljes képernyő kialakulásában szerepet játszik. Ez azt jelenti, hogy az <function>egyjatekos()</function> függvényre fogok koncentrálni, mivel a program többjátékos része nem használ grafikus felületet. De az egyjátékos részben már rögtön az első sor is fontos, hiszen létrehozunk egy GraphicsDrive-ot, ami segíteni fog a teljes képernyőre váltásban. Ezek után pedig létrehozunk egy KeyListener-t, ami az ESC gomb lenyomására fog fülelni, hiszen amennyiben a felhasználó lenyomja azt a billentyűt, akkor a program kilép.
+        </para>
+	<programlisting>
+	<![CDATA[GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+	KeyListener listener = new KeyListener() {
+		
+		@Override
+		public void keyPressed(KeyEvent event){
+
+			if(event.getKeyCode() == KeyEvent.VK_ESCAPE)		
+				System.exit(0);
+		}
+
+		@Override
+		public void keyReleased(KeyEvent event){}
+
+		@Override
+		public void keyTyped(KeyEvent event){}
+	};]]>
+	</programlisting>
+
+	<para>
+	Ezek után létrehozunk egy JFrame-t, ami tulajdonképpen az alkalmazás ablaka, és hozzá is adjuk a frame-hez a KeyListenert, majd pedig létrehozunk pár gombot, illetve szövegmezőt is, és azokhoz is hozzárendeljük a KeyListenert. Erre azért van szükség, mivel csak akkor fog működni a KeyListener-ünk, ha hozzá van rendelve ahhoz az elemhez, ami éppen fókuszban van, és nem elég csak a Frame-hez hozzárendelni. Vagyis ha a program épp egy gombra kattintásra vár, de ahhoz a gombhoz nincs hozzárendelve a KeyListener, akkor nem fog bezárulni az alkalmazás, hiába nyomogatjuk az ESC gombot (igen ezt tapasztalatból mondom sajnos).
+	</para>
+	<programlisting>
+	<![CDATA[JFrame options = new JFrame("");
+        options.setTitle("Egyjátékos mód");
+	    options.addKeyListener(listener);
+        options.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JTextField maxszam = new JTextField("Adja meg, hogy maximum mekkora számra lehet gondolni");
+        JTextField gondolt = new JTextField("Adja meg azt a számot amire gondolt");
+        JButton start = new JButton("Start");
+        JButton ujra = new JButton("Újra");
+        options.getContentPane().add(BorderLayout.NORTH,maxszam);
+        options.getContentPane().add(BorderLayout.CENTER,gondolt);
+        options.getContentPane().add(BorderLayout.SOUTH,start);
+        maxszam.addKeyListener(listener);
+        gondolt.addKeyListener(listener);]]>
+	</programlisting>
+	<para>
+	Majd pedig a teljes képernyőre váltás, ami úgy történik, hogy megnézzük, hogy támogatja e a számítógépünk a teljes képernyőt a <function>gd.isFullScreenSupported()</function> függvénnyel. Ha igen, akkor undercorated-re állítjuk a frame-t, ami szükséges az igazi teljes képernyőhöz, majd pedig a <function>setFullScreenWindow()</function> függvénnyel teljes képernyőre állítjuk a frame-t.
+	</para>
+	<programlisting>
+	<![CDATA[if (gd.isFullScreenSupported()) {
+		options.setUndecorated(true);
+		gd.setFullScreenWindow(options);
+	}
+	else{
+		System.err.println("Nem jó");
+		options.setSize(600, 200);
+		options.setVisible(true);
+	}]]>
+	</programlisting>
+	<para>
+	Az eredmény pedig egy teljes képernyős alkalmazás:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/fullscreen.png" contentwidth="7in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+   <section>
+        <title>Paszigráfia Rapszódia OpenGL full screen vizualizáció</title>
+        <para>
+	Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvilág, textúrázás, a szintek jobb elkülönítése, kézreállóbb irányítás.
+        </para>
+
+        <para>
+            Megoldás videó:
+        </para>
+
+        
+
+        <para>
+            Ebben a feladatban a Bátfai Norbert által <link xlink:href="https://gitlab.com/nbatfai/pasigraphy-rhapsody/tree/master/para/docs">megadott</link> programon kellett apró változtatásokat elvégezni. Ehhez először fel kellett telepíteni a boost-ot, amit a következő paranccsal lehet megtenni: <emphasis>sudo apt-get install libboost-all-dev</emphasis>, illetve e mellett még az OpenGl-re is szükség van, amit pedig a következő parancs kiadásával lehet megtenni: <emphasis>sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev</emphasis> majd pedig a forráskódban a kommentekben megadott módon lehet fordítani és futtatni.
+        </para>
+	<para>
+	Az egyik dolog, amin én módosítottam, az a színvilág, amihez a <function>glColor3f()</function> függvényt kellett használni. Ennek a függvénynek három paramétere van, az első a piros, a második a zöld, a harmadik pedig a kék szín intenzitását állítja be. Ez azt jelenti, hogy a 0.1 0.0 0.0 értékek egy sötét piros színt adnának, a 0.8 0.0 0.0 értékek pedig egy intenzív világos piros színt eredményeznek. Én egy minimalista stílussal dolgoztam, ezért a világos és sötét szürke színekkel játszadoztam, ahogy az az alábbi képen is látszani fog.
+	</para>
+	<para>
+	A másik dolog, amin változtattam, az az irányítás. Eddig a kockákat a billenytűzeten található nyilakkal, illetve a page up és page down gombokkal lehetett forgatni. Azonban, mivel nagyítani pedig a + és - gombokkal lehet, ezért nekem a forgatás a W,A,S,D,Q,E billentyűkkel jobban kézreáll. Ehhez töröltem az <function>skeyboard()</function> függvényt, és átírtam a <function>keyboard()</function> függvényt, ami mostmár a következőképpen néz ki:
+	</para>
+	<programlisting>
+	<![CDATA[void keyboard ( unsigned char key, int x, int y )
+{
+        if ( key == '0' ) {
+                index=0;
+        } else if ( key == '1' ) {
+                index=1;
+        } else if ( key == '2' ) {
+                index=2;
+        } else if ( key == '3' ) {
+                index=3;
+        } else if ( key == '4' ) {
+                index=4;
+        } else if ( key == '5' ) {
+                index=5;
+        } else if ( key == '6' ) {
+                index=6;
+        } else if ( key == 'f' ) {
+                transp = !transp;
+        } else if ( key == '-' ) {
+                ++fovy;
+
+                glMatrixMode ( GL_PROJECTION );
+                glLoadIdentity();
+                gluPerspective ( fovy, ( float ) w/ ( float ) h, .1f, 1000.0f );
+                glMatrixMode ( GL_MODELVIEW );
+
+        } else if ( key == '+' ) {
+                --fovy;
+
+                glMatrixMode ( GL_PROJECTION );
+                glLoadIdentity();
+                gluPerspective ( fovy, ( float ) w/ ( float ) h, .1f, 1000.0f );
+                glMatrixMode ( GL_MODELVIEW );
+
+        }
+
+	else if ( key == 'w' ) {
+                cubeLetters[index].rotx += 5.0;
+        } else if ( key == 's' ) {
+                cubeLetters[index].rotx -= 5.0;
+        } else if ( key == 'd' ) {
+                cubeLetters[index].roty -= 5.0;
+        } else if ( key == 'a' ) {
+                cubeLetters[index].roty += 5.0;
+        } else if ( key == 'q' ) {
+                cubeLetters[index].rotz += 5.0;
+        } else if ( key == 'e' ) {
+                cubeLetters[index].rotz -= 5.0;
+        }
+
+        glutPostRedisplay();
+
+}]]>
+	</programlisting>
+	<para>
+	Azt, hogy mostmár más gombokkal kell forgatni a kockákat, ugyan nem tudom megmutatni, de az új színeket viszon igen, amik a következőképpen néznek ki:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/cube.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+
+
+
+</chapter>

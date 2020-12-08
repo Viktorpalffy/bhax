@@ -1,0 +1,348 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Liskov!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+	
+    <section>
+        <title>Liskov helyettesítés sértése</title>
+        <para>
+	Írjunk olyan OO, leforduló Java és C++ kódcsipetet, amely megsérti a Liskov elvet! Mutassunk rá a megoldásra: jobb OO tervezés. https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf (93-99 fólia) (számos példa szerepel az elv megsértésére az UDPROG repóban, lásd pl. source/binom/Batfai-Barki/madarak/)
+        </para>
+        
+        <para>
+           Ez a feladat egy nagyon jól bemutatja az öröklődést, az osztályhierarchiát, calamint a metódustúlterhelést a gyakorlatban. A liskov elv azt jelenti, hogy ha S altípusa T-nek, akkor minden olyan helyen ahol T-t felhasználjuk S-t is minden gond nélkül behelyettesíthetjük anélkül, hogy a programrész tulajdonságai megváltoznának. Vagyis ha S osztály T osztály leszármazottja, akkor S szabadon behelyettesíthető minden olyan helyre (paraméter, változó, stb…), ahol T típust várunk. Ezt kellett megsérteni c++ ban és java-ban is. Ehhez én egy madár-pingvin szülőosztály-gyerekosztály kombinációt használtam.
+        </para>
+	
+	<para>
+	C++:
+	</para>
+	<programlisting language="C++">
+	<![CDATA[#include <iostream>
+using namespace std;
+
+class Madar {
+public:
+     void repul() {
+	cout << "Repül";}
+};
+
+class Sas : public Madar
+{};
+
+class Pingvin : public Madar 
+{};]]>
+	</programlisting>
+<para>
+És java:
+</para>
+	<programlisting language="Java">
+	<![CDATA[static class Madar{
+	public void repul(){
+	System.out.println("Repülök");
+	}
+}
+
+static class Sas extends Madar{
+	
+}
+
+static class Pingvin extends Madar{
+
+}]]>
+	</programlisting>
+	<para>
+	A programok mindkét esetben úgy kezdődnek, hogy létrehozzuk a szülőosztályt, ami a madár. Ennek az osztálynak van egy olyan metódusa, hogy <function>repul()</function> ami jelen esetben csak annyit csinál, hogy kiirja a konzolra azt, hogy Repül vagy Repülök. Majd jön két újabb osztály, amiket a Madárból származtatunk, vagyis ők is meg fogják kapni a <function>repul()</function> metódust. Az egyik osztály a sas, ami tud repülni és még madár is, szóval itt nincs probléma. Azonban a másik osztály a Pingvin, ami igaz, hogy madár, de repülni nem tud.
+	</para>
+	
+	<para>
+	C++:
+	</para>
+	<programlisting language="C++">
+	<![CDATA[int main ( int argc, char **argv )
+{
+     Madar madar;
+     madar.repul();
+     cout << " a madár\n";
+
+     Sas sas;
+     sas.repul();
+     cout << " a sas\n";
+
+     Pingvin pingvin;
+     pingvin.repul();
+     cout << " a pingvin. De a pingvin nem tud repülni, ezért sérült a Liskov elv.\n";
+
+}]]>
+	</programlisting>
+	<para>
+	és Java:
+	</para>
+	<programlisting language="Java">
+	<![CDATA[public static void main(String args[]){
+	Madar madár = new Madar();
+	Sas sas = new Sas();
+	Pingvin pingvin = new Pingvin();
+	
+	System.out.print("Mit csinál a madár?:");
+	madár.repul();
+	
+	System.out.print("\nMit csinál a sas?:");
+	sas.repul();
+
+	System.out.print("\nMit csinál a pingvin?:");
+	pingvin.repul();
+	System.out.println("\nDe a pingvin nem tud repülni, szóval sérül a liskov elv.");
+
+}]]>
+	</programlisting>
+	<para>
+	Ezek után a main-ben mind a két esetben példányosítunk, azaz létrehozunk egy madarat, egy sast és egy pingvint is. Majd mind a három objektummal meghívjuk a repül függvényt. Az első kettővel nincs, és nem is lenne gond, mivel alapvetően tudnak repülni, viszont a pingvin, mint tudjuk nem tud repülni. Azonban ez a pingvin ahelyett, hogy hibát dobna a program, boldogan repked a virtuális térben, ami nekünk nem jó.
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/liskov.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Erre egy megoldás a jobb OO tervezés. Vagyis ha például ha a Madár osztályunk megmadarna, de lenne két származtatott osztálya. Az egyik osztályba kerülnének a repülni tudó madarak, a másikba pedig azok a madarak, amik nem tudnak repülni. És ezekből az osztályokból származtathatnánk tovább a sast, ami egy repülni tudó madár, illetve a pingvint is, ami pedig nem tud repülni.
+	</para>
+    </section>
+
+   <section>
+        <title>Szülő-gyerek</title>
+        <para>
+	Írjunk Szülő-gyerek Java és C++ osztálydefiníciót, amelyben demonstrálni tudjuk, hogy az ősön
+keresztül csak az ős üzenetei küldhetőek!
+https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf (98. fólia)
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        
+        <para>
+            Ebben a feladatban be kellett bizonyítani, hogy ha a gyerekosztályban létrehozunk egy metódust, akkor ha a gyerekosztályt szülőosztályként szeretnénk használni, akkor a gyerekosztály saját metódusait nem fogjuk tudni használni. Én az előző feladathoz hasonlóan maradtam a Madár-Sas példánál. A Madár a szülő, a Sas a gyerekosztály.
+        </para>
+	<para>
+	C++ kód:
+	</para>
+	<programlisting>
+	<![CDATA[class Madar{
+public: 
+	
+};
+
+class Sas : public Madar{
+public:
+	void repul() {
+		std::cout << "Repül";
+	}
+
+};]]>
+	</programlisting>
+	<para>
+	És java:
+	</para>
+	<programlisting>
+	<![CDATA[static class Madar{
+	protected int szarnyhossz;
+	public void setSzarnyhossz(int szarnyhossz) {
+	this.szarnyhossz = szarnyhossz;
+	}
+
+}
+
+static class Sas extends Madar{
+	public int getSzarnyhossz(){
+		return szarnyhossz;
+	}
+}]]>
+	</programlisting>
+
+	<para>
+	A C++ kód esetében a gyerekosztálynak van egy <function>repul()</function> metódusa, ami szimplán csak kiirja a konzolra, hogy "Repül". Ezzel szemben a java példa egy kicsit bonyolultabb, mivel itt a szülő osztálynak, azaz a madárnak van egy szárnyhossz tulajdonsága, illetve egy <function>setSzarnyhossz()</function> metódusa, amivel a szárnyhossz tulajdonságot lehet beállítani. A gyermek osztály természetesen megörökli ezt a tulajdonságot, illetve metódust, szóval neki is szabadon belehet állítani a szárnyhossz tulajdonságát. De ezek mellett van egy <function>getSzarnyhossz()</function> metódusa is, ami visszaadja a sas objektum szárnyhosszát. Ez eddig teljesen normális, az érdekesség akkor kezdődik, amikor a main-be érünk.
+	</para>
+	<para>
+	C++:
+	</para>
+	<programlisting>
+	<![CDATA[int main(){
+
+	Madar* sas = new Sas();
+	Sas* sas2 = new Sas();
+
+	sas->repul();
+	sas2->repul();
+}]]>
+	</programlisting>
+
+	<para>
+	És java:
+	</para>
+	<programlisting>
+	<![CDATA[public static void main(String args[]){
+		Madar sas = new Sas();
+		sas.setSzarnyhossz(80);
+
+		Sas sas2 = new Sas();
+		sas2.setSzarnyhossz(50);
+		
+		System.out.println(sas2.getSzarnyhossz() + " " + sas.getSzarnyhossz() );
+	}]]>
+	</programlisting>
+	<para>
+	Mind a két esetben létrehozunk egy Sas típust Sas típusként, amivel nincs is gond, de létrehozunk egy Madár típust is Sas típusként. Ezek után a C++ kódban mind a két objektumok megpróbáljuk repteteni a <function>repul()</function> metódust használva. A Sas típusnak ezzel nem is lenne gondja, azonban a Madárnak igen.
+	</para>
+	<para>
+	A java kód itt is egy kicsit másképp működik. Itt a két típus létrehozása után mind a kettőnek beállítjuk a szárnyhosszát a <function>setSzarnyhossz()</function> segítségével, amivel nincs is gond, mivel ez eredetileg a Madár osztály metódusa, amit a Sas megörökölt. Azonban ezek után a <function>getSzarnyhossz()</function> metódus segítségével megpróbáljuk kiiratni mind a két objektum szárnyhosszát, ami csak az egyik esetben sikerülne. A végeredmény pedig:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/szgy.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+	
+    </section>
+
+   <section>
+        <title>Anti OO</title>
+        <para>
+	A BBP algoritmussal a Pi hexadecimális kifejtésének a 0. pozíciótól számított 10<superscript>6</superscript>, 10<superscript>7</superscript>, 10<superscript>8</superscript> darab jegyét határozzuk meg C, C++, Java és C# nyelveken és vessük össze a futási időket! https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        
+        <para>
+            Ehhez a feladathoz a Bárfai Norbert által <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066">biztosított</link> forráskódokat használtam. A programokat egy 4.5 Ghz-re overclockolt AMD-FX8350 és 8GB ramot tartalmazó gépen futtattam. Lássuk is az eredményeket:
+        </para>
+	<para>
+	A java program 10<superscript>6</superscript> számjegyet 0.906 másodperc alatt, 10<superscript>7</superscript> számjegyet 11.132 másodperc alatt, 10<superscript>8</superscript> számjegyet pedig 135.7 másodperc alatt számolta ki. Ahhoz, hogy hány számjegyet számoljon ki a program, a következőt kell alkalmazni. Ahhoz, hogy 6 számjegyet számoljon ki, nem kell semmit se módosítani az alap programon. Ahhoz, hogy 7 számjegyet számoljon ki, az alábbi for ciklus fejében kellett hozzáírni a d incializálásához, illetve a feltételhet egy-egy nullás számjegyet. Ahhoz pedig, hogy 8 számegyet számoljon ki, ugyan abban a for ciklusban ugyan azokra a helyekre ismét oda kell írni még egy-egy számjegyet.
+	</para>
+	<programlisting>
+	<![CDATA[for(int d=100000000; d<100000001; ++d)]]>
+	</programlisting>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/antijava.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+
+	<para>
+	A C++ program 10<superscript>6</superscript> számjegyet 2.37792 másodperc alatt, 10<superscript>7</superscript> számjegyet 26.5749 másodperc alatt, 10<superscript>8</superscript> számjegyet pedig 296.292 másodperc alatt számolta ki. Itt is érvényes az a tény, hogy ahhoz, hogy 6 számjegyet számoljon ki, nem kell semmit se módosítani az alap programon. Ahhoz, hogy 7 számjegyet számoljon ki, az alábbi for ciklus fejében kellett hozzáírni a d incializálásához, illetve a feltételhet egy-egy nullás számjegyet. Ahhoz pedig, hogy 8 számegyet számoljon ki, ugyan abban a for ciklusban ugyan azokra a helyekre ismét oda kell írni még egy-egy számjegyet.
+	</para>
+	<programlisting>
+	<![CDATA[for(int d=100000000; d<100000001; ++d)]]>
+	</programlisting>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/anticpp.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+
+	<para>
+	A C program 10<superscript>6</superscript> számjegyet 1.243691 másodperc alatt, 10<superscript>7</superscript> számjegyet 15.384056 másodperc alatt, 10<superscript>8</superscript> számjegyet pedig 186.029669 másodperc alatt számolta ki. És igen. Ahhoz, hogy 6 számjegyet számoljon ki, nem kell semmit se módosítani az alap programon. Ahhoz, hogy 7 számjegyet számoljon ki, az alábbi for ciklus fejében kellett hozzáírni a d incializálásához, illetve a feltételhet egy-egy nullás számjegyet. Ahhoz pedig, hogy 8 számegyet számoljon ki, ugyan abban a for ciklusban ugyan azokra a helyekre ismét oda kell írni még egy-egy számjegyet.
+	</para>
+	<programlisting>
+	<![CDATA[for(int d=100000000; d<100000001; ++d)]]>
+	</programlisting>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/antic.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+
+	<para>
+	És végül a C# program 10<superscript>6</superscript> számjegyet 0.950131 másodperc alatt, 10<superscript>7</superscript> számjegyet 11.643125 másodperc alatt, 10<superscript>8</superscript> számjegyet pedig 140.350363 másodperc alatt számolta ki. Végül pedig szintén itt is ahhoz, hogy 6 számjegyet számoljon ki, nem kell semmit se módosítani az alap programon. Ahhoz, hogy 7 számjegyet számoljon ki, az alábbi for ciklus fejében kellett hozzáírni a d incializálásához, illetve a feltételhet egy-egy nullás számjegyet. Ahhoz pedig, hogy 8 számegyet számoljon ki, ugyan abban a for ciklusban ugyan azokra a helyekre ismét oda kell írni még egy-egy számjegyet.
+	</para>
+	<programlisting>
+	<![CDATA[for(int d=100000000; d<100000001; ++d)]]>
+	</programlisting>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/antics.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Az egész összesítve egy táblázatba:
+	</para>
+	<table frame='all'><title>Összehasonlítás</title>
+<tgroup cols='5' align='left' colsep='1' rowsep='1'>
+<colspec colname='c1'/>
+<colspec colname='c2'/>
+<colspec colname='c3'/>
+<colspec colnum='5' colname='c5'/>
+<thead>
+<row>
+  <entry></entry>
+  <entry>Java</entry>
+  <entry>C++</entry>
+  <entry>C#</entry>
+  <entry>C</entry>
+</row>
+</thead>
+<tfoot>
+<row>
+  <entry>10<superscript>8</superscript></entry>
+  <entry>135.7</entry>
+  <entry>296.292</entry>
+  <entry>140.350363</entry>
+  <entry>186.029669</entry>
+</row>
+</tfoot>
+<tbody>
+<row>
+  <entry>10<superscript>6</superscript></entry>
+  <entry>0.906</entry>
+  <entry>2.37792</entry>
+  <entry>0.950131</entry>
+  <entry>1.243691</entry>
+</row>
+<row>
+  <entry>10<superscript>7</superscript></entry>
+  <entry>11.132</entry>
+  <entry>26.5749</entry>
+  <entry>11.643125</entry>
+  <entry>15.384056</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<para>
+Ebből az látszik, hogy a sort a Java és a C# fej fej mellett haladva vezeti, 10<superscript>6</superscript> számjegynél a C# nyer, ám a másik két esetben pedig a Java. A dobogó harmadik helyét a C nyelv foglalja el, leghátul pedig a C++ kullog.
+</para>
+	
+    </section>
+
+   <section>
+        <title>Ciklomatikus komplexitás</title>
+        <para>
+	Számoljuk ki valamelyik programunk függvényeinek ciklomatikus komplexitását! Lásd a fogalom
+tekintetében a https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_2.pdf (77-79
+fóliát)!
+        </para>
+        
+        <para>
+            A ciklomatikus komplexitás egy forráskód összetettségét jelenti, amit gráfelmélettel kell kiszámolni. A képlet hozzá M=E-N+2P ahol E a gráf elemeinek a száma, N a gráfban lévő csúcsok száma, és P pedig az összefüggő komponensek száma. Én ezt a feladatot a <link xlink:href="http://www.lizard.ws/">http://www.lizard.ws/</link> oldal segítségével oldottam meg. Szimplán csak be kell illeszteni a forráskódot, ki kell választani, hogy milyen nyelven van írva a program, és ki is számolja nekünk. Én az első csokorban átnézett BBP és LZWBinFa programok java változatait számoltattam ki. Az eredmények:
+        </para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/CkLZW.png" contentwidth="6in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Itt viszont csak a különböző programrészek komplexitását kapjuk meg, nem pedig az egész programét. Ha összeadjuk a programrészek komplexitását akkor megkapjuk hogy a teljes program ciklomatikus komplexitása 45. De most nézzük a BBP algoritmust, az kicsit egyszerűbb:
+	</para>
+	<mediaobject>
+            <imageobject>
+		<imagedata fileref="pic/CkBBP.png" contentwidth="8in"/>
+            </imageobject>
+        </mediaobject>
+	<para>
+	Itt is ugyan az érvényes, mint az előző programnál. Azaz a teljes program ciklomatikus komplexitásának a meghatározásához össze kell adnunk az egyes programrészek ciklomatikus komplexitását. Ez által azt kapjuk, hogy a BBP algoritmus java változatának ciklomatikus komplexitása 13.
+	</para>
+    </section>
+
+</chapter>
